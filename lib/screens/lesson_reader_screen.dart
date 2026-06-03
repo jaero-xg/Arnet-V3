@@ -128,8 +128,11 @@ class _SectionBlock extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          const SizedBox(height: 10),
-          Text(section.body, style: Theme.of(context).textTheme.bodyLarge),
+          Text(
+            section.body,
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.justify,
+          ),
         ],
       ),
     );
