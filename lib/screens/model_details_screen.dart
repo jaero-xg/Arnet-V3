@@ -35,123 +35,145 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
     );
 
     return Scaffold(
-      backgroundColor: AppTheme.surfaceColor,
-      appBar: AppBar(
-          title:
-              Text(model.name, style: Theme.of(context).textTheme.titleLarge)),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Large preview
-            Container(
-              color: Colors.white,
-              width: double.infinity,
-              height: 220,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.string(
-                      model.thumbnailSvg,
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.contain,
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryColor.withValues(alpha: .08),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        model.category,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppTheme.primaryColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: CustomScrollView(
+        slivers: [
+          // ── Sticky App Bar ─────────────────────────────────────────────
+          SliverAppBar(
+            pinned: true,
+            backgroundColor: Theme.of(context).cardTheme.color,
+            surfaceTintColor: Colors.transparent,
+            elevation: 0,
+            leading: Padding(
+              padding: const EdgeInsets.all(8),
+              child: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    Icons.arrow_back_rounded,
+                    size: 18,
+                    color: Theme.of(context).textTheme.titleLarge?.color,
+                  ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(model.name,
-                      style: Theme.of(context).textTheme.headlineSmall),
-                  const SizedBox(height: 8),
-                  Text(model.description,
-                      style: Theme.of(context).textTheme.bodyLarge),
-                  const SizedBox(height: 20),
-                  // Info section
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(14),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Model Information',
-                              style: Theme.of(context).textTheme.titleMedium),
-                          const SizedBox(height: 12),
-                          _InfoRow(label: 'Model Name', value: model.name),
-                          const Divider(height: 20, thickness: 0.5),
-                          _InfoRow(label: 'Category', value: model.category),
-                          const Divider(height: 20, thickness: 0.5),
-                          _InfoRow(
-                              label: 'Learning Objective',
-                              value: model.learningObjective),
-                          const Divider(height: 20, thickness: 0.5),
-                          _InfoRow(
-                              label: 'Related Module',
-                              value: relatedModule.title),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  // Open related lesson
-                  OutlinedButton.icon(
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              ModuleDetailsScreen(module: relatedModule)),
-                    ),
-                    icon: const Icon(Icons.menu_book_outlined, size: 18),
-                    label: const Text('Open Related Lesson'),
-                    style: OutlinedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      foregroundColor: AppTheme.primaryColor,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      context.read<AppState>().incrementArSessions();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                              'AR session started — Unity integration pending'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.view_in_ar),
-                    label: const Text('Start AR Experience',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600)),
-                  ),
-                  const SizedBox(height: 16),
-                ],
+            title: Text(
+              '3D Model',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(1),
+              child: Container(
+                height: 0.8,
+                color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
+              ),
+            ),
+          ),
+
+          // ── Large Preview ─────────────────────────────────────────────
+          SliverToBoxAdapter(
+            child: _ModelPreview(model: model),
+          ),
+
+          // ── Model Name ─────────────────────────────────────────────
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
+              child: Text(
+                model.name,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+          ),
+
+          // ── Description ─────────────────────────────────────────────
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
+              child: Text(
+                model.description,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            ),
+          ),
+
+          // ── Model Information ────────────────────────────────────────
+          const SliverToBoxAdapter(
+            child: _SectionHeader(
+              title: 'Model Information',
+              trailing: null,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: _ModelInfoCard(model: model, relatedModule: relatedModule),
+          ),
+
+          // ── Action Buttons ───────────────────────────────────────────
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+              child: _RelatedLessonButton(relatedModule: relatedModule),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+              child: _ARLaunchButton(),
+            ),
+          ),
+
+          // ── Bottom safe padding ─────────────────────────────────────
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 96 + MediaQuery.of(context).padding.bottom,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Model Preview ─────────────────────────────────────────────────────────────
+
+class _ModelPreview extends StatelessWidget {
+  final Model3D model;
+  const _ModelPreview({required this.model});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).cardTheme.color,
+      width: double.infinity,
+      height: 220,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.string(
+              model.thumbnailSvg,
+              width: 80,
+              height: 80,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppTheme.accentColor.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                model.category,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppTheme.accentColor,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
@@ -161,6 +183,79 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
   }
 }
 
+// ── Section Header ────────────────────────────────────────────────────────────
+
+class _SectionHeader extends StatelessWidget {
+  final String title;
+  final String? trailing;
+  const _SectionHeader({required this.title, this.trailing});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          const Spacer(),
+          if (trailing != null)
+            Text(
+              trailing!,
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Model Info Card ───────────────────────────────────────────────────────────
+
+class _ModelInfoCard extends StatelessWidget {
+  final Model3D model;
+  final LearningModule relatedModule;
+  const _ModelInfoCard({
+    required this.model,
+    required this.relatedModule,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardTheme.color,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
+            width: 0.8,
+          ),
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _InfoRow(label: 'Model Name', value: model.name),
+            Divider(height: 20, color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight),
+            _InfoRow(label: 'Category', value: model.category),
+            Divider(height: 20, color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight),
+            _InfoRow(
+                label: 'Learning Objective', value: model.learningObjective),
+            Divider(height: 20, color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight),
+            _InfoRow(label: 'Related Module', value: relatedModule.title),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Info Row ──────────────────────────────────────────────────────────────────
+
 class _InfoRow extends StatelessWidget {
   final String label;
   final String value;
@@ -168,22 +263,142 @@ class _InfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 130,
-          child: Text(label,
-              style: TextStyle(fontSize: 13, color: Colors.grey[500])),
-        ),
-        Expanded(
-          child: Text(value,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 130,
+            child: Text(
+              label,
               style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  color: AppTheme.primaryDark)),
+                fontSize: 13,
+                color: Color(0xFF8BAAB8),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).textTheme.titleSmall?.color,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Related Lesson Button ─────────────────────────────────────────────────────
+
+class _RelatedLessonButton extends StatelessWidget {
+  final LearningModule relatedModule;
+  const _RelatedLessonButton({required this.relatedModule});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ModuleDetailsScreen(module: relatedModule),
         ),
-      ],
+      ),
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardTheme.color,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
+            width: 0.8,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Row(
+          children: [
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: AppTheme.tealColor.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(
+                Icons.menu_book_outlined,
+                color: AppTheme.tealColor,
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Open Related Lesson',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    relatedModule.title,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.chevron_right_rounded,
+              size: 20,
+              color: Color(0xFFB0C8D4),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── AR Launch Button ──────────────────────────────────────────────────────────
+
+class _ARLaunchButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        onPressed: () {
+          context.read<AppState>().incrementArSessions();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('AR session started — Unity integration pending'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        },
+        icon: const Icon(Icons.view_in_ar_rounded),
+        label: const Text(
+          'Start AR Experience',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppTheme.primaryColor,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          elevation: 0,
+        ),
+      ),
     );
   }
 }

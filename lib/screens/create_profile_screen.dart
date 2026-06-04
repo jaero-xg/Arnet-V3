@@ -44,7 +44,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.surfaceColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -62,7 +62,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
-                    'assets/images/logo.png', // path to your logo
+                    'assets/images/logo.png',
                     width: 72,
                     height: 72,
                     fit: BoxFit.cover,
@@ -123,7 +123,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? AppTheme.primaryColor.withValues(alpha: .12)
-                                : Colors.grey[50],
+                                : Theme.of(context).scaffoldBackgroundColor,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: isSelected
@@ -144,7 +144,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                   fontSize: 10,
                                   color: isSelected
                                       ? AppTheme.primaryColor
-                                      : Colors.grey[600],
+                                      : Theme.of(context).textTheme.bodySmall?.color,
                                   fontWeight: isSelected
                                       ? FontWeight.w600
                                       : FontWeight.normal,
@@ -172,6 +172,10 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
               const SizedBox(height: 28),
               ElevatedButton(
                 onPressed: _isLoading ? null : _createProfile,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primaryColor,
+                  foregroundColor: Colors.white,
+                ),
                 child: _isLoading
                     ? const SizedBox(
                         height: 20,

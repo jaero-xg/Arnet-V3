@@ -48,7 +48,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.surfaceColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(title: const Text('Edit Profile')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -58,7 +58,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Center(
               child: CircleAvatar(
                 radius: 36,
-                backgroundColor: AppTheme.primaryColor.withValues(alpha: .1),
+                backgroundColor: AppTheme.accentColor.withValues(alpha: .1),
                 child: Text(
                   avatarList[_selectedAvatarIndex]['emoji'],
                   style: const TextStyle(fontSize: 36),
@@ -90,14 +90,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         duration: const Duration(milliseconds: 150),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? AppTheme.primaryColor.withValues(alpha: .1)
-                              : Colors.grey[50],
+                              ? AppTheme.accentColor.withValues(alpha: .1)
+                              : Theme.of(context).scaffoldBackgroundColor,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
                             color: isSelected
-                                ? AppTheme.primaryColor
+                                ? AppTheme.accentColor
                                 : Colors.transparent,
-                            width: 2,
+                            width: 1,
                           ),
                         ),
                         child: Column(
@@ -112,7 +112,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 fontSize: 10,
                                 color: isSelected
                                     ? AppTheme.primaryColor
-                                    : Colors.grey[600],
+                                    : Theme.of(context).textTheme.bodySmall?.color,
                                 fontWeight: isSelected
                                     ? FontWeight.w600
                                     : FontWeight.normal,
@@ -141,6 +141,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             const SizedBox(height: 28),
             ElevatedButton(
               onPressed: _isLoading ? null : _save,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primaryColor,
+                foregroundColor: Colors.white,
+              ),
               child: _isLoading
                   ? const SizedBox(
                       height: 20,
