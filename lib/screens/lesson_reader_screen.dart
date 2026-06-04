@@ -131,7 +131,6 @@ class _SectionBlock extends StatelessWidget {
           Text(
             section.body,
             style: Theme.of(context).textTheme.bodyLarge,
-            textAlign: TextAlign.justify,
           ),
         ],
       ),

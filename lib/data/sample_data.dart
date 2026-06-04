@@ -618,36 +618,161 @@ final List<LearningModule> sampleModules = [
         isCompleted: false,
         sections: [
           LessonSection(
-            heading: 'Organ Systems',
+            heading: 'DATA TRANSMISSION MEDIA',
             body:
-                'The human body consists of many organ systems that work together. Major systems include the skeletal, muscular, circulatory, respiratory, digestive, nervous, and endocrine systems.',
+                'Transmission media is a pathway that carries the information from sender to receiver. We use different types of cables or waves to transmit data. Data is transmitted normally through electrical or electromagnetic signals.\n'
+                'Different medias have different properties like bandwidth, delay, cost and ease of installation and maintenance. Transmission media isalso called Communication channel. Transmission media is broadly classified into two groups',
           ),
           LessonSection(
-            heading: 'The Skeletal System',
+            heading: 'GUIDED TRANSMISSION MEDIADIA',
             body:
-                'The adult human skeleton consists of 206 bones. It provides structure, protects organs, enables movement, and produces blood cells in the bone marrow.',
+                '	These are the cables that are tangible or have physical existence and are limited by the physical geography.',
           ),
           LessonSection(
-            heading: 'The Circulatory System',
+            heading: 'Twisted Pair',
             body:
-                'The circulatory system consists of the heart, blood, and blood vessels. It transports nutrients, oxygen, and hormones throughout the body while removing waste products.',
+                '	A twisted pair consists of two conductors (normally copper), each with its own plastic insulation, twisted together, as shown in Figure 5.3. One of the wires is used to carry signals to the receiver and the other is used only as a ground reference. It is most effectively used in systems that use a balanced line method of transmission',
+          ),
+          LessonSection(
+            heading: 'RJ45 Connector',
+            body: 'Connector for twisted pair cable\n'
+                'Straight-Through vs. Cross-Over\n'
+                'Straight-Through Cable \n'
+                'Used to connect a host to a switch or hub, or a router to a switch or hub\n'
+                'Cross Over Cable\n'
+                'Crossover cables can be used to connect these devices: Switch to switch, Hub to hub, PC to PC',
+          ),
+          LessonSection(
+            heading: 'Coaxial Cable ',
+            body:
+                '	Coaxial Cable consists of 2 conductors. The inner conductor is held inside an insulator with the other conductor woven around it providing a shield. An insulating protective coating called a jacket covers the outer conductor',
+          ),
+          LessonSection(
+            heading: 'BNC Connectors',
+            body: ' Connectors used to connect Coaxial cable',
+          ),
+          LessonSection(
+            heading: 'Optical Fiber',
+            body:
+                '	Optical fiber is a cable that accepts and transports signals in the form of light. Optical fiber consists of thin glass fiber that can carry information at frequencies in the visible light spectrum.',
+          ),
+          LessonSection(
+            heading: 'Optical Transmission Modes ',
+            body: 'Step Index Mode\n'
+                'Step Index has a large core the light rays tend to bounce around, reflecting off the cladding, inside the core. This causes some rays to take a longer or shorted path through the core.\n'
+                'Grade Index Mode\n'
+                'Grade Index has a gradual change in the Core\'s Refractive Index. This causes the light rays to begradually bent back into the core path. \n'
+                'Single Mode\n'
+                'Single Mode has separate distinct Refractive Indexes for the cladding and core.',
+          ),
+          LessonSection(
+            heading: 'UNGUIDED TRANSMISSION MEDIA',
+            body: 'Ground-wave propagation\n'
+                'It follows the curvature of the Earth. Ground Waves have carrier frequencies up to 2MHz. AM radio is an example of Ground Wave Propagation\n'
+                'Sky-wave propagation\n'
+                'Bounces off of the Earths Ionospheric Layer in the upper atmosphere. Because it depends on the Earth\'s ionosphere, it changes with weather and time of day.\n'
+                'Line-of-sight propagation\n'
+                'It transmits exactly in the line of sight. The receive station must be in the view of the transmit station. It is sometimes called Space Waves or Tropospheric Propagation.\n',
+          ),
+          LessonSection(
+            heading: 'TRANSMISSION MEDIA PROBLEMS AND IMPAIRMENT',
+            body: 'Attenuation Distortion\n'
+                'Attenuation results in loss of energy. When a signal travels through a medium, it loses some of its energy in overcoming the resistance of the medium.\n'
+                'Crosstalk\n'
+                'Crosstalk is when one line induces a signal into another line. In voice communications, we often hear this as another conversation going on in the background\n.'
+                'Echo or Signal Return\n'
+                ' The signal arriving at the end of a transmission line should be fully absorbed otherwise it will be reflected back down the line to the sender and appear as an Echo. Echo Suppressors are often fitted to transmission lines to reduce this effect.\n'
+                'Noise\n'
+                'Noise is any unwanted signal that is mixed or combined with the original signal during transmission. Due to noise the original signal is altered and signal received is not same as the one sent. Noise is sharp quick spikes on the signal caused from electromagnetic interference, lightning, sudden power switching, electromechanical switching, etc. \n',
+          ),
+          LessonSection(
+            heading: 'CHANNEL CAPACITY',
+            body:
+                '	The maximum rate at which datacan be transmitted over a given communication path, or channel, under given conditions is referred to as the channel capacity. \n'
+                '	There are four concepts here that we are trying to relate to one another\n'
+                '- Data rate\n - Bandwidth\n - Noise\n - Error rate',
           ),
         ],
         quizQuestions: [
           QuizQuestion(
-            question: 'How many bones are in the adult human skeleton?',
-            options: ['186', '196', '206', '216'],
+            question:
+                'What is the primary purpose of transmission media in a network communication system?',
+            options: [
+              'Store data',
+              'Carry information',
+              'Encrypt signals',
+              'Filter noise'
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'Which type of transmission media is limited by physical geography and has tangible existence?',
+            options: ['Unguided', 'Wireless', 'Guided', 'Satellite'],
             correctIndex: 2,
           ),
           QuizQuestion(
-            question: 'Which system transports nutrients and oxygen?',
-            options: ['Skeletal', 'Muscular', 'Circulatory', 'Digestive'],
+            question:
+                'In a twisted pair cable, what is the purpose of the second wire aside from carrying the signal?',
+            options: [
+              'Power supply',
+              'Ground reference',
+              'Signal boost',
+              'Noise filter'
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'Which cable connector is specifically used for twisted pair cables in network connections?',
+            options: ['BNC', 'USB-C', 'RJ45', 'HDMI'],
             correctIndex: 2,
           ),
           QuizQuestion(
-            question: 'Where are blood cells produced?',
-            options: ['Heart', 'Liver', 'Bone marrow', 'Kidneys'],
+            question:
+                'A crossover cable is needed when connecting which pair of devices together?',
+            options: [
+              'PC to router',
+              'Host to switch',
+              'Switch to switch',
+              'Router to hub'
+            ],
             correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'In optical fiber transmission, which mode has a gradual change in the core\'s Refractive Index that bends light rays back into the core path?',
+            options: ['Single Mode', 'Step Index', 'Grade Index', 'Multi Mode'],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'Which type of unguided transmission media follows the curvature of the Earth and is used by AM radio?',
+            options: ['Sky-wave', 'Line-of-sight', 'Ground-wave', 'Space wave'],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'What transmission impairment occurs when a signal loses energy while overcoming the resistance of the medium?',
+            options: ['Crosstalk', 'Echo', 'Attenuation', 'Noise'],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'When one transmission line induces an unwanted signal into another line, this impairment is known as what?',
+            options: ['Attenuation', 'Crosstalk', 'Echo', 'Distortion'],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'Which four concepts are used to define and relate to channel capacity in a communication system?',
+            options: [
+              'Speed, Cost, Delay, Power',
+              'Data rate, Bandwidth, Noise, Error rate',
+              'Frequency, Amplitude, Phase, Power',
+              'Latency, Jitter, Loss, Throughput'
+            ],
+            correctIndex: 1,
           ),
         ],
       ),
@@ -659,46 +784,189 @@ final List<LearningModule> sampleModules = [
         isCompleted: false,
         sections: [
           LessonSection(
-            heading: 'Clinical Anatomy',
+            heading: 'MULTIPLEXING',
             body:
-                'Clinical anatomy applies anatomical knowledge to medical diagnosis and treatment. Understanding normal anatomy helps clinicians identify abnormalities.',
+                'Multiplexing is the set of techniques that allows the simultaneous transmission of multiple signals across a single data link.',
           ),
           LessonSection(
-            heading: 'Medical Imaging',
+            heading: 'TYPES OF MULTIPLEXING TECHNIQUES',
             body:
-                'Modern medical imaging techniques such as X-ray, CT scan, and MRI allow visualization of internal structures without surgery, making anatomical knowledge essential for interpretation.',
+                'There are three main types of multiplexing techniques used in data communications:\n'
+                '- Frequency Division Multiplexing (FDM)\n'
+                '- Time Division Multiplexing (TDM)\n'
+                '- Wavelength Division Multiplexing (WDM)\n'
+                'Each technique divides the capacity of the transmission medium differently to allow multiple signals to share the same channel simultaneously.',
           ),
           LessonSection(
-            heading: 'Surgical Anatomy',
+              heading: 'Frequency Division Multiplexing (FDM)',
+              body:
+                  'A number of signals are carried simultaneously on the same medium by allocating to each signal a different frequency band.\n'
+                  'FDM is an analog technique applied when the bandwidth of a link is greater than the combined bandwidths of the signals to be transmitted. Each signal is modulated to a different carrier frequency, and the carrier frequencies are separated by sufficient bandwidth to prevent overlap. The resulting signals are then combined into a single composite signal for transmission.\n'),
+          LessonSection(
+            heading: 'Time Division Multiplexing (TDM)',
             body:
-                'Surgeons must have detailed knowledge of anatomy to perform procedures safely. Understanding the relationships between structures helps avoid damage to vital nerves and vessels.',
+                'TDM is applied primarily on digital signals but can be applied on analog signals as well.\n'
+                'In TDM, the transmission time of the medium is shared among multiple signals. Instead of sharing a portion of the bandwidth, each signal occupies the entire bandwidth of the channel but only for a short period of time. TDM can be further divided into:\n'
+                '- Synchronous TDM: each device is given a fixed time slot regardless of whether it has data to send.\n'
+                '- Statistical TDM: time slots are allocated dynamically based on demand, making it more efficient.\n',
+          ),
+          LessonSection(
+              heading: 'SWITCHING',
+              body:
+                  'Switching is process to forward packets coming in from one port to a port leading towards the destination.\n'
+                  'A network is a combination of nodes and links. Switching allows data to be routed from a source to a destination across multiple interconnected nodes. There are two main categories of switching: Connectionless and Connection Oriented.\n'),
+          LessonSection(
+              heading: 'Connectionless',
+              body:
+                  'The data is forwarded on behalf of forwarding tables. No previous handshaking is required and acknowledgements are optional.\n'
+                  'In connectionless switching, each packet is treated independently and may take a different path to reach the destination. The network does not reserve resources in advance, making it more flexible but potentially less reliable for time-sensitive data.\n'),
+          LessonSection(
+            heading: 'Connection Oriented',
+            body:
+                'Before switching data to be forwarded to destination, there is a need to pre-establish circuit along the path between both endpoints. Data is then forwarded on that circuit. After the transfer is completed, circuits can be kept for future use or can be turned down immediately.\n'
+                'Connection-oriented switching guarantees a dedicated path and consistent quality of service throughout the duration of the transmission, making it suitable for real-time communications such as voice calls.',
+          ),
+          LessonSection(
+            heading: 'TYPES OF SWITCHING METHODS',
+            body:
+                'There are three primary methods of switching used in modern networks:\n'
+                '- Circuit Switching: a dedicated path is established before transmission begins.\n'
+                '- Message Switching: the entire message is stored at each node before being forwarded.\n'
+                '- Packet Switching: data is broken into packets that are routed independently across the network.\n'
+                'Each method has its own advantages and trade-offs in terms of efficiency, reliability, and delay.',
+          ),
+          LessonSection(
+            heading: 'Circuit Switching',
+            body:
+                'Circuit switching establishes a dedicated communication path between two stations before any data is transmitted. This path remains reserved for the entire duration of the connection.\n'
+                'The process involves three phases: circuit establishment, data transfer, and circuit disconnect. The Public Switched Telephone Network (PSTN) is a classic example of circuit switching. While it guarantees a consistent bandwidth and low latency, resources are wasted when no data is being sent during an active connection.',
+          ),
+          LessonSection(
+            heading: 'Message Switching',
+            body:
+                'Message switching is a store-and-forward technique where the entire message is sent from the source to an intermediate node, stored temporarily, and then forwarded to the next node until it reaches its destination.\n'
+                'Unlike circuit switching, no dedicated path is established. Each node along the route stores the complete message before passing it on. This method is more efficient in bandwidth usage but introduces significant delays, making it unsuitable for real-time communication. Email is a common modern example of message switching.',
+          ),
+          LessonSection(
+            heading: 'Packet Switching',
+            body:
+                'Packet switching breaks data into smaller units called packets before transmission. Each packet contains the data payload along with header information such as source and destination addresses.\n'
+                'Packets may travel different paths across the network and are reassembled at the destination. There are two approaches:\n'
+                '- Datagram Packet Switching: each packet is routed independently, similar to connectionless switching.\n'
+                '- Virtual Circuit Packet Switching: a logical path is established before transmission, and all packets follow the same route.\n'
+                'The Internet primarily uses packet switching due to its efficiency, scalability, and resilience to network failures.',
           ),
         ],
         quizQuestions: [
           QuizQuestion(
-            question: 'What does clinical anatomy primarily focus on?',
+            question:
+                'What is the primary purpose of multiplexing in data communications?',
             options: [
-              'Historical anatomy',
-              'Medical diagnosis and treatment',
-              'Animal anatomy',
-              'Evolutionary studies',
+              'Encrypt signals',
+              'Boost signal strength',
+              'Transmit multiple signals on one link',
+              'Convert analog to digital',
             ],
-            correctIndex: 1,
-          ),
-          QuizQuestion(
-            question: 'Which imaging technique does NOT use radiation?',
-            options: ['X-ray', 'CT scan', 'MRI', 'PET scan'],
             correctIndex: 2,
           ),
           QuizQuestion(
-            question: 'Why is anatomical knowledge important in surgery?',
+            question:
+                'Which multiplexing technique works by allocating a different frequency band to each signal sharing the same medium?',
             options: [
-              'To reduce surgery time',
-              'To avoid damage to vital structures',
-              'To improve anesthesia',
-              'To reduce costs',
+              'TDM',
+              'FDM',
+              'WDM',
+              'Statistical TDM',
             ],
             correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'In Synchronous TDM, what happens to a time slot when a device has no data to send?',
+            options: [
+              'It is given to another device',
+              'It is used for error checking',
+              'The slot remains unused',
+              'It is compressed',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'Which type of TDM allocates time slots dynamically based on demand, making it more efficient?',
+            options: [
+              'Synchronous TDM',
+              'Frequency TDM',
+              'Circuit TDM',
+              'Statistical TDM',
+            ],
+            correctIndex: 3,
+          ),
+          QuizQuestion(
+            question:
+                'In connectionless switching, how are packets routed through the network to their destination?',
+            options: [
+              'Along a pre-established circuit',
+              'Each packet is routed independently',
+              'Through a dedicated reserved path',
+              'Only through a single fixed route',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'Which switching method requires a dedicated communication path to be established before any data is transmitted?',
+            options: [
+              'Packet Switching',
+              'Message Switching',
+              'Circuit Switching',
+              'Statistical Switching',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'What are the three phases involved in circuit switching before a connection is terminated?',
+            options: [
+              'Request, Transfer, Acknowledge',
+              'Connect, Encrypt, Disconnect',
+              'Circuit establishment, Data transfer, Circuit disconnect',
+              'Handshake, Transmit, Confirm',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'In message switching, what does each intermediate node do before forwarding the data to the next node?',
+            options: [
+              'Breaks it into packets',
+              'Stores the entire message temporarily',
+              'Encrypts the message',
+              'Compresses the data',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'Which packet switching approach establishes a logical path before transmission so all packets follow the same route?',
+            options: [
+              'Datagram Packet Switching',
+              'Message Packet Switching',
+              'Circuit Packet Switching',
+              'Virtual Circuit Packet Switching',
+            ],
+            correctIndex: 3,
+          ),
+          QuizQuestion(
+            question:
+                'Why is packet switching primarily used on the Internet over other switching methods?',
+            options: [
+              'It requires less hardware',
+              'It guarantees delivery order',
+              'It is efficient, scalable, and resilient',
+              'It uses dedicated paths',
+            ],
+            correctIndex: 2,
           ),
         ],
       ),
