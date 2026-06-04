@@ -62,7 +62,11 @@ class QuizRecord {
   final int score;
   final int total;
   final DateTime date;
-  QuizRecord({required this.title, required this.score, required this.total, required this.date});
+  QuizRecord(
+      {required this.title,
+      required this.score,
+      required this.total,
+      required this.date});
   double get percentage => (score / total) * 100;
 }
 
@@ -117,7 +121,10 @@ class QuizQuestion {
   final String question;
   final List<String> options;
   final int correctIndex;
-  QuizQuestion({required this.question, required this.options, required this.correctIndex});
+  QuizQuestion(
+      {required this.question,
+      required this.options,
+      required this.correctIndex});
 }
 
 class Model3D {
@@ -127,7 +134,7 @@ class Model3D {
   final String category;
   final String learningObjective;
   final String relatedModuleId;
-  final String thumbnailEmoji;
+  final String thumbnailSvg;
 
   Model3D({
     required this.id,
@@ -136,6 +143,6 @@ class Model3D {
     required this.category,
     required this.learningObjective,
     required this.relatedModuleId,
-    required this.thumbnailEmoji,
+    required this.thumbnailSvg,
   });
 }

@@ -6,6 +6,7 @@ import '../models/app_models.dart';
 import '../state/app_state.dart';
 import '../theme/app_theme.dart';
 import 'module_details_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ModelDetailsScreen extends StatefulWidget {
   final Model3D model;
@@ -51,8 +52,12 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(model.thumbnailEmoji,
-                        style: const TextStyle(fontSize: 80)),
+                    SvgPicture.string(
+                      model.thumbnailSvg,
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.contain,
+                    ),
                     const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -61,11 +66,14 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
                         color: AppTheme.primaryColor.withValues(alpha: .08),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Text(model.category,
-                          style: const TextStyle(
-                              fontSize: 12,
-                              color: AppTheme.primaryColor,
-                              fontWeight: FontWeight.w500)),
+                      child: Text(
+                        model.category,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppTheme.primaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ],
                 ),

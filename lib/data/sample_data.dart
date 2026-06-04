@@ -1,6 +1,7 @@
 // lib/data/sample_data.dart
 
 import '../models/app_models.dart';
+import 'package:ar_elearning/data/network_svgs.dart';
 
 final List<LearningModule> sampleModules = [
   LearningModule(
@@ -621,76 +622,116 @@ final List<LearningModule> sampleModules = [
             heading: 'DATA TRANSMISSION MEDIA',
             body:
                 'Transmission media is a pathway that carries the information from sender to receiver. We use different types of cables or waves to transmit data. Data is transmitted normally through electrical or electromagnetic signals.\n'
-                'Different medias have different properties like bandwidth, delay, cost and ease of installation and maintenance. Transmission media isalso called Communication channel. Transmission media is broadly classified into two groups',
+                'Different medias have different properties like bandwidth, delay, cost and ease of installation and maintenance. Transmission media is also called Communication channel. Transmission media is broadly classified into two groups',
           ),
           LessonSection(
-            heading: 'GUIDED TRANSMISSION MEDIADIA',
+            heading: 'GUIDED TRANSMISSION MEDIA',
             body:
-                '	These are the cables that are tangible or have physical existence and are limited by the physical geography.',
+                'These are the cables that are tangible or have physical existence and are limited by the physical geography.',
           ),
           LessonSection(
             heading: 'Twisted Pair',
             body:
-                '	A twisted pair consists of two conductors (normally copper), each with its own plastic insulation, twisted together, as shown in Figure 5.3. One of the wires is used to carry signals to the receiver and the other is used only as a ground reference. It is most effectively used in systems that use a balanced line method of transmission',
+                'A twisted pair consists of two conductors (normally copper), each with its own plastic insulation, twisted together. One of the wires is used to carry signals to the receiver and the other is used only as a ground reference. It is most effectively used in systems that use a balanced line method of transmission.',
           ),
           LessonSection(
             heading: 'RJ45 Connector',
-            body: 'Connector for twisted pair cable\n'
-                'Straight-Through vs. Cross-Over\n'
-                'Straight-Through Cable \n'
-                'Used to connect a host to a switch or hub, or a router to a switch or hub\n'
-                'Cross Over Cable\n'
-                'Crossover cables can be used to connect these devices: Switch to switch, Hub to hub, PC to PC',
+            body: 'Connector for twisted pair cable.\n',
           ),
           LessonSection(
-            heading: 'Coaxial Cable ',
+              heading: 'Straight-Through Cable',
+              body:
+                  'Used to connect a host to a switch or hub, or a router to a switch or hub.\n'),
+          LessonSection(
+            heading: 'Cross Over Cable',
             body:
-                '	Coaxial Cable consists of 2 conductors. The inner conductor is held inside an insulator with the other conductor woven around it providing a shield. An insulating protective coating called a jacket covers the outer conductor',
+                'Crossover cables can be used to connect these devices: Switch to switch, Hub to hub, PC to PC.',
+          ),
+          LessonSection(
+            heading: 'Coaxial Cable',
+            body:
+                'Coaxial Cable consists of 2 conductors. The inner conductor is held inside an insulator with the other conductor woven around it providing a shield. An insulating protective coating called a jacket covers the outer conductor.',
           ),
           LessonSection(
             heading: 'BNC Connectors',
-            body: ' Connectors used to connect Coaxial cable',
+            body: 'Connectors used to connect Coaxial cable.',
           ),
           LessonSection(
             heading: 'Optical Fiber',
             body:
-                '	Optical fiber is a cable that accepts and transports signals in the form of light. Optical fiber consists of thin glass fiber that can carry information at frequencies in the visible light spectrum.',
+                'Optical fiber is a cable that accepts and transports signals in the form of light. Optical fiber consists of thin glass fiber that can carry information at frequencies in the visible light spectrum.',
           ),
           LessonSection(
-            heading: 'Optical Transmission Modes ',
-            body: 'Step Index Mode\n'
-                'Step Index has a large core the light rays tend to bounce around, reflecting off the cladding, inside the core. This causes some rays to take a longer or shorted path through the core.\n'
-                'Grade Index Mode\n'
-                'Grade Index has a gradual change in the Core\'s Refractive Index. This causes the light rays to begradually bent back into the core path. \n'
-                'Single Mode\n'
-                'Single Mode has separate distinct Refractive Indexes for the cladding and core.',
+            heading: 'Optical Transmission Modes',
+            body:
+                'Optical fiber supports different transmission modes depending on the size of the core and how light travels through it. The three main modes are Step Index, Grade Index, and Single Mode. Each differs in how light rays travel and reflect within the fiber core.',
+          ),
+          LessonSection(
+              heading: 'Step Index Mode',
+              body:
+                  'Step Index has a large core where light rays tend to bounce around, reflecting off the cladding inside the core. This causes some rays to take a longer or shorter path through the core.\n'),
+          LessonSection(
+              heading: 'Grade Index Mode',
+              body:
+                  'Grade Index has a gradual change in the Core\'s Refractive Index. This causes the light rays to be gradually bent back into the core path.\n'),
+          LessonSection(
+            heading: 'Single Mode',
+            body:
+                'Single Mode has separate distinct Refractive Indexes for the cladding and core. It has a much smaller core that allows only one mode of light to propagate, resulting in less signal distortion and allowing data to travel longer distances.',
           ),
           LessonSection(
             heading: 'UNGUIDED TRANSMISSION MEDIA',
-            body: 'Ground-wave propagation\n'
-                'It follows the curvature of the Earth. Ground Waves have carrier frequencies up to 2MHz. AM radio is an example of Ground Wave Propagation\n'
-                'Sky-wave propagation\n'
-                'Bounces off of the Earths Ionospheric Layer in the upper atmosphere. Because it depends on the Earth\'s ionosphere, it changes with weather and time of day.\n'
-                'Line-of-sight propagation\n'
+            body:
+                'Unguided transmission media refers to wireless transmission that transports electromagnetic waves without the use of a physical conductor. Signals are broadcast through air, water, or vacuum. It is classified based on the frequency range and the method of propagation used to transmit signals from sender to receiver.',
+          ),
+          LessonSection(
+            heading: 'Ground-wave propagation',
+            body:
+                'It follows the curvature of the Earth. Ground Waves have carrier frequencies up to 2MHz. AM radio is an example of Ground Wave Propagation.\n',
+          ),
+          LessonSection(
+              heading: 'Sky-wave propagation',
+              body:
+                  'Bounces off of the Earth\'s Ionospheric Layer in the upper atmosphere. Because it depends on the Earth\'s ionosphere, it changes with weather and time of day.\n'),
+          LessonSection(
+            heading: 'Line-of-sight propagation',
+            body:
                 'It transmits exactly in the line of sight. The receive station must be in the view of the transmit station. It is sometimes called Space Waves or Tropospheric Propagation.\n',
           ),
           LessonSection(
             heading: 'TRANSMISSION MEDIA PROBLEMS AND IMPAIRMENT',
-            body: 'Attenuation Distortion\n'
-                'Attenuation results in loss of energy. When a signal travels through a medium, it loses some of its energy in overcoming the resistance of the medium.\n'
-                'Crosstalk\n'
-                'Crosstalk is when one line induces a signal into another line. In voice communications, we often hear this as another conversation going on in the background\n.'
-                'Echo or Signal Return\n'
-                ' The signal arriving at the end of a transmission line should be fully absorbed otherwise it will be reflected back down the line to the sender and appear as an Echo. Echo Suppressors are often fitted to transmission lines to reduce this effect.\n'
-                'Noise\n'
-                'Noise is any unwanted signal that is mixed or combined with the original signal during transmission. Due to noise the original signal is altered and signal received is not same as the one sent. Noise is sharp quick spikes on the signal caused from electromagnetic interference, lightning, sudden power switching, electromechanical switching, etc. \n',
+            body:
+                'When signals travel through a transmission medium, they are subject to various forms of impairment that degrade the quality of the received signal. The four major types of transmission impairments are Attenuation Distortion, Crosstalk, Echo or Signal Return, and Noise.',
+          ),
+          LessonSection(
+            heading: 'Attenuation Distortion',
+            body:
+                'Attenuation results in loss of energy. When a signal travels through a medium, it loses some of its energy in overcoming the resistance of the medium.\n',
+          ),
+          LessonSection(
+            heading: 'Crosstalk',
+            body:
+                'Crosstalk is when one line induces a signal into another line. In voice communications, we often hear this as another conversation going on in the background.\n',
+          ),
+          LessonSection(
+            heading: 'Echo or Signal Return',
+            body:
+                'The signal arriving at the end of a transmission line should be fully absorbed otherwise it will be reflected back down the line to the sender and appear as an Echo. Echo Suppressors are often fitted to transmission lines to reduce this effect.\n',
+          ),
+          LessonSection(
+            heading: 'Noise',
+            body:
+                'Noise is any unwanted signal that is mixed or combined with the original signal during transmission. Due to noise the original signal is altered and signal received is not same as the one sent. Noise is sharp quick spikes on the signal caused from electromagnetic interference, lightning, sudden power switching, electromechanical switching, etc.\n',
           ),
           LessonSection(
             heading: 'CHANNEL CAPACITY',
             body:
-                '	The maximum rate at which datacan be transmitted over a given communication path, or channel, under given conditions is referred to as the channel capacity. \n'
-                '	There are four concepts here that we are trying to relate to one another\n'
-                '- Data rate\n - Bandwidth\n - Noise\n - Error rate',
+                'The maximum rate at which data can be transmitted over a given communication path, or channel, under given conditions is referred to as the channel capacity.\n'
+                'There are four concepts here that we are trying to relate to one another:\n'
+                '- Data rate\n'
+                '- Bandwidth\n'
+                '- Noise\n'
+                '- Error rate',
           ),
         ],
         quizQuestions: [
@@ -988,46 +1029,184 @@ final List<LearningModule> sampleModules = [
         isCompleted: false,
         sections: [
           LessonSection(
-            heading: 'First Law: Inertia',
+            heading: 'HUB',
             body:
-                'An object at rest stays at rest, and an object in motion stays in motion with the same speed and in the same direction unless acted upon by an unbalanced force.',
+                'A hub is the device that connects all the segments of the network together in a star topology Ethernet network. Every device in the network connects directly to the hub through a single cable and is used to connect multiple devices without segmenting a network.',
           ),
           LessonSection(
-            heading: 'Second Law: F = ma',
+            heading: 'REPEATER',
             body:
-                'The acceleration of an object depends on the net force acting on the object and the mass of the object. Force equals mass times acceleration.',
+                'A repeater is a network device that amplifies or regenerates a signal so that it can travel longer distances without degradation. When a signal weakens as it travels through a medium, the repeater receives it and retransmits it at its original strength. Repeaters operate at the Physical Layer (Layer 1) of the OSI model and are commonly used to extend the range of a network segment.',
           ),
           LessonSection(
-            heading: 'Third Law: Action-Reaction',
+            heading: 'MODEM',
             body:
-                'For every action, there is an equal and opposite reaction. Forces always come in pairs that are equal in strength and opposite in direction.',
+                'A modem is a device that modulates digital data onto an analog carrier for transmission over an analog medium and then demodulates from the analog carrier to a digital signal again at the receiving end. A term modem is actually an acronym that stands for MOdulator/DEModulator.',
+          ),
+          LessonSection(
+            heading: 'Types of Modem',
+            body:
+                'There are several types of modems used depending on the connection medium and use case:\n'
+                '- External Modem: a standalone device that connects externally to a computer.\n'
+                '- Router/Modem Combo: combines both modem and router functionality in one unit.\n'
+                '- Integrated Modem: built into the computer via USB or PCI card.\n'
+                '- Cable, DSL, Fiber, and Dial-up Modems: categorized by the type of internet connection they support.',
+          ),
+          LessonSection(
+            heading: 'External modem',
+            body:
+                'An external modem is a standalone modem that does not contain a router. It connects to a single computer through a USB or Ethernet port and requires a separate router if multiple devices need to share the connection.',
+          ),
+          LessonSection(
+            heading: 'Router/Modem Combo',
+            body:
+                'A router/modem combo is a modem that is contained within a router, which allows multiple computers and devices to connect within one network. It simplifies setup by combining two devices into one unit, reducing the number of cables and hardware needed.',
+          ),
+          LessonSection(
+            heading: 'Integrated modem',
+            body:
+                'An integrated modem is a modem that is contained within a computer, usually by USB or as a PCI card. It is built directly into the system, eliminating the need for an external device and saving desk space.',
+          ),
+          LessonSection(
+            heading: 'Cable, DSL, Fiber, Dial-up Modems',
+            body:
+                'These modems are classified by the type of internet service they support:\n'
+                '- Dial-up Modem: uses a standard telephone line to establish a connection. It is the oldest and slowest type with speeds up to 56 Kbps.\n'
+                '- DSL Modem: uses a digital subscriber line over telephone wiring to provide faster speeds than dial-up while keeping the phone line available.\n'
+                '- Cable Modem: connects through a cable TV line and offers higher speeds suitable for home broadband use.\n'
+                '- Fiber Modem (ONT): used with fiber-optic internet connections, converting optical signals to digital data for extremely fast and reliable internet access.',
+          ),
+          LessonSection(
+            heading: 'NETWORK INTERFACE CARD (NIC)',
+            body:
+                'A Network Interface Card (NIC) is installed in your computer to connect, or interface, your computer to the network. It provides the physical, electrical, and electronic connections to the network media. Each NIC is assigned a unique hardware identifier known as a MAC address, which is used to identify the device on the network. NICs can support wired connections via Ethernet or wireless connections via Wi-Fi.',
+          ),
+          LessonSection(
+            heading: 'BRIDGE',
+            body:
+                'A bridge—specifically, a transparent bridge—is a network device that connects two similar network segments together. Its primary function is to keep traffic separated on either side of the bridge, breaking up collision domains. Bridges operate at the Data Link Layer (Layer 2) of the OSI model and use MAC addresses to filter and forward traffic, improving overall network performance by reducing unnecessary data transmission.',
+          ),
+          LessonSection(
+            heading: 'SWITCH',
+            body:
+                'Switches connect multiple segments of a network together much like hubs do, but with three significant differences — a switch recognizes frames and pays attention to the source and destination MAC address of the incoming frame as well as the port on which it was received. Unlike hubs, switches forward data only to the specific device it is intended for rather than broadcasting to all ports. This reduces network congestion, improves security, and increases overall efficiency. Switches operate at the Data Link Layer (Layer 2) of the OSI model.',
+          ),
+          LessonSection(
+            heading: 'WIRELESS ACCESS POINT (AP)',
+            body:
+                'A wireless access point (AP) allows mobile users to connect to a wired network wirelessly via radio frequency technologies. Using wireless technologies, APs also allow wired networks to connect to each other and are basically the wireless equivalent of hubs or switches because they can connect multiple wireless and often wired devices together to form a network. APs are commonly used in homes, offices, and public spaces to extend wireless network coverage.',
+          ),
+          LessonSection(
+            heading: 'ROUTER',
+            body:
+                'A router is a network device used to connect many, sometimes disparate, network segments together, combining them into what we call an internetwork. Routers operate at the Network Layer (Layer 3) of the OSI model and use IP addresses to determine the best path for forwarding data packets to their destination. They are essential for connecting local networks to the internet and for directing traffic efficiently across large and complex networks.',
           ),
         ],
         quizQuestions: [
           QuizQuestion(
-            question: "Newton's First Law describes which property?",
-            options: ['Gravity', 'Inertia', 'Momentum', 'Energy'],
-            correctIndex: 1,
+            question:
+                'Which network device connects all segments of a star topology Ethernet network and does not segment traffic?',
+            options: ['Switch', 'Router', 'Hub', 'Bridge'],
+            correctIndex: 2,
           ),
           QuizQuestion(
-            question: 'What does F = ma represent?',
+            question:
+                'A repeater is used in a network primarily to perform which of the following functions?',
             options: [
-              'First law',
-              'Second law',
-              'Third law',
-              'Law of gravity',
+              'Filter MAC addresses',
+              'Regenerate weakened signals',
+              'Assign IP addresses',
+              'Encrypt data'
             ],
             correctIndex: 1,
           ),
           QuizQuestion(
-            question: 'The Third Law states forces come in:',
+            question:
+                'What does the acronym MODEM stand for in networking terminology?',
             options: [
-              'Triplets',
-              'Groups of four',
-              'Equal and opposite pairs',
-              'Multiples of mass',
+              'Media Output Device for Electronic Media',
+              'Modulator/Demodulator',
+              'Multiple Output Data Exchange Module',
+              'Managed Output Data Encryption Module',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'Which type of modem is built directly into a computer through USB or as a PCI card?',
+            options: [
+              'External modem',
+              'Router/Modem Combo',
+              'Cable modem',
+              'Integrated modem'
+            ],
+            correctIndex: 3,
+          ),
+          QuizQuestion(
+            question:
+                'Which modem type converts optical signals to digital data and is used with the fastest type of internet connection?',
+            options: [
+              'DSL Modem',
+              'Cable Modem',
+              'Fiber Modem (ONT)',
+              'Dial-up Modem'
             ],
             correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'What unique hardware identifier does a Network Interface Card use to identify a device on the network?',
+            options: [
+              'IP address',
+              'MAC address',
+              'Serial number',
+              'Port number'
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'At which OSI layer does a bridge operate, using MAC addresses to filter and forward network traffic?',
+            options: [
+              'Physical Layer',
+              'Network Layer',
+              'Data Link Layer',
+              'Transport Layer'
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'Unlike a hub, a switch improves network performance by forwarding data in which specific manner?',
+            options: [
+              'Broadcasts to all ports equally',
+              'Only to the intended destination port',
+              'Through the router first',
+              'Based on IP addresses only',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'A Wireless Access Point (AP) is considered the wireless equivalent of which wired network devices?',
+            options: [
+              'Routers and modems',
+              'Bridges and repeaters',
+              'Hubs or switches',
+              'NICs and bridges'
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'At which OSI layer does a router operate, using IP addresses to determine the best path for forwarding packets?',
+            options: [
+              'Data Link Layer',
+              'Physical Layer',
+              'Transport Layer',
+              'Network Layer'
+            ],
+            correctIndex: 3,
           ),
         ],
       ),
@@ -1039,36 +1218,160 @@ final List<LearningModule> sampleModules = [
         isCompleted: false,
         sections: [
           LessonSection(
-            heading: 'Universal Gravitation',
+            heading: 'INTRODUCING IP ADDRESSES',
             body:
-                'Every mass attracts every other mass in the universe with a force that is directly proportional to the product of their masses and inversely proportional to the square of the distance between them.',
+                '	An IP address is a number that uniquely identifies every host on an IP network. IP addresses operate at the Network layer of the TCP/IP protocol stack, so they’re independent of lower-level addresses, such as MAC addresses (MAC stands for Media Access Control).\n'
+                '	IP addresses are 32-bit binary numbers, which means that, theoretically,a maximum of something in the neighborhood of 4 billion unique hostaddresses can exist throughout the Internet. You’d think that’d be enough, but TCP/IP places certain restrictions on how IP addresses are allocated.',
           ),
           LessonSection(
-            heading: 'Weight vs Mass',
+            heading: 'Networks and Hosts ',
             body:
-                'Mass is the amount of matter in an object, measured in kilograms. Weight is the gravitational force acting on that mass, measured in Newtons. Weight = mass × gravitational acceleration.',
+                'IP stands for Internet Protocol, and its primary purpose is to enable communications between networks.',
+          ),
+          LessonSection(
+            heading: '32-bit IP address consists of two parts',
+            body:
+                'Every 32-bit IP address is divided into two logical sections: the network ID and the host ID. The network ID identifies the specific network, while the host ID identifies a particular device within that network. This structure allows data to be routed efficiently across interconnected networks.',
+          ),
+          LessonSection(
+            heading: 'The network ID (or network address)',
+            body:
+                ' Identifies the network on which a host computer can be found.',
+          ),
+          LessonSection(
+            heading: 'The host ID (or host address)',
+            body:
+                'Identifies a specific device on the network indicated by the network ID.',
+          ),
+          LessonSection(
+            heading: 'The Dotted-Decimal Notation ',
+            body:
+                'IP addresses are usually represented in a format known as dotted-decimal notation. In dotted-decimal notation, each group of eight bits, known as an octet, is represented by its decimal equivalent',
+          ),
+          LessonSection(
+            heading: 'CLASSIFYING IP ADDRESSES',
+            body:
+                'To accommodate networks of different sizes, IPv4 addresses are divided into classes. The most commonly used classes are Class A, Class B, and Class C. Each class allocates a different number of bits for the network ID and host ID, determining the number of available networks and hosts.',
+          ),
+          LessonSection(
+            heading: 'Class A addresses ',
+            body:
+                'Class A addresses are designed for very large networks. In a Class A address, the first octet of the address is the network ID, and the remaining three octets are the host ID.',
+          ),
+          LessonSection(
+            heading: 'Class B addresses ',
+            body:
+                'In a Class B address, the first two octets of the IP address are used as the network ID, and the second two octets are used as the host ID. Thus, a Class B address comes close to my hypothetical scheme of splitting the address down the middle, using half for the network ID and half for the host ID',
+          ),
+          LessonSection(
+            heading: 'Class C addresses',
+            body:
+                'In a Class C address, the first three octets are used for the network ID, and the fourth octet is used for the host ID. With only eight bits for the host ID, each Class C network can accommodate only 254 hosts. However, with 24 network ID bits, Class C addresses allow for more than 2 million networks.',
           ),
         ],
         quizQuestions: [
           QuizQuestion(
-            question: 'Weight is measured in which unit?',
-            options: ['Kilograms', 'Grams', 'Newtons', 'Joules'],
-            correctIndex: 2,
+            question: 'What does IP stand for?',
+            options: [
+              'Internet Protocol',
+              'Internal Program',
+              'Internet Provider',
+              'Information Process',
+            ],
+            correctIndex: 0,
           ),
           QuizQuestion(
-            question: 'Mass is the amount of _____ in an object.',
-            options: ['Weight', 'Matter', 'Energy', 'Force'],
+            question: 'What is the primary purpose of IP?',
+            options: [
+              'Store files',
+              'Enable communication between networks',
+              'Encrypt data',
+              'Manage user accounts',
+            ],
             correctIndex: 1,
           ),
           QuizQuestion(
-            question: 'Gravitational force is inversely proportional to:',
+            question:
+                'An IP address uniquely identifies a _____ on an IP network.',
             options: [
-              'Mass',
-              'Velocity',
-              'Square of distance',
-              'Temperature',
+              'Website',
+              'Router only',
+              'Host',
+              'Cable',
             ],
             correctIndex: 2,
+          ),
+          QuizQuestion(
+            question: 'How many bits are in an IPv4 address?',
+            options: [
+              '16 bits',
+              '32 bits',
+              '64 bits',
+              '128 bits',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question: 'A 32-bit IP address consists of which two parts?',
+            options: [
+              'Network ID and Host ID',
+              'MAC ID and Device ID',
+              'Port ID and Network ID',
+              'Host ID and Gateway ID',
+            ],
+            correctIndex: 0,
+          ),
+          QuizQuestion(
+            question: 'What does the network ID identify?',
+            options: [
+              'A specific user',
+              'A specific application',
+              'The network on which a host is located',
+              'The operating system',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question: 'What does the host ID identify?',
+            options: [
+              'A specific device on a network',
+              'A network administrator',
+              'An internet service provider',
+              'A website domain',
+            ],
+            correctIndex: 0,
+          ),
+          QuizQuestion(
+            question: 'IP addresses are commonly written in which format?',
+            options: [
+              'Binary notation',
+              'Hexadecimal notation',
+              'Dotted-decimal notation',
+              'Scientific notation',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'In a Class B IP address, how many octets are used for the network ID?',
+            options: [
+              '1',
+              '2',
+              '3',
+              '4',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'In a Class C IP address, which octet is used for the host ID?',
+            options: [
+              'First octet',
+              'Second octet',
+              'Third octet',
+              'Fourth octet',
+            ],
+            correctIndex: 3,
           ),
         ],
       ),
@@ -1080,31 +1383,129 @@ final List<LearningModule> sampleModules = [
         isCompleted: false,
         sections: [
           LessonSection(
-            heading: 'What is Energy?',
+            heading: 'What is Subnetting?',
             body:
-                'Energy is the capacity to do work. It exists in many forms including kinetic energy (energy of motion), potential energy (stored energy), thermal energy, and electromagnetic energy.',
+                'Subnetting is a technique that lets network administrators use the 32 bits available in an IP address more efficiently by creating networks that aren’t limited to the scales provided by Class A, B, and C IP addresses. With subnetting, you can create networks with more realistic host limits',
           ),
           LessonSection(
-            heading: 'Work-Energy Theorem',
+            heading: 'What is a Subnet?',
             body:
-                'Work is done when a force causes displacement of an object. The work done on an object equals the change in its kinetic energy. Work = Force × Distance × cos(θ).',
+                'A subnet is a network that falls within another (Class A, B, or C) network. Subnets are created by using one or more of the Class A, B, or C host bits to extend the network ID.',
+          ),
+          LessonSection(
+            heading: 'Subnet masks',
+            body:
+                'A subnet mask is a 32-bit number that separates the network portion of an IP address from the host portion. It works by using consecutive 1s to represent the network and subnet bits, and 0s to represent the host bits. Common subnet masks include 255.0.0.0 for Class A, 255.255.0.0 for Class B, and 255.255.255.0 for Class C networks.',
+          ),
+          LessonSection(
+            heading: 'HOW TO CREATE SUBNETS?',
+            body:
+                '1. Identify the class of the IP address.\n2. Find the number of borrowed bits.\n3. Solve the value of ∆.\n4. Find the new subnet mask.',
           ),
         ],
         quizQuestions: [
           QuizQuestion(
-            question: 'Energy is the capacity to do:',
-            options: ['Force', 'Work', 'Motion', 'Power'],
+            question: 'What is subnetting?',
+            options: [
+              'A method of combining networks',
+              'A technique for dividing a network into smaller networks',
+              'A process of encrypting data',
+              'A type of routing protocol',
+            ],
             correctIndex: 1,
           ),
           QuizQuestion(
-            question: 'Kinetic energy is the energy of:',
-            options: ['Position', 'Heat', 'Motion', 'Light'],
+            question: 'What is the main purpose of subnetting?',
+            options: [
+              'To increase internet speed',
+              'To reduce the number of IP addresses',
+              'To use IP addresses more efficiently',
+              'To replace routers',
+            ],
             correctIndex: 2,
           ),
           QuizQuestion(
-            question: 'Work requires both force and:',
-            options: ['Mass', 'Time', 'Displacement', 'Velocity'],
+            question: 'A subnet is a network that falls within what?',
+            options: [
+              'Another Class A, B, or C network',
+              'A MAC address',
+              'A router table',
+              'A DNS server',
+            ],
+            correctIndex: 0,
+          ),
+          QuizQuestion(
+            question:
+                'Subnets are created by using one or more _____ bits to extend the network ID.',
+            options: [
+              'Network',
+              'Host',
+              'Parity',
+              'Gateway',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question: 'What is a subnet mask?',
+            options: [
+              'A type of IP address',
+              'A network cable',
+              'A 32-bit number that separates network and host portions',
+              'A routing protocol',
+            ],
             correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'In a subnet mask, the network and subnet bits are represented by:',
+            options: [
+              '0s',
+              '1s',
+              '2s',
+              '8s',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question: 'In a subnet mask, the host bits are represented by:',
+            options: [
+              '0s',
+              '1s',
+              '2s',
+              '8s',
+            ],
+            correctIndex: 0,
+          ),
+          QuizQuestion(
+            question: 'What is the default subnet mask for a Class B network?',
+            options: [
+              '255.0.0.0',
+              '255.255.0.0',
+              '255.255.255.0',
+              '255.255.255.255',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question: 'What is the first step in creating subnets?',
+            options: [
+              'Find the new subnet mask',
+              'Solve the value of Δ',
+              'Identify the class of the IP address',
+              'Find the host address',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'After finding the number of borrowed bits, what is the next step?',
+            options: [
+              'Find the new subnet mask',
+              'Solve the value of Δ',
+              'Identify the network ID',
+              'Determine the host name',
+            ],
+            correctIndex: 1,
           ),
         ],
       ),
@@ -1126,31 +1527,145 @@ final List<LearningModule> sampleModules = [
         isCompleted: false,
         sections: [
           LessonSection(
-            heading: 'The Cell: Basic Unit of Life',
+            heading: 'Home Network',
             body:
-                'Cells are the smallest structural and functional units of all living organisms. Every living thing is made of one or more cells, and all cells arise from pre-existing cells.',
+                '	The most common home network is Ethernet; it’s a very popular LAN (Local Area Network) technology due to its inexpensive setup cost and reasonably fast speed. The other types of network are Token Ring, LocalTalk, and FDDI, but they are not important here. The speed (data transfer rate) of an Ethernet can be 10Mbps (Ethernet), 100Mbps (Fast Ethernet) and 1000Mbps (Gigabit Ethernet). Mbps is called Megabits per seconds',
           ),
           LessonSection(
-            heading: 'Cell Organelles',
+            heading: 'DIRECT CONNECTION OF TWO COMPUTERS',
             body:
-                'The nucleus contains genetic material. Mitochondria produce energy. The endoplasmic reticulum synthesizes proteins and lipids. The Golgi apparatus modifies and packages proteins for transport.',
+                '	The two major network devices required are: crossover cable and network cards. This is wired connection approach, it’s effective and simple way if you want to connect the computers temporary. If the network card on computers supports auto MDI/MDIX feature, you could use crossover or straight through network cable to connect both computers. If not, crossover cable is needed',
+          ),
+          LessonSection(
+            heading: 'Network configuration\n\n',
+            body: 'Computer A:\n'
+                'IP Address: 192.168.36.1\n'
+                'Subnet mask: 255.255.255.0\n'
+                'Gateway: [leave-it-blank]\n'
+                'DNS Servers: [leave-it-blank]\n\n'
+                'Computer B:\n'
+                'IP Address: 192.168.36.2\n'
+                'Subnet mask: 255.255.255.0\n'
+                'Gateway: [leave-it-blank]\n'
+                'DNS Servers: [leave-it-blank]',
+          ),
+          LessonSection(
+            heading: 'Peer to Peer Configuration',
+            body:
+                '1. Connect the two computer using a cross-over cable. Note: If cable is not available, you can wirelessly connect the 2 computers using the hotspot f your mobile phone. (There should be NO red x mark)\n\n'
+                '2. Control Panel ->Network and Internet-> Network & Sharing Center ->Change Adapter Settings -> Local Area Connection/Ethernet -> Ethernet Properties IPv4 -> Use the following IP add: 192.168.1.1 (the last number in the IP add is your seat #)\n\n'
+                '3. Disable the windows firewall.\n\n'
+                '4. Type at cmd: ping (IP add of the other computer ex:192.168.1.2) to check connectivity\n\n'
+                'Sharing/Accessing Folder: Both computer can access the folder of the other computer.\n'
+                'a.) Desktop ->Create new folder->share folder.\n'
+                'b.) Access the shared folder of the other computer.',
           ),
         ],
         quizQuestions: [
           QuizQuestion(
-            question: 'What is the smallest unit of life?',
-            options: ['Tissue', 'Organ', 'Cell', 'Molecule'],
-            correctIndex: 2,
-          ),
-          QuizQuestion(
-            question: 'Which organelle produces energy?',
-            options: ['Nucleus', 'Mitochondria', 'Golgi apparatus', 'Ribosome'],
+            question: 'What is the most common type of home network?',
+            options: [
+              'Token Ring',
+              'Ethernet',
+              'FDDI',
+              'LocalTalk',
+            ],
             correctIndex: 1,
           ),
           QuizQuestion(
-            question: 'Where is genetic material stored?',
-            options: ['Mitochondria', 'Cell membrane', 'Nucleus', 'Vacuole'],
+            question: 'Why is Ethernet popular in home networks?',
+            options: [
+              'It is very expensive',
+              'It requires no hardware',
+              'It has low setup cost and good speed',
+              'It only works wirelessly',
+            ],
             correctIndex: 2,
+          ),
+          QuizQuestion(
+            question: 'What does LAN stand for?',
+            options: [
+              'Large Area Network',
+              'Local Access Network',
+              'Local Area Network',
+              'Linked Area Network',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question: 'Which Ethernet standard has a speed of 1000 Mbps?',
+            options: [
+              'Ethernet',
+              'Fast Ethernet',
+              'Gigabit Ethernet',
+              'Token Ring',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question: 'What does Mbps mean?',
+            options: [
+              'Megabytes per second',
+              'Megabits per second',
+              'Millions per second',
+              'Memory bits per second',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'Which two major devices are required for a direct connection between two computers?',
+            options: [
+              'Router and modem',
+              'Switch and hub',
+              'Crossover cable and network cards',
+              'Access point and repeater',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'What type of cable is commonly used to directly connect two computers if auto MDI/MDIX is not supported?',
+            options: [
+              'Straight-through cable',
+              'Fiber optic cable',
+              'Coaxial cable',
+              'Crossover cable',
+            ],
+            correctIndex: 3,
+          ),
+          QuizQuestion(
+            question:
+                'What is the IP address assigned to Computer A in the example configuration?',
+            options: [
+              '192.168.36.1',
+              '192.168.36.2',
+              '255.255.255.0',
+              '192.168.1.1',
+            ],
+            correctIndex: 0,
+          ),
+          QuizQuestion(
+            question:
+                'What subnet mask is used for both Computer A and Computer B?',
+            options: [
+              '255.0.0.0',
+              '255.255.0.0',
+              '255.255.255.0',
+              '255.255.255.255',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'Which command is used to test connectivity between two computers?',
+            options: [
+              'ipconfig',
+              'ping',
+              'tracert',
+              'netstat',
+            ],
+            correctIndex: 1,
           ),
         ],
       ),
@@ -1162,30 +1677,135 @@ final List<LearningModule> sampleModules = [
         isCompleted: false,
         sections: [
           LessonSection(
-            heading: 'Mitosis',
+            heading:
+                'CONFIGURING OF IP ADDRESS AND OTHER NETWORK INFORMATION ON WINDOWS ',
             body:
-                'Mitosis is a type of cell division resulting in two daughter cells each having the same number and kind of chromosomes as the parent cell. It is used for growth and repair.',
+                '	IP address must be configured on computer in order to communicate with other computers, because this IP address is the standard address understood by computers and other networking devices in networking world. We can configure IP address, subnet mask, gateway and DNS servers manually on computer, we can also configure computer to obtain IP address and other network information from DHCP server (most of the time is configured on router).',
           ),
           LessonSection(
-            heading: 'Meiosis',
+            heading: 'Procedure:',
+            body: '1. Go to Start and click on Control Panel.\n\n'
+                '2. Click View network status and tasks in Control Panel window\n\n'
+                '3. Network and Sharing Center window will appear, and then click change adapter settings.\n\n'
+                '4. Network Connections window will appear. Here you can right click on the network adapter (can be wireless adapter or wired Ethernet adapter) that you wish to configure and click Properties\n\n'
+                '5. In the Network Connection Properties window, tick on Internet Protocol Version 4 (TCP/IPv4) and click Properties\n\n'
+                '6. Assigning IP Address - After clicking properties, TCP/IPv4 window appear. (See figure 4.2.5) For manual IP Assigning we can now key in the IP address, Subnet mask, Default gateway and DNS servers. IP address of your computer must be unique. None of the 2 computers in the same network can share same IP address, because it will cause IP address conflict',
+          ),
+          LessonSection(
+            heading: 'PHYSICAL NETWORK SETUP',
             body:
-                'Meiosis is a type of cell division that results in four daughter cells each with half the number of chromosomes of the parent cell. It is used for sexual reproduction.',
+                '	Connect the WAN port on router to your cable/DSL modem using straight cable, then connect computers‟ network card to router’s LAN ports using straight cable also. You can connect up to 4 computers to this router\n\n'
+                '	Power on the router after finish connecting, you should be able to see the WAN and LAN lights on the router. Also, you need to ensure that your DSL/Cable modem is configured in bridge mode, so that it can work well after connecting to router. ',
           ),
         ],
         quizQuestions: [
           QuizQuestion(
-            question: 'How many daughter cells does mitosis produce?',
-            options: ['One', 'Two', 'Three', 'Four'],
+            question: 'Why must an IP address be configured on a computer?',
+            options: [
+              'To increase storage capacity',
+              'To communicate with other computers on a network',
+              'To improve monitor resolution',
+              'To install applications',
+            ],
             correctIndex: 1,
           ),
           QuizQuestion(
-            question: 'Meiosis is used for:',
-            options: ['Growth', 'Repair', 'Sexual reproduction', 'Digestion'],
+            question:
+                'Which of the following network information can be configured manually?',
+            options: [
+              'IP address, subnet mask, gateway, and DNS servers',
+              'CPU speed and RAM',
+              'Monitor settings',
+              'Keyboard layout only',
+            ],
+            correctIndex: 0,
+          ),
+          QuizQuestion(
+            question:
+                'What device commonly provides IP addresses automatically to computers?',
+            options: [
+              'Switch',
+              'Hub',
+              'DHCP Server',
+              'Repeater',
+            ],
             correctIndex: 2,
           ),
           QuizQuestion(
-            question: 'Meiosis produces cells with _____ chromosomes.',
-            options: ['Double', 'The same', 'Half', 'Triple'],
+            question:
+                'What is the first step in configuring network settings in Windows?',
+            options: [
+              'Open Command Prompt',
+              'Go to Start and click Control Panel',
+              'Restart the computer',
+              'Open File Explorer',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'Which option should you click in Control Panel to view network settings?',
+            options: [
+              'Programs and Features',
+              'Device Manager',
+              'View network status and tasks',
+              'System Information',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'Which protocol must be selected before clicking Properties to configure an IP address?',
+            options: [
+              'HTTP',
+              'FTP',
+              'Internet Protocol Version 4 (TCP/IPv4)',
+              'SMTP',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'What can happen if two computers on the same network use the same IP address?',
+            options: [
+              'Faster internet connection',
+              'IP address conflict',
+              'Improved security',
+              'Automatic subnetting',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'In a physical network setup, the router WAN port is connected to the:',
+            options: [
+              'Printer',
+              'Computer LAN port',
+              'Cable/DSL modem',
+              'Network switch',
+            ],
+            correctIndex: 2,
+          ),
+          QuizQuestion(
+            question:
+                'What type of cable is used to connect computers to the router LAN ports?',
+            options: [
+              'Crossover cable',
+              'Straight cable',
+              'Fiber cable',
+              'Coaxial cable',
+            ],
+            correctIndex: 1,
+          ),
+          QuizQuestion(
+            question:
+                'Before using the router with a DSL/Cable modem, the modem should be configured in:',
+            options: [
+              'Access Point mode',
+              'Safe mode',
+              'Bridge mode',
+              'Wireless mode',
+            ],
             correctIndex: 2,
           ),
         ],
@@ -1196,66 +1816,146 @@ final List<LearningModule> sampleModules = [
 
 final List<Model3D> sampleModels = [
   Model3D(
-    id: 'mdl_heart',
-    name: 'Human Heart',
+    id: 'mdl_modem',
+    name: 'Modem',
     description:
-        'A detailed 3D model of the human heart showing all four chambers, major vessels, and valve structures.',
-    category: 'Anatomy',
-    learningObjective: 'Understand cardiac structure and blood flow pathways.',
-    relatedModuleId: 'mod_anatomy',
-    thumbnailEmoji: '🫀',
-  ),
-  Model3D(
-    id: 'mdl_skeleton',
-    name: 'Human Skeleton',
-    description:
-        'Complete skeletal system with labeled bones, joints, and articulations for anatomical study.',
-    category: 'Anatomy',
+        'A modem is a network device that converts digital signals from a computer into analog signals for transmission over telephone or cable lines, and vice versa.',
+    category: 'Networking',
     learningObjective:
-        'Identify major bones and understand skeletal structure.',
-    relatedModuleId: 'mod_anatomy',
-    thumbnailEmoji: '🦴',
+        'Understand how a modem enables internet connectivity by converting and transmitting data between ISP and local devices.',
+    relatedModuleId: 'mod_implementation',
+    thumbnailSvg: NetworkSvgs.modem,
   ),
   Model3D(
-    id: 'mdl_atom',
-    name: 'Atomic Structure',
+    id: 'mdl_networkSwitch',
+    name: 'Network Switch',
     description:
-        'Interactive 3D representation of atomic structure including nucleus, electron shells and orbitals.',
-    category: 'Physics',
+        'A network switch is a device that connects multiple devices within a local area network (LAN) and intelligently forwards data only to the intended recipient device.',
+    category: 'Networking',
     learningObjective:
-        'Visualize atomic components and electron configuration.',
-    relatedModuleId: 'mod_physics',
-    thumbnailEmoji: '⚛️',
+        'Understand how a network switch efficiently manages data traffic by directing packets to specific devices in a LAN.',
+    relatedModuleId: 'mod_implementation',
+    thumbnailSvg: NetworkSvgs.networkSwitch,
   ),
   Model3D(
-    id: 'mdl_cell',
-    name: 'Animal Cell',
+    id: 'mdl_hub',
+    name: 'Network Hub',
     description:
-        'Detailed 3D model of an animal cell with labeled organelles including nucleus, mitochondria and more.',
-    category: 'Biology',
+        'A network hub is a basic networking device that connects multiple devices in a local area network (LAN) and broadcasts data to all connected devices, regardless of the intended recipient.',
+    category: 'Networking',
     learningObjective:
-        'Identify and understand the function of cell organelles.',
-    relatedModuleId: 'mod_cells',
-    thumbnailEmoji: '🔬',
+        'Understand how a network hub works by broadcasting incoming data to all connected devices and compare it with a network switch.',
+    relatedModuleId: 'mod_implementation',
+    thumbnailSvg: NetworkSvgs.hub,
   ),
   Model3D(
-    id: 'mdl_brain',
-    name: 'Human Brain',
+    id: 'mdl_repeater',
+    name: 'Network Repeater',
     description:
-        'Comprehensive model of the human brain showing lobes, major regions, and neural pathways.',
-    category: 'Anatomy',
-    learningObjective: 'Explore brain regions and their associated functions.',
-    relatedModuleId: 'mod_anatomy',
-    thumbnailEmoji: '🧠',
+        'A network repeater is a device that regenerates and amplifies weak or degraded signals to extend the distance of a network.',
+    category: 'Networking',
+    learningObjective:
+        'Understand how a repeater improves signal strength and extends network coverage over long distances.',
+    relatedModuleId: 'mod_implementation',
+    thumbnailSvg: NetworkSvgs.repeater,
   ),
   Model3D(
-    id: 'mdl_dna',
-    name: 'DNA Double Helix',
+    id: 'mdl_rj45',
+    name: 'RJ45 Connector',
     description:
-        'Molecular model of DNA double helix structure with base pair visualization.',
-    category: 'Biology',
-    learningObjective: 'Understand DNA structure and nucleotide base pairing.',
-    relatedModuleId: 'mod_cells',
-    thumbnailEmoji: '🧬',
+        'An RJ45 connector is a standard network interface used to terminate Ethernet cables and connect devices to a local area network (LAN).',
+    category: 'Networking',
+    learningObjective:
+        'Understand the role of RJ45 connectors in establishing wired Ethernet connections between network devices.',
+    relatedModuleId: 'mod_transmission',
+    thumbnailSvg: NetworkSvgs.rj45,
+  ),
+  Model3D(
+    id: 'mdl_coaxialCable',
+    name: 'Coaxial Cable',
+    description:
+        'A coaxial cable is a type of transmission medium used to carry high-frequency electrical signals for cable television, internet, and radio communications. It consists of a central conductor, insulating layer, metallic shield, and outer jacket.',
+    category: 'Networking',
+    learningObjective:
+        'Understand how coaxial cables transmit data signals and their role in broadband and cable network systems.',
+    relatedModuleId: 'mod_transmission',
+    thumbnailSvg: NetworkSvgs.coaxialCable,
+  ),
+  Model3D(
+    id: 'mdl_opticalFiber',
+    name: 'Optical Fiber',
+    description:
+        'Optical fiber is a high-speed transmission medium that uses light pulses through thin glass or plastic fibers to transmit data over long distances with minimal signal loss.',
+    category: 'Networking',
+    learningObjective:
+        'Understand how optical fiber transmits data using light and why it is used for high-speed and long-distance communication networks.',
+    relatedModuleId: 'mod_transmission',
+    thumbnailSvg: NetworkSvgs.opticalFiber,
+  ),
+  Model3D(
+    id: 'mdl_smartphone',
+    name: 'Smartphone',
+    description:
+        'A smartphone is a mobile device that combines cellular communication, computing capabilities, and internet connectivity, allowing users to make calls, access the web, and run applications.',
+    category: 'Networking',
+    learningObjective:
+        'Understand how smartphones connect to cellular networks and Wi-Fi to access communication and internet services.',
+    relatedModuleId: 'mod_fundamentals',
+    thumbnailSvg: NetworkSvgs.smartphone,
+  ),
+  Model3D(
+    id: 'mdl_serverRack',
+    name: 'Server Rack',
+    description:
+        'A server rack is a standardized frame or cabinet used to organize, mount, and secure servers, networking devices, and other computing hardware in data centers.',
+    category: 'Networking',
+    learningObjective:
+        'Understand how server racks are used to organize and manage network infrastructure and computing hardware efficiently in data centers.',
+    relatedModuleId: 'mod_fundamentals',
+    thumbnailSvg: NetworkSvgs.serverRack,
+  ),
+  Model3D(
+    id: 'mdl_laptop',
+    name: 'Laptop',
+    description:
+        'A laptop is a portable personal computer used to access networks, run applications, and perform computing tasks while on the move.',
+    category: 'Networking',
+    learningObjective:
+        'Understand how laptops connect to wired and wireless networks for communication and data access.',
+    relatedModuleId: 'mod_fundamentals',
+    thumbnailSvg: NetworkSvgs.laptop,
+  ),
+  Model3D(
+    id: 'mdl_desktop',
+    name: 'Desktop Computer',
+    description:
+        'A desktop computer is a stationary computing device that connects to a network to access internet services and shared resources.',
+    category: 'Networking',
+    learningObjective:
+        'Understand how desktop computers function as fixed network endpoints in a LAN or WAN.',
+    relatedModuleId: 'mod_fundamentals',
+    thumbnailSvg: NetworkSvgs.desktop,
+  ),
+  Model3D(
+    id: 'mdl_router',
+    name: 'Router',
+    description:
+        'A router is a networking device that directs data between different networks, such as connecting a local network to the internet.',
+    category: 'Networking',
+    learningObjective:
+        'Understand how routers manage and direct data traffic between networks.',
+    relatedModuleId: 'mod_implementation',
+    thumbnailSvg: NetworkSvgs.router,
+  ),
+  Model3D(
+    id: 'mdl_access_point',
+    name: 'Wireless Access Point',
+    description:
+        'A wireless access point allows devices to connect to a wired network using Wi-Fi technology.',
+    category: 'Networking',
+    learningObjective:
+        'Understand how access points provide wireless connectivity to a local network.',
+    relatedModuleId: 'mod_implementation',
+    thumbnailSvg: NetworkSvgs.wirelessAccessPoint,
   ),
 ];

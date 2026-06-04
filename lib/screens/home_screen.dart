@@ -7,6 +7,7 @@ import '../theme/app_theme.dart';
 import '../models/app_models.dart';
 import 'module_details_screen.dart';
 import 'model_details_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -258,8 +259,11 @@ class _ModelCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Center(
-                  child: Text(model.thumbnailEmoji,
-                      style: const TextStyle(fontSize: 32)),
+                  child: SvgPicture.string(
+                    model.thumbnailSvg,
+                    width: 40,
+                    height: 40,
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
