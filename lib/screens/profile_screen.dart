@@ -24,28 +24,12 @@ class ProfileScreen extends StatelessWidget {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            // ── Header ──────────────────────────────────────────────────
-            SliverToBoxAdapter(
-              child: _ProfileHeader(profile: profile),
-            ),
-
-            // ── Profile Info Card ──────────────────────────────────────
-            SliverToBoxAdapter(
-              child: _ProfileInfoCard(profile: profile),
-            ),
-
-            // ── Progress Overview ───────────────────────────────────────
+            SliverToBoxAdapter(child: _ProfileHeader(profile: profile)),
+            SliverToBoxAdapter(child: _ProfileInfoCard(profile: profile)),
             const SliverToBoxAdapter(
-              child: _SectionHeader(
-                title: 'Progress Overview',
-                trailing: null,
-              ),
+              child: _SectionHeader(title: 'Progress Overview', trailing: null),
             ),
-            SliverToBoxAdapter(
-              child: _ProgressCards(profile: profile),
-            ),
-
-            // ── Recent Lessons ───────────────────────────────────────────
+            SliverToBoxAdapter(child: _ProgressCards(profile: profile)),
             if (profile.recentLessons.isNotEmpty) ...[
               SliverToBoxAdapter(
                 child: _SectionHeader(
@@ -60,8 +44,6 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ],
-
-            // ── Recent Quiz Records ────────────────────────────────────
             if (profile.quizRecords.isNotEmpty) ...[
               SliverToBoxAdapter(
                 child: _SectionHeader(
@@ -74,8 +56,6 @@ class ProfileScreen extends StatelessWidget {
                     records: profile.quizRecords.take(5).toList()),
               ),
             ],
-
-            // ── Recent 3D Models ───────────────────────────────────────
             if (profile.recentModels.isNotEmpty) ...[
               SliverToBoxAdapter(
                 child: _SectionHeader(
@@ -90,8 +70,6 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ],
-
-            // ── Achievements ────────────────────────────────────────────
             if (profile.achievements.isNotEmpty) ...[
               SliverToBoxAdapter(
                 child: _SectionHeader(
@@ -103,19 +81,10 @@ class ProfileScreen extends StatelessWidget {
                 child: _AchievementsSection(achievements: profile.achievements),
               ),
             ],
-
-            // ── Settings ────────────────────────────────────────────────
             const SliverToBoxAdapter(
-              child: _SectionHeader(
-                title: 'Settings',
-                trailing: null,
-              ),
+              child: _SectionHeader(title: 'Settings', trailing: null),
             ),
-            SliverToBoxAdapter(
-              child: _SettingsSection(),
-            ),
-
-            // ── Bottom safe padding ─────────────────────────────────────
+            SliverToBoxAdapter(child: _SettingsSection()),
             SliverToBoxAdapter(
               child: SizedBox(
                 height: 96 + MediaQuery.of(context).padding.bottom,
@@ -139,6 +108,7 @@ class _ProfileHeader extends StatelessWidget {
     return Container(
       color: Theme.of(context).cardTheme.color,
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
+      margin: const EdgeInsets.only(bottom: 10),
       child: Row(
         children: [
           Container(
@@ -158,10 +128,7 @@ class _ProfileHeader extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Profile',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+              Text('Profile', style: Theme.of(context).textTheme.titleLarge),
               Text(
                 'Your learning stats and settings',
                 style: Theme.of(context).textTheme.bodySmall,
@@ -174,7 +141,7 @@ class _ProfileHeader extends StatelessWidget {
   }
 }
 
-// ── Profile Info Card ────────────────────────────────────────────────────────
+// ── Profile Info Card ─────────────────────────────────────────────────────────
 
 class _ProfileInfoCard extends StatelessWidget {
   final LearnerProfile profile;
@@ -188,11 +155,6 @@ class _ProfileInfoCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: Theme.of(context).dividerTheme.color ??
-                AppTheme.borderColorLight,
-            width: 0.8,
-          ),
         ),
         padding: const EdgeInsets.all(20),
         child: Row(
@@ -242,10 +204,7 @@ class _SectionHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
       child: Row(
         children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+          Text(title, style: Theme.of(context).textTheme.titleLarge),
           const Spacer(),
           if (trailing != null)
             Text(
@@ -286,13 +245,13 @@ class _ProgressCards extends StatelessWidget {
             icon: Icons.menu_book_outlined,
             label: 'Lessons Completed',
             value: '${profile.lessonsCompleted}',
-            color: AppTheme.tealColor,
+            color: AppTheme.primaryColor,
           ),
           _ProgressCard(
             icon: Icons.view_in_ar_outlined,
             label: 'AR Sessions',
             value: '${profile.arSessions}',
-            color: AppTheme.accentColor,
+            color: AppTheme.primaryColor,
           ),
           _ProgressCard(
             icon: Icons.quiz_outlined,
@@ -325,18 +284,21 @@ class _ProgressCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color:
-              Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
-          width: 0.8,
-        ),
       ),
       padding: const EdgeInsets.all(14),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(icon, color: color, size: 22),
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: AppTheme.greenTint,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, color: color, size: 20),
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -344,7 +306,7 @@ class _ProgressCard extends StatelessWidget {
                 value,
                 style: TextStyle(
                   fontSize: 22,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w800,
                   color: color,
                 ),
               ),
@@ -363,6 +325,8 @@ class _ProgressCard extends StatelessWidget {
 }
 
 // ── Activity List ─────────────────────────────────────────────────────────────
+// FIX: clipBehavior: Clip.hardEdge on the outer container prevents ListTile's
+// tileColor (set via listTileTheme) from bleeding past the rounded corners.
 
 class _ActivityList extends StatelessWidget {
   final List<RecentActivity> activities;
@@ -375,14 +339,10 @@ class _ActivityList extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
       child: Container(
+        clipBehavior: Clip.hardEdge, // ← fixes border-radius bleed
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: Theme.of(context).dividerTheme.color ??
-                AppTheme.borderColorLight,
-            width: 0.8,
-          ),
         ),
         child: Column(
           children: activities.asMap().entries.map((e) {
@@ -421,6 +381,7 @@ class _ActivityList extends StatelessWidget {
 }
 
 // ── Quiz Record List ──────────────────────────────────────────────────────────
+// FIX: same clipBehavior: Clip.hardEdge fix applied here.
 
 class _QuizRecordList extends StatelessWidget {
   final List<QuizRecord> records;
@@ -431,21 +392,17 @@ class _QuizRecordList extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
       child: Container(
+        clipBehavior: Clip.hardEdge, // ← fixes border-radius bleed
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: Theme.of(context).dividerTheme.color ??
-                AppTheme.borderColorLight,
-            width: 0.8,
-          ),
         ),
         child: Column(
           children: records.asMap().entries.map((e) {
             final record = e.value;
             final isLast = e.key == records.length - 1;
             final color = record.percentage >= 80
-                ? AppTheme.tealColor
+                ? AppTheme.primaryColor
                 : record.percentage >= 60
                     ? AppTheme.warningColor
                     : AppTheme.dangerColor;
@@ -478,7 +435,7 @@ class _QuizRecordList extends StatelessWidget {
                       '${record.percentage.toInt()}%',
                       style: TextStyle(
                         fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
                         color: color,
                       ),
                     ),
@@ -519,20 +476,19 @@ class _AchievementsSection extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).cardTheme.color,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: Theme.of(context).dividerTheme.color ??
-                    AppTheme.borderColorLight,
-                width: 0.8,
-              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text('🏆', style: TextStyle(fontSize: 14)),
                 const SizedBox(width: 6),
-                Text(
-                  a,
-                  style: Theme.of(context).textTheme.titleSmall,
+                Flexible(
+                  // ← add this
+                  child: Text(
+                    a,
+                    style: Theme.of(context).textTheme.titleSmall,
+                    softWrap: true, // ← wraps instead of overflowing
+                  ),
                 ),
               ],
             ),
@@ -544,6 +500,8 @@ class _AchievementsSection extends StatelessWidget {
 }
 
 // ── Settings Section ──────────────────────────────────────────────────────────
+// FIX: clipBehavior: Clip.hardEdge applied here too — ListTile rows inside
+// were bleeding past the container's rounded corners identically.
 
 class _SettingsSection extends StatelessWidget {
   @override
@@ -551,19 +509,14 @@ class _SettingsSection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
       child: Container(
+        clipBehavior: Clip.hardEdge, // ← fixes border-radius bleed
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: Theme.of(context).dividerTheme.color ??
-                AppTheme.borderColorLight,
-            width: 0.8,
-          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ── Appearance tile ──────────────────────────────────────────
             const _AppearanceTile(),
             Divider(
               height: 1,
@@ -571,8 +524,6 @@ class _SettingsSection extends StatelessWidget {
               endIndent: 16,
               color: Theme.of(context).dividerTheme.color,
             ),
-
-            // ── Notifications Toggle ───────────────────────────────────
             const _NotificationsTile(),
             Divider(
               height: 1,
@@ -580,8 +531,6 @@ class _SettingsSection extends StatelessWidget {
               endIndent: 16,
               color: Theme.of(context).dividerTheme.color,
             ),
-
-            // ── Edit Profile ─────────────────────────────────────────────
             _SettingsTile(
               icon: Icons.edit_outlined,
               label: 'Edit Profile',
@@ -595,8 +544,6 @@ class _SettingsSection extends StatelessWidget {
               indent: 52,
               color: Theme.of(context).dividerTheme.color,
             ),
-
-            // ── Reset Progress ───────────────────────────────────────────
             _SettingsTile(
               icon: Icons.refresh,
               label: 'Reset Progress',
@@ -626,7 +573,8 @@ class _SettingsSection extends StatelessWidget {
               Navigator.pop(context);
               context.read<AppState>().resetProgress();
             },
-            child: const Text('Reset', style: TextStyle(color: Colors.red)),
+            child: const Text('Reset',
+                style: TextStyle(color: AppTheme.dangerColor)),
           ),
         ],
       ),
@@ -671,8 +619,6 @@ class _AppearanceTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-
-              // Segmented control
               Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
@@ -741,7 +687,7 @@ class _NotificationsTile extends StatelessWidget {
       trailing: Switch.adaptive(
         value: enabled,
         onChanged: (value) => appState.setNotificationsEnabled(value),
-        activeTrackColor: AppTheme.accentColor,
+        activeTrackColor: AppTheme.primaryColor,
       ),
       dense: true,
     );
@@ -778,10 +724,6 @@ class _AppearanceOption extends StatelessWidget {
                 ? Theme.of(context).cardTheme.color
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isSelected ? AppTheme.accentColor : Colors.transparent,
-              width: 1.5,
-            ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -794,7 +736,7 @@ class _AppearanceOption extends StatelessWidget {
                   icon,
                   size: 20,
                   color: isSelected
-                      ? AppTheme.accentColor
+                      ? AppTheme.primaryColor
                       : Theme.of(context).textTheme.bodySmall?.color,
                 ),
               ),
@@ -837,13 +779,14 @@ class _SettingsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = isDestructive
-        ? Colors.red
+        ? AppTheme.dangerColor
         : Theme.of(context).textTheme.titleSmall?.color;
+
     return ListTile(
       leading: Icon(
         icon,
         color: isDestructive
-            ? Colors.red
+            ? AppTheme.dangerColor
             : Theme.of(context).textTheme.bodySmall?.color,
         size: 20,
       ),
@@ -857,7 +800,7 @@ class _SettingsTile extends StatelessWidget {
       ),
       trailing: const Icon(
         Icons.chevron_right_rounded,
-        color: Color(0xFFB0C8D4),
+        color: Color(0xFF9AA0A8),
         size: 20,
       ),
       onTap: onTap,

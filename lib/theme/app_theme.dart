@@ -4,50 +4,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AppTheme {
-  // ── Brand Colors (from ARNET logo) ──────────────────────────────────────
-  static const Color primaryColor = Color(0xFF1B2B3A); // dark navy
-  static const Color primaryLight = Color(0xFF243447); // mid navy
-  static const Color primaryDark = Color(0xFF101E2B); // deeper navy
-  static const Color accentColor = Color(0xFF5CD6E0); // cyan (logo highlight)
-  static const Color tealColor =
-      Color(0xFF00C2A8); // teal green (progress/success)
-  static const Color dangerColor =
-      Color(0xFFE05A5A); // coral red (alerts/errors)
-  static const Color cyanTint =
-      Color(0xFFC8E8EF); // light cyan (chips/badges bg)
+  // ── Brand Colors ──────────────────────────────────────────────────────────
+  static const Color primaryColor = Color(0xFF3E6EA8);
+  static const Color primaryLight = Color(0xFF5B86BB);
+  static const Color primaryDark = Color(0xFF2E5786);
+  static const Color accentColor = Color(0xFF4A7BB8);
+  static const Color tealColor = Color(0xFF4F8FA8);
+  static const Color dangerColor = Color(0xFFE05A5A);
+  static const Color greenTint = Color(0xFFEAF1F9);
 
-  // ── Light Theme Surfaces ────────────────────────────────────────────────
-  static const Color surfaceColorLight =
-      Color(0xFFF4F8FA); // near-white scaffold
-  static const Color cardColorLight = Color(0xFFFFFFFF); // pure white cards
-  static const Color borderColorLight =
-      Color(0xFFE0EEF2); // subtle cyan-tinted border
+  // ── Light Theme Surfaces ──────────────────────────────────────────────────
+  static const Color surfaceColorLight = Color(0xFFF8FAFC);
+  static const Color cardColorLight = Color(0xFFFFFFFF);
+  static const Color borderColorLight = Color(0xFFE2E8F0);
 
-  // ── Dark Theme Surfaces ─────────────────────────────────────────────────
-  static const Color surfaceColorDark = Color(0xFF0F1923); // deep navy scaffold
-  static const Color cardColorDark = Color(0xFF1B2B3A); // slightly lighter navy
-  static const Color borderColorDark = Color(0xFF2A3F52); // subtle border
-  static const Color textPrimaryDark =
-      Color(0xFFE8F4F8); // light cyan-white text
-  static const Color textSecondaryDark = Color(0xFF8BAAB8); // muted cyan text
+  // ── Dark Theme Surfaces ───────────────────────────────────────────────────
+  static const Color surfaceColorDark = Color(0xFF0B1220);
+  static const Color cardColorDark = Color(0xFF131C2B);
+  static const Color borderColorDark = Color(0xFF243244);
+  static const Color textPrimaryDark = Color(0xFFF8FAFC);
+  static const Color textSecondaryDark = Color(0xFFB6C2D1);
 
-  // ── Semantic aliases (kept for backwards compat) ─────────────────────────
-  static const Color successColor = tealColor;
-  static const Color warningColor = Color(0xFFFFA726);
+  // ── Semantic aliases ──────────────────────────────────────────────────────
+  static const Color successColor = Color.fromARGB(255, 2, 95, 0);
+  static const Color warningColor = Color(0xFFF4A261);
 
-  // ── Light Theme ─────────────────────────────────────────────────────────
+  // ── Light Theme ───────────────────────────────────────────────────────────
   static ThemeData get lightTheme => _buildTheme(
         brightness: Brightness.light,
         surfaceColor: surfaceColorLight,
         cardColor: cardColorLight,
         borderColor: borderColorLight,
-        textPrimary: primaryColor,
-        textSecondary: const Color(0xFF4A6B7C),
-        textTertiary: const Color(0xFF6B8FA0),
-        textQuaternary: const Color(0xFF8BAAB8),
+        textPrimary: const Color(0xFF101820),
+        textSecondary: const Color(0xFF4A5560),
+        textTertiary: const Color(0xFF6C7078),
+        textQuaternary: const Color(0xFF9AA0A8),
       );
 
-  // ── Dark Theme ────────────────────────────────────────────────────────
+  // ── Dark Theme ────────────────────────────────────────────────────────────
   static ThemeData get darkTheme => _buildTheme(
         brightness: Brightness.dark,
         surfaceColor: surfaceColorDark,
@@ -55,8 +49,8 @@ class AppTheme {
         borderColor: borderColorDark,
         textPrimary: textPrimaryDark,
         textSecondary: textSecondaryDark,
-        textTertiary: const Color(0xFF7A9BA8),
-        textQuaternary: const Color(0xFF5A8A98),
+        textTertiary: const Color(0xFF7A8E98),
+        textQuaternary: const Color(0xFF566878),
       );
 
   static ThemeData _buildTheme({
@@ -85,13 +79,13 @@ class AppTheme {
         error: dangerColor,
         surface: surfaceColor,
         onPrimary: Colors.white,
-        onSecondary: primaryDark,
+        onSecondary: Colors.white,
         surfaceContainerHighest: cardColor,
       ),
 
       scaffoldBackgroundColor: surfaceColor,
 
-      // ── Cards ────────────────────────────────────────────────────────
+      // ── Cards ─────────────────────────────────────────────────────────────
       cardTheme: CardThemeData(
         color: cardColor,
         elevation: 0,
@@ -101,7 +95,7 @@ class AppTheme {
         ),
       ),
 
-      // ── AppBar ───────────────────────────────────────────────────────
+      // ── AppBar ────────────────────────────────────────────────────────────
       appBarTheme: AppBarTheme(
         backgroundColor: cardColor,
         foregroundColor: textPrimary,
@@ -118,11 +112,11 @@ class AppTheme {
             isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       ),
 
-      // ── Elevated Button ──────────────────────────────────────────────
+      // ── Elevated Button ───────────────────────────────────────────────────
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: accentColor,
-          foregroundColor: primaryDark,
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
           minimumSize: const Size(double.infinity, 52),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
@@ -136,22 +130,22 @@ class AppTheme {
         ),
       ),
 
-      // ── Outlined Button ──────────────────────────────────────────────
+      // ── Outlined Button ───────────────────────────────────────────────────
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: isDark ? textPrimaryDark : primaryColor,
           minimumSize: const Size(double.infinity, 52),
-          side: const BorderSide(color: accentColor, width: 1.5),
+          side: const BorderSide(color: primaryColor, width: 1.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
         ),
       ),
 
-      // ── Text Button ────────────────────────────────────────────────────
+      // ── Text Button ───────────────────────────────────────────────────────
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: accentColor,
+          foregroundColor: primaryColor,
           textStyle: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -159,7 +153,7 @@ class AppTheme {
         ),
       ),
 
-      // ── Input Fields ───────────────────────────────────────────────────
+      // ── Input Fields ──────────────────────────────────────────────────────
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: cardColor,
@@ -173,27 +167,24 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: accentColor, width: 1.8),
+          borderSide: const BorderSide(color: primaryColor, width: 1.8),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: dangerColor, width: 1.5),
         ),
-        hintStyle: TextStyle(
-          color: textQuaternary,
-          fontSize: 14,
-        ),
+        hintStyle: TextStyle(color: textQuaternary, fontSize: 14),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       ),
 
-      // ── Bottom Navigation Bar ────────────────────────────────────────
+      // ── Bottom Navigation Bar ─────────────────────────────────────────────
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: cardColor,
-        indicatorColor: accentColor.withValues(alpha: 0.15),
+        indicatorColor: primaryColor.withValues(alpha: 0.12),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return const IconThemeData(color: accentColor, size: 24);
+            return const IconThemeData(color: primaryColor, size: 24);
           }
           return IconThemeData(color: textQuaternary, size: 22);
         }),
@@ -202,7 +193,7 @@ class AppTheme {
             return const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: accentColor,
+              color: primaryColor,
             );
           }
           return TextStyle(
@@ -214,11 +205,12 @@ class AppTheme {
         elevation: 1,
       ),
 
-      // ── Chips ─────────────────────────────────────────────────────────
+      // ── Chips ─────────────────────────────────────────────────────────────
       chipTheme: ChipThemeData(
-        backgroundColor: isDark ? primaryLight : cyanTint,
+        backgroundColor:
+            isDark ? primaryDark.withValues(alpha: 0.35) : greenTint,
         labelStyle: TextStyle(
-          color: textPrimary,
+          color: isDark ? textPrimaryDark : primaryDark,
           fontSize: 13,
           fontWeight: FontWeight.w500,
         ),
@@ -229,28 +221,35 @@ class AppTheme {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       ),
 
-      // ── Progress Indicator ───────────────────────────────────────────
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: accentColor,
-        linearTrackColor: cyanTint,
-        circularTrackColor: cyanTint,
+      // ── Progress Indicator ────────────────────────────────────────────────
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: primaryColor,
+        linearTrackColor: greenTint,
+        circularTrackColor: isDark ? borderColorDark : greenTint,
       ),
 
-      // ── Divider ───────────────────────────────────────────────────────
+      // ── Divider ───────────────────────────────────────────────────────────
       dividerTheme: DividerThemeData(
         color: borderColor,
         thickness: 0.8,
         space: 1,
       ),
 
-      // ── List Tile ─────────────────────────────────────────────────────
+      // ── List Tile ─────────────────────────────────────────────────────────
+      // FIX: tileColor is intentionally NOT set (left null/transparent).
+      // Setting tileColor: cardColor causes ListTile to paint a solid
+      // rectangle that bleeds past parent container's borderRadius even
+      // when clipBehavior: Clip.hardEdge is present, because the color
+      // is applied before the clip in the render pipeline on some tiles.
+      // With tileColor unset, ListTile inherits the parent's background
+      // transparently and the rounded corners are always respected.
       listTileTheme: ListTileThemeData(
-        tileColor: cardColor,
+        tileColor: Colors.transparent,
         textColor: textPrimary,
-        iconColor: textQuaternary,
+        iconColor: primaryColor,
       ),
 
-      // ── Dialog ────────────────────────────────────────────────────────
+      // ── Dialog ────────────────────────────────────────────────────────────
       dialogTheme: DialogThemeData(
         backgroundColor: cardColor,
         shape: RoundedRectangleBorder(
@@ -258,7 +257,7 @@ class AppTheme {
         ),
       ),
 
-      // ── Typography ────────────────────────────────────────────────────
+      // ── Typography ────────────────────────────────────────────────────────
       textTheme: TextTheme(
         headlineLarge: TextStyle(
           fontSize: 28,

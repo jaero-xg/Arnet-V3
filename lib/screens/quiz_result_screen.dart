@@ -40,7 +40,7 @@ class _QuizResultScreenState extends State<QuizResultScreen>
     if (_isPerfect) return 'Perfect score! Outstanding work.';
     if (_isExcellent) return 'Excellent work! Keep it up.';
     if (_isGood) return 'Good effort! Review and try again.';
-    return 'Keep studying.You\'ll get there!';
+    return "Keep studying. You'll get there!";
   }
 
   Color get _scoreColor {
@@ -93,82 +93,86 @@ class _QuizResultScreenState extends State<QuizResultScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final borderColor = theme.dividerTheme.color ?? AppTheme.borderColorLight;
+
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
             // ── Header ───────────────────────────────────────────────
             Container(
-              color: Theme.of(context).cardTheme.color,
+              color: theme.cardTheme.color,
               padding: const EdgeInsets.fromLTRB(12, 10, 16, 14),
-              child: Column(
+              child: Row(
                 children: [
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () => Navigator.of(context).popUntil(
-                          (route) =>
-                              route.isFirst || route.settings.name == '/home',
-                        ),
-                        child: Container(
-                          width: 36,
-                          height: 36,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                color: Theme.of(context).dividerTheme.color ??
-                                    AppTheme.borderColorLight,
-                                width: 0.8),
-                          ),
-                          child: Icon(
-                            Icons.arrow_back_rounded,
-                            size: 18,
-                            color:
-                                Theme.of(context).textTheme.titleLarge?.color,
-                          ),
-                        ),
+                  // Back button
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).popUntil(
+                      (route) =>
+                          route.isFirst || route.settings.name == '/home',
+                    ),
+                    child: Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: theme.scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: borderColor, width: 0.8),
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.lesson.title,
-                              style: const TextStyle(
-                                fontSize: 11,
-                                color: Color(0xFF8BAAB8),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Text(
-                              'Quiz Result',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
+                      child: Icon(
+                        Icons.arrow_back_rounded,
+                        size: 18,
+                        color: theme.textTheme.titleLarge?.color,
                       ),
-                      // Module pill
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: AppTheme.cyanTint,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          widget.module.title,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  // Lesson + screen title
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.lesson.title,
                           style: const TextStyle(
                             fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: AppTheme.primaryColor,
+                            color: Color(0xFF8BAAB8),
+                            fontWeight: FontWeight.w500,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
+                        Text(
+                          'Quiz Result',
+                          style: theme.textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Module pill
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: 120),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? AppTheme.primaryDark.withValues(alpha: 0.35)
+                          : AppTheme.greenTint,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      widget.module.title,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: isDark
+                            ? AppTheme.primaryLight
+                            : AppTheme.primaryColor,
                       ),
-                    ],
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
@@ -186,16 +190,13 @@ class _QuizResultScreenState extends State<QuizResultScreen>
                       padding: const EdgeInsets.symmetric(
                           vertical: 28, horizontal: 20),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).cardTheme.color,
+                        color: theme.cardTheme.color,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                            color: Theme.of(context).dividerTheme.color ??
-                                AppTheme.borderColorLight,
-                            width: 0.8),
+                        border: Border.all(color: borderColor, width: 0.8),
                       ),
                       child: Column(
                         children: [
-                          // Animated ring
+                          // Animated ring with elastic scale-in
                           ScaleTransition(
                             scale: _scaleAnim,
                             child: AnimatedBuilder(
@@ -210,11 +211,13 @@ class _QuizResultScreenState extends State<QuizResultScreen>
                                       size: const Size(160, 160),
                                       painter: _RingPainter(
                                         progress: _progressAnim.value,
-                                        trackColor: AppTheme.cyanTint,
+                                        trackColor: isDark
+                                            ? AppTheme.borderColorDark
+                                            : AppTheme.greenTint,
                                         progressColor: _scoreColor,
                                       ),
                                     ),
-                                    // Center content
+                                    // Inner circle
                                     Container(
                                       width: 110,
                                       height: 110,
@@ -238,6 +241,7 @@ class _QuizResultScreenState extends State<QuizResultScreen>
                                               fontSize: 28,
                                               fontWeight: FontWeight.w800,
                                               color: _scoreColor,
+                                              height: 1.1,
                                             ),
                                           ),
                                           Text(
@@ -258,14 +262,12 @@ class _QuizResultScreenState extends State<QuizResultScreen>
                           ),
                           const SizedBox(height: 20),
 
-                          // Message
+                          // Result message fades in after ring
                           FadeTransition(
                             opacity: _fadeAnim,
                             child: Text(
                               _message,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
+                              style: theme.textTheme.titleLarge
                                   ?.copyWith(height: 1.4),
                               textAlign: TextAlign.center,
                             ),
@@ -324,12 +326,12 @@ class _QuizResultScreenState extends State<QuizResultScreen>
                       opacity: _fadeAnim,
                       child: Column(
                         children: [
-                          // Retry — primary action
+                          // Retry — primary
                           ElevatedButton(
                             onPressed: () => Navigator.of(context).pop(),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.accentColor,
-                              foregroundColor: AppTheme.primaryDark,
+                              backgroundColor: AppTheme.primaryColor,
+                              foregroundColor: Colors.white,
                               minimumSize: const Size(double.infinity, 52),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(14),
@@ -353,7 +355,7 @@ class _QuizResultScreenState extends State<QuizResultScreen>
                           ),
                           const SizedBox(height: 10),
 
-                          // Return to module — secondary action
+                          // Return to module — secondary
                           OutlinedButton(
                             onPressed: () => Navigator.of(context).popUntil(
                               (route) =>
@@ -362,10 +364,9 @@ class _QuizResultScreenState extends State<QuizResultScreen>
                             ),
                             style: OutlinedButton.styleFrom(
                               foregroundColor:
-                                  Theme.of(context).textTheme.titleSmall?.color,
+                                  theme.textTheme.titleSmall?.color,
                               minimumSize: const Size(double.infinity, 52),
-                              side: const BorderSide(
-                                  color: AppTheme.borderColorLight, width: 1),
+                              side: BorderSide(color: borderColor, width: 1),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(14),
                               ),
@@ -420,15 +421,15 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final borderColor = theme.dividerTheme.color ?? AppTheme.borderColorLight;
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardTheme.color,
+        color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-            color: Theme.of(context).dividerTheme.color ??
-                AppTheme.borderColorLight,
-            width: 0.8),
+        border: Border.all(color: borderColor, width: 0.8),
       ),
       child: Column(
         children: [
@@ -472,7 +473,7 @@ class _RingPainter extends CustomPainter {
   final Color trackColor;
   final Color progressColor;
 
-  _RingPainter({
+  const _RingPainter({
     required this.progress,
     required this.trackColor,
     required this.progressColor,
@@ -495,17 +496,19 @@ class _RingPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    // Track
+    // Track (full circle)
     canvas.drawCircle(center, radius, trackPaint);
 
-    // Progress arc
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius),
-      -math.pi / 2,
-      2 * math.pi * progress,
-      false,
-      progressPaint,
-    );
+    // Progress arc — starts at 12 o'clock, sweeps clockwise
+    if (progress > 0) {
+      canvas.drawArc(
+        Rect.fromCircle(center: center, radius: radius),
+        -math.pi / 2,
+        2 * math.pi * progress,
+        false,
+        progressPaint,
+      );
+    }
   }
 
   @override

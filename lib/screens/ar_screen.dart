@@ -109,10 +109,6 @@ class _ARPlaceholder extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
-          width: 0.8,
-        ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

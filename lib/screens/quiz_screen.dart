@@ -256,7 +256,7 @@ class _QuizHeader extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
-                    color: AppTheme.cyanTint,
+                    color: AppTheme.tealColor.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
@@ -274,7 +274,7 @@ class _QuizHeader extends StatelessWidget {
           // Progress bar
           LinearProgressIndicator(
             value: progress,
-            backgroundColor: AppTheme.cyanTint,
+            backgroundColor: AppTheme.tealColor.withValues(alpha: 0.08),
             color: AppTheme.accentColor,
             minHeight: 4,
           ),
@@ -413,7 +413,10 @@ class _AnswerOption extends StatelessWidget {
               : Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: isSelected ? AppTheme.accentColor : (Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight),
+            color: isSelected
+                ? AppTheme.accentColor
+                : (Theme.of(context).dividerTheme.color ??
+                    AppTheme.borderColorLight),
             width: isSelected ? 1.8 : 0.8,
           ),
         ),
@@ -425,7 +428,9 @@ class _AnswerOption extends StatelessWidget {
               width: 34,
               height: 34,
               decoration: BoxDecoration(
-                color: isSelected ? AppTheme.accentColor : AppTheme.cyanTint,
+                color: isSelected
+                    ? AppTheme.accentColor
+                    : AppTheme.tealColor.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Center(
@@ -435,7 +440,7 @@ class _AnswerOption extends StatelessWidget {
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: isSelected
-                        ? AppTheme.primaryDark
+                        ? AppTheme.textPrimaryDark
                         : const Color(0xFF4A6B7C),
                   ),
                 ),
@@ -450,7 +455,7 @@ class _AnswerOption extends StatelessWidget {
                   height: 1.4,
                   color: isSelected
                       ? Theme.of(context).textTheme.titleSmall?.color
-                      : const Color(0xFF2C4255),
+                      : AppTheme.textPrimaryDark,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                 ),
               ),
@@ -503,7 +508,8 @@ class _BottomNav extends StatelessWidget {
         color: Theme.of(context).cardTheme.color,
         border: Border(
           top: BorderSide(
-            color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
+            color: Theme.of(context).dividerTheme.color ??
+                AppTheme.borderColorLight,
             width: 0.8,
           ),
         ),
@@ -520,7 +526,9 @@ class _BottomNav extends StatelessWidget {
               decoration: BoxDecoration(
                 color: currentIndex > 0
                     ? Theme.of(context).scaffoldBackgroundColor
-                    : (Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight).withValues(alpha: 0.4),
+                    : (Theme.of(context).dividerTheme.color ??
+                            AppTheme.borderColorLight)
+                        .withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Icon(
@@ -542,7 +550,8 @@ class _BottomNav extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: allAnswered
                           ? AppTheme.tealColor
-                          : (Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight),
+                          : (Theme.of(context).dividerTheme.color ??
+                              AppTheme.borderColorLight),
                       foregroundColor: Colors.white,
                       minimumSize: const Size(double.infinity, 52),
                       shape: RoundedRectangleBorder(
@@ -570,10 +579,11 @@ class _BottomNav extends StatelessWidget {
                     onPressed: currentAnswered ? onNext : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: currentAnswered
-                          ? AppTheme.accentColor
-                          : (Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight),
+                          ? AppTheme.primaryColor
+                          : (Theme.of(context).dividerTheme.color ??
+                              AppTheme.borderColorLight),
                       foregroundColor: currentAnswered
-                          ? AppTheme.primaryDark
+                          ? Colors.white
                           : const Color(0xFFB0C8D4),
                       minimumSize: const Size(double.infinity, 52),
                       shape: RoundedRectangleBorder(

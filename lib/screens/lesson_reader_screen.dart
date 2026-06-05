@@ -7,6 +7,13 @@ import '../state/app_state.dart';
 import '../theme/app_theme.dart';
 import 'quiz_screen.dart';
 
+const _kModuleIcons = <String, IconData>{
+  'mod_fundamentals': Icons.wifi_rounded,
+  'mod_transmission': Icons.cable_rounded,
+  'mod_implementation': Icons.router_rounded,
+  'mod_setup': Icons.settings_ethernet_rounded,
+};
+
 class LessonReaderScreen extends StatefulWidget {
   final Lesson lesson;
   final LearningModule module;
@@ -91,7 +98,7 @@ class _LessonReaderScreenState extends State<LessonReaderScreen> {
                       module.title,
                       style: const TextStyle(
                         fontSize: 11,
-                        color: Color(0xFF8BAAB8),
+                        color: Color(0xFF9AA0A8),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -101,7 +108,6 @@ class _LessonReaderScreenState extends State<LessonReaderScreen> {
                     ),
                   ],
                 ),
-                // Lesson position indicator e.g. "2 / 5"
                 actions: [
                   if (lessonIndex >= 0)
                     Padding(
@@ -110,7 +116,7 @@ class _LessonReaderScreenState extends State<LessonReaderScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
-                          color: AppTheme.cyanTint,
+                          color: AppTheme.greenTint,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
@@ -128,8 +134,8 @@ class _LessonReaderScreenState extends State<LessonReaderScreen> {
                   preferredSize: const Size.fromHeight(5),
                   child: LinearProgressIndicator(
                     value: _readProgress,
-                    backgroundColor: AppTheme.cyanTint,
-                    color: AppTheme.accentColor,
+                    backgroundColor: AppTheme.greenTint,
+                    color: AppTheme.primaryColor,
                     minHeight: 4,
                   ),
                 ),
@@ -178,32 +184,35 @@ class _LessonHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final icon = _kModuleIcons[module.id] ?? Icons.school_outlined;
+
     return Container(
       color: Theme.of(context).cardTheme.color,
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Module breadcrumb pill
+          // Module breadcrumb pill — icon instead of emoji
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: AppTheme.accentColor.withValues(alpha: 0.1),
+              color: AppTheme.primaryColor.withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  module.thumbnailEmoji,
-                  style: const TextStyle(fontSize: 12),
+                Icon(
+                  icon,
+                  size: 13,
+                  color: AppTheme.primaryColor,
                 ),
                 const SizedBox(width: 5),
                 Text(
                   module.title,
                   style: const TextStyle(
                     fontSize: 12,
-                    color: AppTheme.accentColor,
+                    color: AppTheme.primaryColor,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -236,7 +245,7 @@ class _LessonHero extends StatelessWidget {
                 const _MetaChip(
                   icon: Icons.check_circle_rounded,
                   label: 'Completed',
-                  color: AppTheme.tealColor,
+                  color: AppTheme.primaryColor,
                 ),
               ],
             ],
@@ -246,7 +255,8 @@ class _LessonHero extends StatelessWidget {
           // Divider
           Container(
             height: 0.8,
-            color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
+            color: Theme.of(context).dividerTheme.color ??
+                AppTheme.borderColorLight,
           ),
         ],
       ),
@@ -262,7 +272,7 @@ class _MetaChip extends StatelessWidget {
   const _MetaChip({
     required this.icon,
     required this.label,
-    this.color = const Color(0xFF8BAAB8),
+    this.color = const Color(0xFF9AA0A8),
   });
 
   @override
@@ -333,12 +343,12 @@ class _SectionBlock extends StatelessWidget {
           ),
           const SizedBox(height: 8),
 
-          // Cyan accent underline
+          // Accent underline
           Container(
             width: 36,
             height: 3,
             decoration: BoxDecoration(
-              color: AppTheme.accentColor,
+              color: AppTheme.primaryColor,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -370,7 +380,8 @@ class _BottomCTA extends StatelessWidget {
         color: Theme.of(context).cardTheme.color,
         border: Border(
           top: BorderSide(
-            color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
+            color: Theme.of(context).dividerTheme.color ??
+                AppTheme.borderColorLight,
             width: 0.8,
           ),
         ),

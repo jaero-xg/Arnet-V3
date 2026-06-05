@@ -5,6 +5,13 @@ import '../models/app_models.dart';
 import '../theme/app_theme.dart';
 import 'lesson_reader_screen.dart';
 
+const _kModuleIcons = <String, IconData>{
+  'mod_fundamentals': Icons.wifi_rounded,
+  'mod_transmission': Icons.cable_rounded,
+  'mod_implementation': Icons.router_rounded,
+  'mod_setup': Icons.settings_ethernet_rounded,
+};
+
 class ModuleDetailsScreen extends StatelessWidget {
   final LearningModule module;
   const ModuleDetailsScreen({super.key, required this.module});
@@ -49,7 +56,8 @@ class ModuleDetailsScreen extends StatelessWidget {
               preferredSize: const Size.fromHeight(1),
               child: Container(
                 height: 0.8,
-                color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
+                color: Theme.of(context).dividerTheme.color ??
+                    AppTheme.borderColorLight,
               ),
             ),
           ),
@@ -62,21 +70,19 @@ class ModuleDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Emoji + stats row
                   Row(
                     children: [
                       Container(
                         width: 64,
                         height: 64,
                         decoration: BoxDecoration(
-                          color: AppTheme.cyanTint,
+                          color: AppTheme.greenTint,
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: Center(
-                          child: Text(
-                            module.thumbnailEmoji,
-                            style: const TextStyle(fontSize: 32),
-                          ),
+                        child: Icon(
+                          _kModuleIcons[module.id] ?? Icons.school_outlined,
+                          size: 30,
+                          color: AppTheme.primaryColor,
                         ),
                       ),
                       const SizedBox(width: 14),
@@ -89,19 +95,18 @@ class ModuleDetailsScreen extends StatelessWidget {
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             const SizedBox(height: 4),
-                            // Lesson + completed pills
                             Row(
                               children: [
                                 _InfoPill(
                                   icon: Icons.menu_book_outlined,
                                   label: '${module.lessons.length} lessons',
-                                  color: AppTheme.accentColor,
+                                  color: AppTheme.primaryColor,
                                 ),
                                 const SizedBox(width: 6),
                                 _InfoPill(
                                   icon: Icons.check_circle_outline_rounded,
                                   label: '${module.completedLessons} done',
-                                  color: AppTheme.tealColor,
+                                  color: AppTheme.primaryColor,
                                 ),
                               ],
                             ),
@@ -111,15 +116,11 @@ class ModuleDetailsScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 14),
-
-                  // Description
                   Text(
                     module.description,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 16),
-
-                  // Progress section
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -129,12 +130,10 @@ class ModuleDetailsScreen extends StatelessWidget {
                       ),
                       Text(
                         isDone ? 'Completed ✓' : '${pct.toInt()}%',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
-                          color: isDone
-                              ? AppTheme.tealColor
-                              : AppTheme.accentColor,
+                          color: AppTheme.primaryColor,
                         ),
                       ),
                     ],
@@ -144,8 +143,8 @@ class ModuleDetailsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                     child: LinearProgressIndicator(
                       value: pct / 100,
-                      backgroundColor: AppTheme.cyanTint,
-                      color: isDone ? AppTheme.tealColor : AppTheme.accentColor,
+                      backgroundColor: AppTheme.greenTint,
+                      color: AppTheme.primaryColor,
                       minHeight: 8,
                     ),
                   ),
@@ -258,12 +257,6 @@ class _LessonCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isCompleted
-              ? AppTheme.tealColor.withValues(alpha: 0.25)
-              : (Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight),
-          width: 0.8,
-        ),
       ),
       child: InkWell(
         onTap: () => Navigator.push(
@@ -283,8 +276,8 @@ class _LessonCard extends StatelessWidget {
                 height: 40,
                 decoration: BoxDecoration(
                   color: isCompleted
-                      ? AppTheme.tealColor.withValues(alpha: 0.1)
-                      : AppTheme.cyanTint,
+                      ? AppTheme.primaryColor.withValues(alpha: 0.1)
+                      : AppTheme.greenTint,
                   shape: BoxShape.circle,
                 ),
                 child: Center(
@@ -292,7 +285,7 @@ class _LessonCard extends StatelessWidget {
                       ? const Icon(
                           Icons.check_rounded,
                           size: 18,
-                          color: AppTheme.tealColor,
+                          color: AppTheme.primaryColor,
                         )
                       : Text(
                           '${index + 1}',
@@ -306,7 +299,6 @@ class _LessonCard extends StatelessWidget {
               ),
               const SizedBox(width: 12),
 
-              // Title + subtitle
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,7 +319,6 @@ class _LessonCard extends StatelessWidget {
               ),
               const SizedBox(width: 8),
 
-              // Right side: time + done badge
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -337,14 +328,14 @@ class _LessonCard extends StatelessWidget {
                       const Icon(
                         Icons.schedule_rounded,
                         size: 12,
-                        color: Color(0xFF8BAAB8),
+                        color: Color(0xFF9AA0A8),
                       ),
                       const SizedBox(width: 3),
                       Text(
                         '${lesson.readingTimeMinutes} min',
                         style: const TextStyle(
                           fontSize: 11,
-                          color: Color(0xFF8BAAB8),
+                          color: Color(0xFF9AA0A8),
                         ),
                       ),
                     ],
@@ -355,14 +346,14 @@ class _LessonCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
-                        color: AppTheme.tealColor.withValues(alpha: 0.1),
+                        color: AppTheme.primaryColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Text(
                         'Done',
                         style: TextStyle(
                           fontSize: 11,
-                          color: AppTheme.tealColor,
+                          color: AppTheme.primaryColor,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -371,7 +362,7 @@ class _LessonCard extends StatelessWidget {
                     const Icon(
                       Icons.chevron_right_rounded,
                       size: 18,
-                      color: Color(0xFFB0C8D4),
+                      color: Color(0xFF9AA0A8),
                     ),
                 ],
               ),

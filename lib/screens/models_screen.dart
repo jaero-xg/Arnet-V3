@@ -22,13 +22,11 @@ class _ModelsScreenState extends State<ModelsScreen> {
   Widget build(BuildContext context) {
     final models = context.watch<AppState>().models;
 
-    // Build category list dynamically from data
     final categories = [
       'All',
       ...{for (final m in models) m.category},
     ];
 
-    // Filter models by selected category
     final filtered = _selectedCategory == 'All'
         ? models
         : models.where((m) => m.category == _selectedCategory).toList();
@@ -38,12 +36,9 @@ class _ModelsScreenState extends State<ModelsScreen> {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
-            // ── Header ──────────────────────────────────────────────────
             SliverToBoxAdapter(
               child: _ModelsHeader(modelCount: models.length),
             ),
-
-            // ── Category filter chips ────────────────────────────────────
             SliverToBoxAdapter(
               child: _CategoryChips(
                 categories: categories,
@@ -51,8 +46,6 @@ class _ModelsScreenState extends State<ModelsScreen> {
                 onSelected: (cat) => setState(() => _selectedCategory = cat),
               ),
             ),
-
-            // ── Section label ────────────────────────────────────────────
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
@@ -73,8 +66,6 @@ class _ModelsScreenState extends State<ModelsScreen> {
                 ),
               ),
             ),
-
-            // ── Grid ─────────────────────────────────────────────────────
             filtered.isEmpty
                 ? SliverToBoxAdapter(child: _EmptyState())
                 : SliverPadding(
@@ -119,19 +110,18 @@ class _ModelsHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title row
           Row(
             children: [
               Container(
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: AppTheme.accentColor.withValues(alpha: 0.12),
+                  color: AppTheme.primaryColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Icon(
                   Icons.layers_rounded,
-                  color: AppTheme.accentColor,
+                  color: AppTheme.primaryColor,
                   size: 20,
                 ),
               ),
@@ -152,39 +142,33 @@ class _ModelsHeader extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 14),
-          // Stats row
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: Theme.of(context).dividerTheme.color ??
-                    AppTheme.borderColorLight,
-                width: 0.8,
-              ),
             ),
             child: Row(
               children: [
                 _StatItem(
                   icon: Icons.view_in_ar_rounded,
-                  iconColor: AppTheme.accentColor,
+                  iconColor: AppTheme.primaryColor,
                   label: '$modelCount',
                   sublabel: 'Models',
                 ),
                 _StatDivider(),
                 const _StatItem(
                   icon: Icons.category_outlined,
-                  iconColor: AppTheme.tealColor,
+                  iconColor: AppTheme.primaryColor,
                   label: 'Browse',
-                  sublabel: 'By category',
+                  sublabel: 'Category',
                 ),
                 _StatDivider(),
                 const _StatItem(
                   icon: Icons.touch_app_outlined,
                   iconColor: AppTheme.primaryColor,
                   label: 'Tap',
-                  sublabel: 'To view in AR',
+                  sublabel: 'View AR',
                 ),
               ],
             ),
@@ -212,28 +196,37 @@ class _StatItem extends StatelessWidget {
     return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min, // ← don't stretch unnecessarily
         children: [
-          Icon(icon, size: 16, color: iconColor),
-          const SizedBox(width: 6),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: AppTheme.primaryColor,
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color:
+                  Theme.of(context).cardTheme.color, // ← white, not scaffoldBg
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, size: 16, color: iconColor),
+          ),
+          const SizedBox(width: 8),
+          Flexible(
+            // ← lets text shrink/wrap
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  label,
+                  style: Theme.of(context).textTheme.titleSmall,
+                  overflow: TextOverflow.ellipsis, // ← safety net
                 ),
-              ),
-              Text(
-                sublabel,
-                style: const TextStyle(
-                  fontSize: 11,
-                  color: Color(0xFF8BAAB8),
+                Text(
+                  sublabel,
+                  style: Theme.of(context).textTheme.bodySmall,
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
@@ -298,13 +291,6 @@ class _CategoryChips extends StatelessWidget {
                           ? AppTheme.primaryColor
                           : Theme.of(context).scaffoldBackgroundColor,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: isSelected
-                            ? AppTheme.primaryColor
-                            : Theme.of(context).dividerTheme.color ??
-                                AppTheme.borderColorLight,
-                        width: 0.8,
-                      ),
                     ),
                     child: Text(
                       cat,
@@ -312,7 +298,7 @@ class _CategoryChips extends StatelessWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color:
-                            isSelected ? Colors.white : const Color(0xFF4A6B7C),
+                            isSelected ? Colors.white : const Color(0xFF6C7078),
                       ),
                     ),
                   ),
@@ -338,11 +324,6 @@ class _ModelCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color:
-              Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
-          width: 0.8,
-        ),
       ),
       child: InkWell(
         onTap: () => Navigator.push(
@@ -355,12 +336,12 @@ class _ModelCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Thumbnail
               Expanded(
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppTheme.cyanTint,
+                    color: AppTheme
+                        .surfaceColorLight, // ← was greenTint (blue-tinted)
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
@@ -368,33 +349,32 @@ class _ModelCard extends StatelessWidget {
                       model.thumbnailSvg,
                       width: 56,
                       height: 56,
+                      colorFilter: const ColorFilter.mode(
+                        // ← explicit neutral tint
+                        Color(0xFF8BAAB8),
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 10),
-              // Name
               Text(
                 model.name,
-                style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.primaryColor,
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall, // ← was hardcoded primaryColor
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 4),
-              // Category + AR badge row
               Row(
                 children: [
                   Expanded(
                     child: Text(
                       model.category,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Color(0xFF8BAAB8),
-                      ),
+                      style:
+                          Theme.of(context).textTheme.bodySmall, // ← use theme
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -402,24 +382,21 @@ class _ModelCard extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
-                      color: AppTheme.accentColor.withValues(alpha: 0.12),
+                      color: AppTheme.primaryColor.withValues(alpha: 0.10),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(
-                          Icons.view_in_ar_rounded,
-                          size: 10,
-                          color: AppTheme.accentColor,
-                        ),
+                        Icon(Icons.view_in_ar_rounded,
+                            size: 10, color: AppTheme.primaryColor),
                         SizedBox(width: 3),
                         Text(
                           'AR',
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
-                            color: AppTheme.accentColor,
+                            color: AppTheme.primaryColor,
                           ),
                         ),
                       ],
@@ -449,13 +426,13 @@ class _EmptyState extends StatelessWidget {
               width: 72,
               height: 72,
               decoration: BoxDecoration(
-                color: AppTheme.cyanTint,
+                color: AppTheme.surfaceColorLight,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: const Icon(
                 Icons.layers_outlined,
                 size: 36,
-                color: AppTheme.accentColor,
+                color: AppTheme.primaryColor,
               ),
             ),
             const SizedBox(height: 16),

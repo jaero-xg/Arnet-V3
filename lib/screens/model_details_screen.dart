@@ -69,7 +69,8 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
               preferredSize: const Size.fromHeight(1),
               child: Container(
                 height: 0.8,
-                color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
+                color: Theme.of(context).dividerTheme.color ??
+                    AppTheme.borderColorLight,
               ),
             ),
           ),
@@ -230,22 +231,27 @@ class _ModelInfoCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
-            width: 0.8,
-          ),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _InfoRow(label: 'Model Name', value: model.name),
-            Divider(height: 20, color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight),
+            Divider(
+                height: 20,
+                color: Theme.of(context).dividerTheme.color ??
+                    AppTheme.borderColorLight),
             _InfoRow(label: 'Category', value: model.category),
-            Divider(height: 20, color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight),
+            Divider(
+                height: 20,
+                color: Theme.of(context).dividerTheme.color ??
+                    AppTheme.borderColorLight),
             _InfoRow(
                 label: 'Learning Objective', value: model.learningObjective),
-            Divider(height: 20, color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight),
+            Divider(
+                height: 20,
+                color: Theme.of(context).dividerTheme.color ??
+                    AppTheme.borderColorLight),
             _InfoRow(label: 'Related Module', value: relatedModule.title),
           ],
         ),
@@ -314,10 +320,6 @@ class _RelatedLessonButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: Theme.of(context).dividerTheme.color ?? AppTheme.borderColorLight,
-            width: 0.8,
-          ),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
