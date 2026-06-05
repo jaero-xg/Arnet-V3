@@ -222,7 +222,7 @@ class _QuizHeader extends StatelessWidget {
                     height: 36,
                     decoration: BoxDecoration(
                       color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(
                       Icons.arrow_back_rounded,
@@ -257,7 +257,7 @@ class _QuizHeader extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     color: AppTheme.tealColor.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
                     '$answeredCount / $total answered',
@@ -344,7 +344,7 @@ class _QuestionCard extends StatelessWidget {
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(26),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -353,15 +353,15 @@ class _QuestionCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: AppTheme.accentColor.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(8),
+              color: AppTheme.surfaceColorLight.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
               'Question ${index + 1}',
               style: const TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
-                color: AppTheme.accentColor,
+                color: AppTheme.textPrimaryDark,
                 letterSpacing: 0.5,
               ),
             ),
@@ -411,13 +411,13 @@ class _AnswerOption extends StatelessWidget {
           color: isSelected
               ? AppTheme.accentColor.withValues(alpha: 0.08)
               : Theme.of(context).cardTheme.color,
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: isSelected
                 ? AppTheme.accentColor
                 : (Theme.of(context).dividerTheme.color ??
                     AppTheme.borderColorLight),
-            width: isSelected ? 1.8 : 0.8,
+            width: isSelected ? 0.8 : 0.8,
           ),
         ),
         child: Row(
@@ -455,7 +455,7 @@ class _AnswerOption extends StatelessWidget {
                   height: 1.4,
                   color: isSelected
                       ? Theme.of(context).textTheme.titleSmall?.color
-                      : AppTheme.textPrimaryDark,
+                      : AppTheme.textSecondaryDark,
                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                 ),
               ),
@@ -529,7 +529,7 @@ class _BottomNav extends StatelessWidget {
                     : (Theme.of(context).dividerTheme.color ??
                             AppTheme.borderColorLight)
                         .withValues(alpha: 0.4),
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(
                 Icons.arrow_back_rounded,
@@ -555,7 +555,7 @@ class _BottomNav extends StatelessWidget {
                       foregroundColor: Colors.white,
                       minimumSize: const Size(double.infinity, 52),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       elevation: 0,
                     ),
@@ -587,7 +587,7 @@ class _BottomNav extends StatelessWidget {
                           : const Color(0xFFB0C8D4),
                       minimumSize: const Size(double.infinity, 52),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       elevation: 0,
                     ),

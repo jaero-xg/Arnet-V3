@@ -129,10 +129,11 @@ class _TopBar extends StatelessWidget {
           const Spacer(),
           // Offline badge
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            height: 36,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
-              color: AppTheme.greenTint,
-              borderRadius: BorderRadius.circular(20),
+              color: AppTheme.surfaceColorLight,
+              borderRadius: BorderRadius.circular(16),
             ),
             child: const Row(
               mainAxisSize: MainAxisSize.min,
@@ -153,12 +154,18 @@ class _TopBar extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           // Avatar
-          CircleAvatar(
-            radius: 18,
-            backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.15),
-            child: Text(
-              avatarList[profile?.avatarIndex ?? 0]['emoji'],
-              style: const TextStyle(fontSize: 18),
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: AppTheme.surfaceColorLight,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Center(
+              child: Text(
+                avatarList[profile?.avatarIndex ?? 0]['emoji'],
+                style: const TextStyle(fontSize: 20),
+              ),
             ),
           ),
         ],
@@ -213,10 +220,10 @@ class _HeroBanner extends StatelessWidget {
           // Greeting text
           RichText(
             text: TextSpan(
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.w300,
-                color: AppTheme.primaryColor,
+                color: Theme.of(context).textTheme.headlineMedium?.color,
               ),
               children: [
                 TextSpan(text: '$greeting, '),
@@ -224,7 +231,6 @@ class _HeroBanner extends StatelessWidget {
                   text: '$name!',
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: AppTheme.primaryColor,
                   ),
                 ),
               ],
@@ -236,7 +242,7 @@ class _HeroBanner extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               color: AppTheme.primaryColor,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(28),
             ),
             clipBehavior: Clip.hardEdge,
             child: Stack(
@@ -272,7 +278,6 @@ class _HeroBanner extends StatelessWidget {
                     children: [
                       // Logo box
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
                         child: Image.asset(
                           'assets/images/logo.png',
                           width: 48,
@@ -421,7 +426,7 @@ class _ActionCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(28),
       ),
       child: InkWell(
         onTap: onTap,
@@ -434,7 +439,7 @@ class _ActionCard extends StatelessWidget {
               height: 42,
               decoration: BoxDecoration(
                 color: iconBg,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
               ),
               child: Icon(icon, color: iconColor, size: 22),
             ),
@@ -479,10 +484,10 @@ class _ModuleCard extends StatelessWidget {
 
   // Map module IDs to icons
   static const _moduleIcons = <String, IconData>{
-    'mod_fundamentals': Icons.wifi_rounded,
-    'mod_transmission': Icons.cable_rounded,
-    'mod_implementation': Icons.router_rounded,
-    'mod_setup': Icons.settings_ethernet_rounded,
+    'Module 1': Icons.wifi_rounded,
+    'Module 2': Icons.cable_rounded,
+    'Module 3': Icons.router_rounded,
+    'Module 4': Icons.settings_ethernet_rounded,
   };
 
   @override
@@ -495,7 +500,7 @@ class _ModuleCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(28),
       ),
       child: InkWell(
         onTap: () => Navigator.push(
@@ -510,15 +515,15 @@ class _ModuleCard extends StatelessWidget {
             children: [
               // Icon box
               Container(
-                width: 52,
-                height: 52,
+                width: 42,
+                height: 42,
                 decoration: BoxDecoration(
                   color: AppTheme.greenTint,
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
                   icon,
-                  size: 24,
+                  size: 22,
                   color: AppTheme.primaryColor,
                 ),
               ),
@@ -529,14 +534,14 @@ class _ModuleCard extends StatelessWidget {
                   children: [
                     Text(
                       module.title,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                     const SizedBox(height: 2),
                     Text(
                       '${module.lessons.length} lessons',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 2),
                     // Progress bar
                     Row(
                       children: [

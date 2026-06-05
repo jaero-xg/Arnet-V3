@@ -112,20 +112,6 @@ class _ModelsHeader extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.layers_rounded,
-                  color: AppTheme.primaryColor,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -146,7 +132,7 @@ class _ModelsHeader extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(18),
             ),
             child: Row(
               children: [
@@ -290,7 +276,7 @@ class _CategoryChips extends StatelessWidget {
                       color: isSelected
                           ? AppTheme.primaryColor
                           : Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       cat,
@@ -323,14 +309,14 @@ class _ModelCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(26),
       ),
       child: InkWell(
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => ModelDetailsScreen(model: model)),
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(26),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Column(
@@ -427,7 +413,7 @@ class _EmptyState extends StatelessWidget {
               height: 72,
               decoration: BoxDecoration(
                 color: AppTheme.surfaceColorLight,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(26),
               ),
               child: const Icon(
                 Icons.layers_outlined,

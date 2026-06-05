@@ -5,7 +5,7 @@ import 'package:ar_elearning/data/network_svgs.dart';
 
 final List<LearningModule> sampleModules = [
   LearningModule(
-    id: 'mod_fundamentals',
+    id: 'Module 1',
     title: 'Fundamentals of Data Communication',
     description:
         'Learn the core principles of data communication including transmission modes, protocols, and how data flows between devices across networks.',
@@ -468,7 +468,7 @@ final List<LearningModule> sampleModules = [
     ],
   ),
   LearningModule(
-    id: 'mod_transmission',
+    id: 'Module 2',
     title: 'Data Transmission',
     description:
         'Explore how data is transmitted across networks through various media, signals, and encoding techniques including wired and wireless methods.',
@@ -1014,7 +1014,7 @@ final List<LearningModule> sampleModules = [
     ],
   ),
   LearningModule(
-    id: 'mod_implementation',
+    id: 'Module 3',
     title: 'Network Implementation Devices',
     description:
         'Discover the roles and functions of key networking hardware such as routers, switches, hubs, and access points in building a network.',
@@ -1512,7 +1512,7 @@ final List<LearningModule> sampleModules = [
     ],
   ),
   LearningModule(
-    id: 'mod_setup',
+    id: 'Module 4',
     title: 'Network Setup & Configuration',
     description:
         'Learn how to plan, set up, and configure a network from scratch including IP addressing, subnetting, and basic network troubleshooting.',

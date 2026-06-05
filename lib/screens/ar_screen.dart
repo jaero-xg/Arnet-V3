@@ -65,20 +65,6 @@ class _ARHeader extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
       child: Row(
         children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: AppTheme.accentColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(
-              Icons.view_in_ar_rounded,
-              color: AppTheme.accentColor,
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -108,7 +94,7 @@ class _ARPlaceholder extends StatelessWidget {
       height: 280,
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(26),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -184,7 +170,7 @@ class _ARDescription extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
             color: AppTheme.warningColor.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: AppTheme.warningColor.withValues(alpha: 0.3),
             ),
@@ -236,7 +222,7 @@ class _LaunchButton extends StatelessWidget {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 18),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
           ),
           elevation: 0,
         ),

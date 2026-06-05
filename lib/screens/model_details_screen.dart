@@ -51,7 +51,7 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: Icon(
                     Icons.arrow_back_rounded,
@@ -166,7 +166,7 @@ class _ModelPreview extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
                 color: AppTheme.accentColor.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
                 model.category,
@@ -230,7 +230,7 @@ class _ModelInfoCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(26),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -315,11 +315,11 @@ class _RelatedLessonButton extends StatelessWidget {
           builder: (_) => ModuleDetailsScreen(module: relatedModule),
         ),
       ),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(26),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(26),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
@@ -396,7 +396,7 @@ class _ARLaunchButton extends StatelessWidget {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
           ),
           elevation: 0,
         ),

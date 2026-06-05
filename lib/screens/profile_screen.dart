@@ -25,7 +25,6 @@ class ProfileScreen extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(child: _ProfileHeader(profile: profile)),
-            SliverToBoxAdapter(child: _ProfileInfoCard(profile: profile)),
             const SliverToBoxAdapter(
               child: _SectionHeader(title: 'Progress Overview', trailing: null),
             ),
@@ -111,26 +110,24 @@ class _ProfileHeader extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       child: Row(
         children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: AppTheme.accentColor.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Icon(
-              Icons.person_rounded,
-              color: AppTheme.accentColor,
-              size: 20,
+          CircleAvatar(
+            radius: 26,
+            backgroundColor: AppTheme.accentColor.withValues(alpha: 0.15),
+            child: Text(
+              avatarList[profile.avatarIndex]['emoji'],
+              style: const TextStyle(fontSize: 26),
             ),
           ),
           const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Profile', style: Theme.of(context).textTheme.titleLarge),
               Text(
-                'Your learning stats and settings',
+                profile.name,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Text(
+                'Joined ${DateFormat('MMM d, yyyy').format(profile.dateCreated)}',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
@@ -142,54 +139,6 @@ class _ProfileHeader extends StatelessWidget {
 }
 
 // ── Profile Info Card ─────────────────────────────────────────────────────────
-
-class _ProfileInfoCard extends StatelessWidget {
-  final LearnerProfile profile;
-  const _ProfileInfoCard({required this.profile});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardTheme.color,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 32,
-              backgroundColor: AppTheme.accentColor.withValues(alpha: 0.15),
-              child: Text(
-                avatarList[profile.avatarIndex]['emoji'],
-                style: const TextStyle(fontSize: 32),
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    profile.name,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Joined ${DateFormat('MMM d, yyyy').format(profile.dateCreated)}',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 // ── Section Header ────────────────────────────────────────────────────────────
 
@@ -283,7 +232,7 @@ class _ProgressCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(26),
       ),
       padding: const EdgeInsets.all(14),
       child: Column(
@@ -295,7 +244,7 @@ class _ProgressCard extends StatelessWidget {
             height: 36,
             decoration: BoxDecoration(
               color: AppTheme.greenTint,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(icon, color: color, size: 20),
           ),
@@ -342,7 +291,7 @@ class _ActivityList extends StatelessWidget {
         clipBehavior: Clip.hardEdge, // ← fixes border-radius bleed
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(26),
         ),
         child: Column(
           children: activities.asMap().entries.map((e) {
@@ -395,7 +344,7 @@ class _QuizRecordList extends StatelessWidget {
         clipBehavior: Clip.hardEdge, // ← fixes border-radius bleed
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(26),
         ),
         child: Column(
           children: records.asMap().entries.map((e) {
@@ -512,7 +461,7 @@ class _SettingsSection extends StatelessWidget {
         clipBehavior: Clip.hardEdge, // ← fixes border-radius bleed
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(26),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

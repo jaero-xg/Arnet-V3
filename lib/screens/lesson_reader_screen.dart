@@ -8,10 +8,10 @@ import '../theme/app_theme.dart';
 import 'quiz_screen.dart';
 
 const _kModuleIcons = <String, IconData>{
-  'mod_fundamentals': Icons.wifi_rounded,
-  'mod_transmission': Icons.cable_rounded,
-  'mod_implementation': Icons.router_rounded,
-  'mod_setup': Icons.settings_ethernet_rounded,
+  'Module 1': Icons.wifi_rounded,
+  'Module 2': Icons.cable_rounded,
+  'Module 3': Icons.router_rounded,
+  'Module 4': Icons.settings_ethernet_rounded,
 };
 
 class LessonReaderScreen extends StatefulWidget {
@@ -81,12 +81,12 @@ class _LessonReaderScreenState extends State<LessonReaderScreen> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                       child: Icon(
                         Icons.arrow_back_rounded,
                         size: 18,
-                        color: Theme.of(context).textTheme.titleLarge?.color,
+                        color: Theme.of(context).textTheme.titleSmall?.color,
                       ),
                     ),
                   ),
@@ -95,16 +95,8 @@ class _LessonReaderScreenState extends State<LessonReaderScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      module.title,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Color(0xFF9AA0A8),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Text(
                       lesson.title,
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ],
                 ),
@@ -117,7 +109,7 @@ class _LessonReaderScreenState extends State<LessonReaderScreen> {
                             horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
                           color: AppTheme.greenTint,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           '${lessonIndex + 1} / $totalLessons',
@@ -336,7 +328,7 @@ class _SectionBlock extends StatelessWidget {
               Expanded(
                 child: Text(
                   section.heading,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
             ],
@@ -345,8 +337,8 @@ class _SectionBlock extends StatelessWidget {
 
           // Accent underline
           Container(
-            width: 36,
-            height: 3,
+            width: 42,
+            height: 2,
             decoration: BoxDecoration(
               color: AppTheme.primaryColor,
               borderRadius: BorderRadius.circular(2),
@@ -357,7 +349,7 @@ class _SectionBlock extends StatelessWidget {
           // Body text
           Text(
             section.body,
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
       ),
@@ -410,7 +402,7 @@ class _BottomCTA extends StatelessWidget {
             foregroundColor: Colors.white,
             minimumSize: const Size(double.infinity, 52),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(20),
             ),
             elevation: 0,
           ),

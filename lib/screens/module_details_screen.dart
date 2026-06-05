@@ -6,10 +6,10 @@ import '../theme/app_theme.dart';
 import 'lesson_reader_screen.dart';
 
 const _kModuleIcons = <String, IconData>{
-  'mod_fundamentals': Icons.wifi_rounded,
-  'mod_transmission': Icons.cable_rounded,
-  'mod_implementation': Icons.router_rounded,
-  'mod_setup': Icons.settings_ethernet_rounded,
+  'Module 1': Icons.wifi_rounded,
+  'Module 2': Icons.cable_rounded,
+  'Module 3': Icons.router_rounded,
+  'Module 4': Icons.settings_ethernet_rounded,
 };
 
 class ModuleDetailsScreen extends StatelessWidget {
@@ -38,7 +38,7 @@ class ModuleDetailsScreen extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: Icon(
                     Icons.arrow_back_rounded,
@@ -49,7 +49,7 @@ class ModuleDetailsScreen extends StatelessWidget {
               ),
             ),
             title: Text(
-              module.title,
+              module.id,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             bottom: PreferredSize(
@@ -77,7 +77,7 @@ class ModuleDetailsScreen extends StatelessWidget {
                         height: 64,
                         decoration: BoxDecoration(
                           color: AppTheme.greenTint,
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(26),
                         ),
                         child: Icon(
                           _kModuleIcons[module.id] ?? Icons.school_outlined,
@@ -92,9 +92,9 @@ class ModuleDetailsScreen extends StatelessWidget {
                           children: [
                             Text(
                               module.title,
-                              style: Theme.of(context).textTheme.titleLarge,
+                              style: Theme.of(context).textTheme.titleSmall,
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: 8),
                             Row(
                               children: [
                                 _InfoPill(
@@ -118,7 +118,7 @@ class ModuleDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 14),
                   Text(
                     module.description,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(height: 16),
                   Row(
@@ -140,7 +140,7 @@ class ModuleDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(8),
                     child: LinearProgressIndicator(
                       value: pct / 100,
                       backgroundColor: AppTheme.greenTint,
@@ -212,7 +212,7 @@ class _InfoPill extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -256,7 +256,7 @@ class _LessonCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: isLast ? 0 : 10),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(26),
       ),
       child: InkWell(
         onTap: () => Navigator.push(
@@ -272,13 +272,13 @@ class _LessonCard extends StatelessWidget {
             children: [
               // Step indicator circle
               Container(
-                width: 40,
-                height: 40,
+                width: 42,
+                height: 42,
                 decoration: BoxDecoration(
                   color: isCompleted
                       ? AppTheme.primaryColor.withValues(alpha: 0.1)
                       : AppTheme.greenTint,
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Center(
                   child: isCompleted
@@ -305,7 +305,7 @@ class _LessonCard extends StatelessWidget {
                   children: [
                     Text(
                       lesson.title,
-                      style: Theme.of(context).textTheme.labelMedium,
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                     const SizedBox(height: 2),
                     Text(
