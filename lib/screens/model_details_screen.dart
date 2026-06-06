@@ -86,7 +86,7 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
               padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
               child: Text(
                 model.name,
-                style: Theme.of(context).textTheme.headlineSmall,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
           ),
@@ -97,7 +97,7 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
               child: Text(
                 model.description,
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
           ),
@@ -199,13 +199,13 @@ class _SectionHeader extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           const Spacer(),
           if (trailing != null)
             Text(
               trailing!,
-              style: Theme.of(context).textTheme.labelSmall,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
         ],
       ),
@@ -329,7 +329,7 @@ class _RelatedLessonButton extends StatelessWidget {
               height: 42,
               decoration: BoxDecoration(
                 color: AppTheme.tealColor.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
               ),
               child: const Icon(
                 Icons.menu_book_outlined,
@@ -396,7 +396,7 @@ class _ARLaunchButton extends StatelessWidget {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(26),
           ),
           elevation: 0,
         ),

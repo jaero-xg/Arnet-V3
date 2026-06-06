@@ -76,7 +76,7 @@ class ModuleDetailsScreen extends StatelessWidget {
                         width: 64,
                         height: 64,
                         decoration: BoxDecoration(
-                          color: AppTheme.greenTint,
+                          color: AppTheme.primaryColor.withValues(alpha: 0.10),
                           borderRadius: BorderRadius.circular(26),
                         ),
                         child: Icon(
@@ -277,7 +277,7 @@ class _LessonCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isCompleted
                       ? AppTheme.primaryColor.withValues(alpha: 0.1)
-                      : AppTheme.greenTint,
+                      : AppTheme.primaryColor.withValues(alpha: 0.10),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Center(

@@ -55,12 +55,12 @@ class _ModelsScreenState extends State<ModelsScreen> {
                       _selectedCategory == 'All'
                           ? 'All models'
                           : _selectedCategory,
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const Spacer(),
                     Text(
                       '${filtered.length} model${filtered.length == 1 ? '' : 's'}',
-                      style: Theme.of(context).textTheme.labelSmall,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -326,9 +326,8 @@ class _ModelCard extends StatelessWidget {
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppTheme
-                        .surfaceColorLight, // ← was greenTint (blue-tinted)
-                    borderRadius: BorderRadius.circular(12),
+                    color: AppTheme.primaryColor.withValues(alpha: 0.10),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: Center(
                     child: SvgPicture.string(
@@ -353,7 +352,6 @@ class _ModelCard extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 4),
               Row(
                 children: [
                   Expanded(
@@ -374,11 +372,8 @@ class _ModelCard extends StatelessWidget {
                     child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.view_in_ar_rounded,
-                            size: 10, color: AppTheme.primaryColor),
-                        SizedBox(width: 3),
                         Text(
-                          'AR',
+                          'View',
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,

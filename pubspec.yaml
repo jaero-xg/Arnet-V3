@@ -29,6 +29,8 @@ dependencies:
   # For scheduling daily notifications
   flutter_timezone: ^5.1.0
 
+  connectivity_plus: ^6.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

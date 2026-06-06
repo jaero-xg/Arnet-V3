@@ -3,8 +3,8 @@
 import 'package:flutter/foundation.dart';
 import '../models/app_models.dart';
 import '../data/sample_data.dart';
-import '../services/storage_service.dart';
 import '../services/notification_service.dart';
+import '../services/storage_service.dart';
 
 class AppState extends ChangeNotifier {
   LearnerProfile? _profile;
@@ -198,7 +198,8 @@ class AppState extends ChangeNotifier {
 
     // Show notification for good scores
     if (percentage >= 80) {
-      await NotificationService.showQuizSuccessNotification(quizTitle, percentage.toInt());
+      await NotificationService.showQuizSuccessNotification(
+          quizTitle, percentage.toInt());
     }
 
     await _saveAll();

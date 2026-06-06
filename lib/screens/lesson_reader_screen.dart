@@ -105,10 +105,11 @@ class _LessonReaderScreenState extends State<LessonReaderScreen> {
                     Padding(
                       padding: const EdgeInsets.only(right: 16),
                       child: Container(
+                        height: 36,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
+                            horizontal: 10, vertical: 9.5),
                         decoration: BoxDecoration(
-                          color: AppTheme.greenTint,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(

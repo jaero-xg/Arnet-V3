@@ -253,10 +253,11 @@ class _QuizHeader extends StatelessWidget {
                 ),
                 // Answered counter
                 Container(
+                  height: 36,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 9.5),
                   decoration: BoxDecoration(
-                    color: AppTheme.tealColor.withValues(alpha: 0.08),
+                    color: Theme.of(context).scaffoldBackgroundColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(

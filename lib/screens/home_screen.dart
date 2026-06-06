@@ -1,11 +1,14 @@
 // lib/screens/home_screen.dart
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import '../state/app_state.dart';
 import '../theme/app_theme.dart';
 import '../models/app_models.dart';
 import 'module_details_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final VoidCallback? onGoToModels;
@@ -42,7 +45,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            // ── Quick action cards (dismissible tips) ──────────────────
+            // ── Quick action cards ─────────────────────────────────────
             SliverToBoxAdapter(
               child: _QuickActions(
                 modules: modules,
@@ -80,9 +83,7 @@ class HomeScreen extends StatelessWidget {
                     delegate: SliverChildBuilderDelegate(
                       (context, index) => Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: _ModuleCard(
-                          module: modules[index],
-                        ),
+                        child: _ModuleCard(module: modules[index]),
                       ),
                       childCount: modules.length,
                     ),
@@ -100,11 +101,40 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-// ── Top bar ──────────────────────────────────────────────────────────────────
+// ── Top bar ───────────────────────────────────────────────────────────────────
 
-class _TopBar extends StatelessWidget {
+class _TopBar extends StatefulWidget {
   final dynamic profile;
   const _TopBar({required this.profile});
+
+  @override
+  State<_TopBar> createState() => _TopBarState();
+}
+
+class _TopBarState extends State<_TopBar> {
+  bool _isOnline = true;
+  late StreamSubscription<List<ConnectivityResult>> _connectivitySub;
+
+  @override
+  void initState() {
+    super.initState();
+    Connectivity().checkConnectivity().then((results) {
+      if (mounted) {
+        setState(() => _isOnline = !results.contains(ConnectivityResult.none));
+      }
+    });
+    _connectivitySub = Connectivity().onConnectivityChanged.listen((results) {
+      if (mounted) {
+        setState(() => _isOnline = !results.contains(ConnectivityResult.none));
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _connectivitySub.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,43 +157,63 @@ class _TopBar extends StatelessWidget {
             ),
           ),
           const Spacer(),
-          // Offline badge
+
+          // ── Online indicator ────────────────────────────────────
           Container(
             height: 36,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             decoration: BoxDecoration(
-              color: AppTheme.surfaceColorLight,
+              color: Theme.of(context).scaffoldBackgroundColor,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.wifi_off_rounded,
-                    size: 12, color: AppTheme.primaryColor),
-                SizedBox(width: 4),
-                Text(
-                  'Offline',
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.w600,
-                  ),
+                Icon(
+                  _isOnline ? Icons.wifi_rounded : Icons.wifi_off_rounded,
+                  size: 20,
+                  color: AppTheme.primaryColor,
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 10),
-          // Avatar
+          const SizedBox(width: 7),
+
+          // ── Settings button ─────────────────────────────────────
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
+            },
+            child: Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Icon(
+                Icons.settings_outlined,
+                size: 20,
+                color: AppTheme.primaryColor,
+              ),
+            ),
+          ),
+          const SizedBox(width: 7),
+
+          // ── Avatar ──────────────────────────────────────────────
           Container(
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: AppTheme.surfaceColorLight,
+              color: Theme.of(context).scaffoldBackgroundColor,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Center(
               child: Text(
-                avatarList[profile?.avatarIndex ?? 0]['emoji'],
+                avatarList[widget.profile?.avatarIndex ?? 0]['emoji'],
                 style: const TextStyle(fontSize: 20),
               ),
             ),
@@ -217,7 +267,6 @@ class _HeroBanner extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Greeting text
           RichText(
             text: TextSpan(
               style: TextStyle(
@@ -229,15 +278,12 @@ class _HeroBanner extends StatelessWidget {
                 TextSpan(text: '$greeting, '),
                 TextSpan(
                   text: '$name!',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: const TextStyle(fontWeight: FontWeight.w700),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 12),
-          // ARNET info card
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -247,7 +293,6 @@ class _HeroBanner extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             child: Stack(
               children: [
-                // Decorative circles for depth
                 Positioned(
                   right: -20,
                   top: -20,
@@ -276,7 +321,6 @@ class _HeroBanner extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      // Logo box
                       ClipRRect(
                         child: Image.asset(
                           'assets/images/logo.png',
@@ -285,7 +329,6 @@ class _HeroBanner extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
-
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(
@@ -365,7 +408,6 @@ class _QuickActionsState extends State<_QuickActions> {
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
       child: Column(
         children: [
-          // Continue learning card
           if (_showContinue && inProgress != null)
             _ActionCard(
               icon: Icons.play_circle_outline_rounded,
@@ -382,8 +424,6 @@ class _QuickActionsState extends State<_QuickActions> {
               ),
               onDismiss: () => setState(() => _showContinue = false),
             ),
-
-          // Try AR card
           if (_showAR)
             _ActionCard(
               icon: Icons.view_in_ar_rounded,
@@ -482,7 +522,6 @@ class _ModuleCard extends StatelessWidget {
   final LearningModule module;
   const _ModuleCard({required this.module});
 
-  // Map module IDs to icons
   static const _moduleIcons = <String, IconData>{
     'Module 1': Icons.wifi_rounded,
     'Module 2': Icons.cable_rounded,
@@ -513,36 +552,26 @@ class _ModuleCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
           child: Row(
             children: [
-              // Icon box
               Container(
                 width: 42,
                 height: 42,
                 decoration: BoxDecoration(
-                  color: AppTheme.greenTint,
+                  color: AppTheme.primaryColor.withValues(alpha: 0.10),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Icon(
-                  icon,
-                  size: 22,
-                  color: AppTheme.primaryColor,
-                ),
+                child: Icon(icon, size: 22, color: AppTheme.primaryColor),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      module.title,
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
+                    Text(module.title,
+                        style: Theme.of(context).textTheme.titleSmall),
                     const SizedBox(height: 2),
-                    Text(
-                      '${module.lessons.length} lessons',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
+                    Text('${module.lessons.length} lessons',
+                        style: Theme.of(context).textTheme.bodySmall),
                     const SizedBox(height: 2),
-                    // Progress bar
                     Row(
                       children: [
                         Expanded(
@@ -605,10 +634,8 @@ class _EmptyModules extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Text(
-              'No modules yet',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+            Text('No modules yet',
+                style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: 6),
             Text(
               'Your learning modules will appear here.',
