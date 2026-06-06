@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../services/version_checker.dart';
 import '../state/app_state.dart';
 import '../state/appearance_notifier.dart';
 import '../theme/app_theme.dart';
@@ -20,9 +22,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _isOnline = true;
   late StreamSubscription<List<ConnectivityResult>> _connectivitySub;
 
+  // ── Version state ──────────────────────────────────────────────
+  String _currentVersion = '...';
+  bool _isCheckingUpdate = false;
+
   @override
   void initState() {
     super.initState();
+    _loadCurrentVersion();
+
     Connectivity().checkConnectivity().then((results) {
       if (mounted) {
         setState(() => _isOnline = !results.contains(ConnectivityResult.none));
@@ -35,10 +43,185 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  Future<void> _loadCurrentVersion() async {
+    final version = await VersionChecker.getCurrentVersion();
+    if (mounted) setState(() => _currentVersion = version);
+  }
+
   @override
   void dispose() {
     _connectivitySub.cancel();
     super.dispose();
+  }
+
+  // ── Update check ───────────────────────────────────────────────
+  Future<void> _checkForUpdates() async {
+    if (_isCheckingUpdate) return;
+    setState(() => _isCheckingUpdate = true);
+
+    try {
+      final result = await VersionChecker.checkForUpdate();
+      if (!mounted) return;
+
+      if (result.updateAvailable) {
+        _showUpdateAvailableDialog(result);
+      } else {
+        _showUpToDateDialog(result.currentVersion);
+      }
+    } catch (e) {
+      if (!mounted) return;
+      _showErrorSnackbar();
+    } finally {
+      if (mounted) setState(() => _isCheckingUpdate = false);
+    }
+  }
+
+  void _showUpdateAvailableDialog(UpdateCheckResult result) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: AppTheme.primaryColor.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(Icons.system_update_outlined,
+                  size: 18, color: AppTheme.primaryColor),
+            ),
+            const SizedBox(width: 10),
+            const Text('Update Available'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Version badge row
+            Row(
+              children: [
+                _VersionBadge(label: 'Current', version: result.currentVersion),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: Icon(Icons.arrow_forward_rounded,
+                      size: 14, color: Color(0xFF9AA0A8)),
+                ),
+                _VersionBadge(
+                  label: 'Latest',
+                  version: result.latestVersion,
+                  highlight: true,
+                ),
+              ],
+            ),
+            if (result.releaseNotes.isNotEmpty) ...[
+              const SizedBox(height: 14),
+              Text(
+                "What's new",
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              const SizedBox(height: 6),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  result.releaseNotes,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+            ],
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Later'),
+          ),
+          FilledButton.icon(
+            style: FilledButton.styleFrom(
+              backgroundColor: AppTheme.primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            icon: const Icon(Icons.open_in_new_rounded, size: 16),
+            label: const Text('Update Now'),
+            onPressed: () async {
+              Navigator.pop(context);
+              final uri = Uri.parse(result.downloadUrl);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showUpToDateDialog(String version) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: Colors.green.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(Icons.check_circle_outline_rounded,
+                  size: 18, color: Colors.green),
+            ),
+            const SizedBox(width: 10),
+            const Text("You're up to date"),
+          ],
+        ),
+        content: Text(
+          'ARNET v$version is the latest version.',
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        actions: [
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: AppTheme.primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Great'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showErrorSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Row(
+          children: [
+            Icon(Icons.error_outline_rounded, color: Colors.white, size: 18),
+            SizedBox(width: 8),
+            Text('Could not check for updates. Try again later.'),
+          ],
+        ),
+        backgroundColor: AppTheme.dangerColor,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: const EdgeInsets.all(16),
+      ),
+    );
   }
 
   @override
@@ -82,10 +265,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   padding: const EdgeInsets.only(right: 16),
                   child: Container(
                     height: 36,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 8,
-                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     decoration: BoxDecoration(
                       color: Theme.of(context).scaffoldBackgroundColor,
                       borderRadius: BorderRadius.circular(16),
@@ -285,6 +466,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   child: Column(
                     children: [
+                      // App version row
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 14, vertical: 14),
@@ -311,15 +493,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                           .textTheme
                                           .titleSmall),
                                   const SizedBox(height: 2),
-                                  Text('ARNET v1.0.0',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall),
+                                  Text(
+                                    'ARNET v$_currentVersion',
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
                                 ],
                               ),
                             ),
                           ],
                         ),
+                      ),
+                      Divider(
+                        height: 1,
+                        indent: 52,
+                        color: Theme.of(context).dividerTheme.color,
+                      ),
+                      // Check for updates tile
+                      _UpdateTile(
+                        isOnline: _isOnline,
+                        isChecking: _isCheckingUpdate,
+                        onTap: _isOnline && !_isCheckingUpdate
+                            ? _checkForUpdates
+                            : null,
                       ),
                       Divider(
                         height: 1,
@@ -370,6 +566,116 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+// ── Update tile ───────────────────────────────────────────────────────────────
+
+class _UpdateTile extends StatelessWidget {
+  final bool isOnline;
+  final bool isChecking;
+  final VoidCallback? onTap;
+
+  const _UpdateTile({
+    required this.isOnline,
+    required this.isChecking,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(
+        Icons.system_update_outlined,
+        color: isOnline
+            ? Theme.of(context).textTheme.bodySmall?.color
+            : const Color(0xFF9AA0A8),
+        size: 20,
+      ),
+      title: Text(
+        'Check for Updates',
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: isOnline
+              ? Theme.of(context).textTheme.titleSmall?.color
+              : const Color(0xFF9AA0A8),
+        ),
+      ),
+      subtitle: !isOnline
+          ? Text(
+              'Connect to the internet to check for updates',
+              style: Theme.of(context).textTheme.bodySmall,
+            )
+          : null,
+      trailing: isChecking
+          ? SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: AppTheme.primaryColor,
+              ),
+            )
+          : const Icon(
+              Icons.chevron_right_rounded,
+              color: Color(0xFF9AA0A8),
+              size: 20,
+            ),
+      onTap: onTap,
+      dense: true,
+    );
+  }
+}
+
+// ── Version badge (used in update dialog) ─────────────────────────────────────
+
+class _VersionBadge extends StatelessWidget {
+  final String label;
+  final String version;
+  final bool highlight;
+
+  const _VersionBadge({
+    required this.label,
+    required this.version,
+    this.highlight = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 10, color: Color(0xFF9AA0A8)),
+        ),
+        const SizedBox(height: 2),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: highlight
+                ? AppTheme.primaryColor.withValues(alpha: 0.12)
+                : Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.circular(8),
+            border: highlight
+                ? Border.all(
+                    color: AppTheme.primaryColor.withValues(alpha: 0.3))
+                : null,
+          ),
+          child: Text(
+            'v$version',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: highlight
+                  ? AppTheme.primaryColor
+                  : Theme.of(context).textTheme.bodySmall?.color,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
