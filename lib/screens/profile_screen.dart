@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../state/app_state.dart';
 import '../theme/app_theme.dart';
 import '../models/app_models.dart';
+import 'settings_screen.dart';
 
 // ── Profile Screen ────────────────────────────────────────────────────────────
 
@@ -104,14 +105,19 @@ class _ProfileHeader extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 26,
-            backgroundColor: AppTheme.accentColor.withValues(alpha: 0.15),
-            child: Text(
-              avatarList[profile.avatarIndex]['emoji'],
-              style: const TextStyle(fontSize: 26),
-            ),
-          ),
+          Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Center(
+                child: Text(
+                  avatarList[profile.avatarIndex]['emoji'],
+                  style: const TextStyle(fontSize: 21),
+                ),
+              )),
           const SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,13 +132,33 @@ class _ProfileHeader extends StatelessWidget {
               ),
             ],
           ),
+          const Spacer(),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
+            },
+            child: Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Icon(
+                Icons.settings_outlined,
+                size: 20,
+                color: AppTheme.primaryColor,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
-// ── Profile Info Card ─────────────────────────────────────────────────────────
 
 // ── Section Header ────────────────────────────────────────────────────────────
 
@@ -144,7 +170,7 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
       child: Row(
         children: [
           Text(title, style: Theme.of(context).textTheme.titleMedium),
@@ -182,7 +208,8 @@ class _ProgressCards extends StatelessWidget {
             icon: Icons.school_outlined,
             label: 'Modules Completed',
             value: '${profile.modulesCompleted}',
-            color: AppTheme.primaryColor,
+            color: const Color(0xFF4CAF50),
+            bgColor: const Color(0xFF4CAF50),
           ),
           _ProgressCard(
             icon: Icons.menu_book_outlined,
@@ -201,6 +228,7 @@ class _ProgressCards extends StatelessWidget {
             label: 'Avg. Quiz Score',
             value: '${profile.averageQuizScore.toInt()}%',
             color: AppTheme.warningColor,
+            bgColor: AppTheme.warningColor,
           ),
         ],
       ),
@@ -213,12 +241,14 @@ class _ProgressCard extends StatelessWidget {
   final String label;
   final String value;
   final Color color;
+  final Color? bgColor;
 
   const _ProgressCard({
     required this.icon,
     required this.label,
     required this.value,
     required this.color,
+    this.bgColor,
   });
 
   @override
@@ -237,7 +267,7 @@ class _ProgressCard extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: AppTheme.accentColor.withValues(alpha: 0.15),
+              color: (bgColor ?? AppTheme.accentColor).withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(icon, color: color, size: 20),

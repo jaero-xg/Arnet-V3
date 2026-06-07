@@ -1,14 +1,11 @@
 // lib/screens/home_screen.dart
 
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import '../state/app_state.dart';
 import '../theme/app_theme.dart';
 import '../models/app_models.dart';
 import 'module_details_screen.dart';
-import 'settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final VoidCallback? onGoToModels;
@@ -73,7 +70,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-
             // ── Module list ────────────────────────────────────────────
             modules.isEmpty
                 ? SliverToBoxAdapter(
@@ -112,30 +108,6 @@ class _TopBar extends StatefulWidget {
 }
 
 class _TopBarState extends State<_TopBar> {
-  bool _isOnline = true;
-  late StreamSubscription<List<ConnectivityResult>> _connectivitySub;
-
-  @override
-  void initState() {
-    super.initState();
-    Connectivity().checkConnectivity().then((results) {
-      if (mounted) {
-        setState(() => _isOnline = !results.contains(ConnectivityResult.none));
-      }
-    });
-    _connectivitySub = Connectivity().onConnectivityChanged.listen((results) {
-      if (mounted) {
-        setState(() => _isOnline = !results.contains(ConnectivityResult.none));
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _connectivitySub.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
@@ -157,52 +129,6 @@ class _TopBarState extends State<_TopBar> {
             ),
           ),
           const Spacer(),
-
-          // ── Online indicator ────────────────────────────────────
-          Container(
-            height: 36,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  _isOnline ? Icons.wifi_rounded : Icons.wifi_off_rounded,
-                  size: 20,
-                  color: AppTheme.primaryColor,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 7),
-
-          // ── Settings button ─────────────────────────────────────
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              );
-            },
-            child: Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Icon(
-                Icons.settings_outlined,
-                size: 20,
-                color: AppTheme.primaryColor,
-              ),
-            ),
-          ),
-          const SizedBox(width: 7),
-
           // ── Avatar ──────────────────────────────────────────────
           Container(
             width: 36,

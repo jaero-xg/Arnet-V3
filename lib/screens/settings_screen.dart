@@ -374,83 +374,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
 
-            // ── Section: Connectivity ────────────────────────────────
-            const SliverToBoxAdapter(
-              child: _SectionLabel(title: 'Connectivity'),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Container(
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardTheme.color,
-                    borderRadius: BorderRadius.circular(26),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 14),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color:
-                                AppTheme.primaryColor.withValues(alpha: 0.10),
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          child: Icon(
-                            _isOnline
-                                ? Icons.wifi_rounded
-                                : Icons.wifi_off_rounded,
-                            size: 20,
-                            color: AppTheme.primaryColor,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Network status',
-                                  style:
-                                      Theme.of(context).textTheme.titleSmall),
-                              const SizedBox(height: 2),
-                              Text(
-                                _isOnline ? 'Connected' : 'No connection',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: _isOnline
-                                ? AppTheme.primaryColor.withValues(alpha: 0.10)
-                                : Colors.red.withValues(alpha: 0.10),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            _isOnline ? 'Online' : 'Offline',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: _isOnline
-                                  ? AppTheme.primaryColor
-                                  : Colors.red,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
             // ── Section: About ───────────────────────────────────────
             const SliverToBoxAdapter(
               child: _SectionLabel(title: 'About'),
@@ -586,12 +509,18 @@ class _UpdateTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(
-        Icons.system_update_outlined,
-        color: isOnline
-            ? Theme.of(context).textTheme.bodySmall?.color
-            : const Color(0xFF9AA0A8),
-        size: 20,
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: AppTheme.primaryColor.withValues(alpha: 0.10),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Icon(
+          Icons.system_update_outlined,
+          size: 20,
+          color: isOnline ? AppTheme.primaryColor : const Color(0xFF9AA0A8),
+        ),
       ),
       title: Text(
         'Check for Updates',
@@ -610,7 +539,7 @@ class _UpdateTile extends StatelessWidget {
             )
           : null,
       trailing: isChecking
-          ? SizedBox(
+          ? const SizedBox(
               width: 18,
               height: 18,
               child: CircularProgressIndicator(
@@ -777,40 +706,62 @@ class _AppearanceTile extends StatelessWidget {
 
 // ── Notifications tile ────────────────────────────────────────────────────────
 
-class _NotificationsTile extends StatelessWidget {
+class _NotificationsTile extends StatefulWidget {
   const _NotificationsTile();
 
   @override
-  Widget build(BuildContext context) {
-    final appState = context.watch<AppState>();
-    final enabled = appState.notificationsEnabled;
+  State<_NotificationsTile> createState() => _NotificationsTileState();
+}
 
+class _NotificationsTileState extends State<_NotificationsTile> {
+  late bool _enabled;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _enabled = context.read<AppState>().notificationsEnabled;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(
-        enabled
-            ? Icons.notifications_active_outlined
-            : Icons.notifications_off_outlined,
-        color: Theme.of(context).textTheme.bodySmall?.color,
-        size: 20,
+      leading: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: AppTheme.primaryColor.withValues(alpha: 0.10),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Icon(
+          _enabled
+              ? Icons.notifications_active_outlined
+              : Icons.notifications_off_outlined,
+          size: 20,
+          color: AppTheme.primaryColor,
+        ),
       ),
       title:
           Text('Notifications', style: Theme.of(context).textTheme.titleSmall),
       subtitle: Text(
-        enabled
+        _enabled
             ? 'Daily reminders and achievements enabled'
             : 'Notifications are turned off',
         style: Theme.of(context).textTheme.bodySmall,
       ),
       trailing: Switch.adaptive(
-        value: enabled,
-        onChanged: (value) => appState.setNotificationsEnabled(value),
+        value: _enabled,
+        onChanged: (value) {
+          setState(() => _enabled = value); // instant local update
+          context
+              .read<AppState>()
+              .setNotificationsEnabled(value); // sync to state
+        },
         activeTrackColor: AppTheme.primaryColor,
       ),
       dense: true,
     );
   }
 }
-
 // ── Appearance option ─────────────────────────────────────────────────────────
 
 class _AppearanceOption extends StatelessWidget {
@@ -898,14 +849,25 @@ class _SettingsTile extends StatelessWidget {
     final color = isDestructive
         ? AppTheme.dangerColor
         : Theme.of(context).textTheme.titleSmall?.color;
-
     return ListTile(
-      leading: Icon(
-        icon,
-        color: isDestructive
-            ? AppTheme.dangerColor
-            : Theme.of(context).textTheme.bodySmall?.color,
-        size: 20,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      leading: Padding(
+        padding: const EdgeInsets.only(right: 0),
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: isDestructive
+                ? AppTheme.dangerColor.withValues(alpha: 0.10)
+                : AppTheme.primaryColor.withValues(alpha: 0.10),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: Icon(
+            icon,
+            size: 20,
+            color: isDestructive ? AppTheme.dangerColor : AppTheme.primaryColor,
+          ),
+        ),
       ),
       title: Text(
         label,
