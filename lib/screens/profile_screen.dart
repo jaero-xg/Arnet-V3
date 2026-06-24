@@ -239,7 +239,6 @@ class _ProgressCards extends StatelessWidget {
             label: 'Avg. Quiz Score',
             value: '${profile.averageQuizScore.toInt()}%',
             color: AppTheme.warningColor,
-            bgColor: AppTheme.warningColor,
           ),
         ],
       ),
@@ -252,14 +251,12 @@ class _ProgressCard extends StatelessWidget {
   final String label;
   final String value;
   final Color color;
-  final Color? bgColor;
 
   const _ProgressCard({
     required this.icon,
     required this.label,
     required this.value,
     required this.color,
-    this.bgColor,
   });
 
   @override

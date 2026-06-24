@@ -22,7 +22,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _isOnline = true;
   late StreamSubscription<List<ConnectivityResult>> _connectivitySub;
 
-  // ── Version state ──────────────────────────────────────────────
   String _currentVersion = '...';
   bool _isCheckingUpdate = false;
 
@@ -54,15 +53,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.dispose();
   }
 
-  // ── Update check ───────────────────────────────────────────────
   Future<void> _checkForUpdates() async {
     if (_isCheckingUpdate) return;
     setState(() => _isCheckingUpdate = true);
-
     try {
       final result = await VersionChecker.checkForUpdate();
       if (!mounted) return;
-
       if (result.updateAvailable) {
         _showUpdateAvailableDialog(result);
       } else {
@@ -80,14 +76,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
           children: [
             Container(
               width: 36,
               height: 36,
               decoration: BoxDecoration(
-                color: AppTheme.primaryColor.withValues(alpha: 0.12),
+                color: AppTheme.greenTint,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(Icons.system_update_outlined,
@@ -101,14 +96,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Version badge row
             Row(
               children: [
                 _VersionBadge(label: 'Current', version: result.currentVersion),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8),
                   child: Icon(Icons.arrow_forward_rounded,
-                      size: 14, color: Color(0xFF9AA0A8)),
+                      size: 14, color: AppTheme.textTertiaryLight),
                 ),
                 _VersionBadge(
                   label: 'Latest',
@@ -119,10 +113,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             if (result.releaseNotes.isNotEmpty) ...[
               const SizedBox(height: 14),
-              Text(
-                "What's new",
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
+              Text("What's new", style: Theme.of(context).textTheme.titleSmall),
               const SizedBox(height: 6),
               Container(
                 padding: const EdgeInsets.all(10),
@@ -130,10 +121,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   color: Theme.of(context).scaffoldBackgroundColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(
-                  result.releaseNotes,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
+                child: Text(result.releaseNotes,
+                    style: Theme.of(context).textTheme.bodySmall),
               ),
             ],
           ],
@@ -146,6 +135,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           FilledButton.icon(
             style: FilledButton.styleFrom(
               backgroundColor: AppTheme.primaryColor,
+              minimumSize: Size.zero,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -169,18 +160,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
           children: [
             Container(
               width: 36,
               height: 36,
               decoration: BoxDecoration(
-                color: Colors.green.withValues(alpha: 0.12),
+                color: AppTheme.successLight,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: const Icon(Icons.check_circle_outline_rounded,
-                  size: 18, color: Colors.green),
+                  size: 18, color: AppTheme.successColor),
             ),
             const SizedBox(width: 10),
             const Text("You're up to date"),
@@ -194,6 +184,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           FilledButton(
             style: FilledButton.styleFrom(
               backgroundColor: AppTheme.primaryColor,
+              minimumSize: Size.zero,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -226,243 +218,164 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // ── Header ───────────────────────────────────────────────
-            SliverAppBar(
-              pinned: true,
-              backgroundColor: Theme.of(context).cardTheme.color,
-              surfaceTintColor: Colors.transparent,
-              elevation: 0,
-              leading: Padding(
-                padding: const EdgeInsets.all(8),
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 36,
-                    width: 36,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Icon(
-                      Icons.arrow_back_rounded,
-                      size: 18,
-                      color: Theme.of(context).textTheme.titleLarge?.color,
+      backgroundColor: theme.scaffoldBackgroundColor,
+      // No SafeArea wrapper — SliverAppBar handles the top inset,
+      // and we add bottom padding explicitly in the trailing SizedBox.
+      body: CustomScrollView(
+        slivers: [
+          // ── App Bar — same pattern as Module Details / Lesson Reader ──
+          SliverAppBar(
+            pinned: true,
+            backgroundColor: theme.scaffoldBackgroundColor,
+            surfaceTintColor: Colors.transparent,
+            elevation: 0,
+            leading: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: theme.cardTheme.color,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context),
+                    borderRadius: BorderRadius.circular(10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: 16,
+                        color: theme.textTheme.titleLarge?.color,
+                      ),
                     ),
                   ),
                 ),
               ),
-              title: Text(
-                'Settings',
-                style: Theme.of(context).textTheme.titleLarge,
+            ),
+            title: Text(
+              'Settings',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.2,
               ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 16),
-                  child: Container(
-                    height: 36,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          _isOnline
-                              ? Icons.wifi_rounded
-                              : Icons.wifi_off_rounded,
-                          size: 20,
-                          color: AppTheme.primaryColor,
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                          _isOnline ? 'Online' : 'Offline',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: AppTheme.primaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: Container(
+                  height: 32,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                  decoration: BoxDecoration(
+                    color: theme.cardTheme.color,
+                    borderRadius: BorderRadius.circular(8),
                   ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        _isOnline ? Icons.wifi_rounded : Icons.wifi_off_rounded,
+                        size: 14,
+                        color: AppTheme.primaryColor,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        _isOnline ? 'Online' : 'Offline',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: AppTheme.primaryColor,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          // ── Appearance ─────────────────────────────────────────────
+          const SliverToBoxAdapter(child: _SectionLabel(title: 'Appearance')),
+          SliverToBoxAdapter(
+            child: _SettingsGroup(
+              children: [const _AppearanceTile()],
+            ),
+          ),
+
+          // ── Notifications ──────────────────────────────────────────
+          const SliverToBoxAdapter(
+              child: _SectionLabel(title: 'Notifications')),
+          SliverToBoxAdapter(
+            child: _SettingsGroup(
+              children: [const _NotificationsTile()],
+            ),
+          ),
+
+          // ── Account ────────────────────────────────────────────────
+          const SliverToBoxAdapter(child: _SectionLabel(title: 'Account')),
+          SliverToBoxAdapter(
+            child: _SettingsGroup(
+              children: [
+                _SettingsTile(
+                  icon: Icons.edit_outlined,
+                  label: 'Edit Profile',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const EditProfileScreen()),
+                  ),
+                ),
+                const _GroupDivider(),
+                _SettingsTile(
+                  icon: Icons.refresh_rounded,
+                  label: 'Reset Progress',
+                  isDestructive: true,
+                  onTap: () => _confirmReset(context),
                 ),
               ],
             ),
+          ),
 
-            // ── Section: Appearance ──────────────────────────────────
-            const SliverToBoxAdapter(
-              child: _SectionLabel(title: 'Appearance'),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Container(
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardTheme.color,
-                    borderRadius: BorderRadius.circular(26),
-                  ),
-                  child: const _AppearanceTile(),
+          // ── About ──────────────────────────────────────────────────
+          const SliverToBoxAdapter(child: _SectionLabel(title: 'About')),
+          SliverToBoxAdapter(
+            child: _SettingsGroup(
+              children: [
+                // Version info — using same _SettingsTile layout for
+                // consistent icon + text alignment across all rows
+                _InfoTile(
+                  icon: Icons.info_outline_rounded,
+                  label: 'App version',
+                  value: 'ARNET v$_currentVersion',
                 ),
-              ),
-            ),
-
-            // ── Section: Notifications ───────────────────────────────
-            const SliverToBoxAdapter(
-              child: _SectionLabel(title: 'Notifications'),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Container(
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardTheme.color,
-                    borderRadius: BorderRadius.circular(26),
-                  ),
-                  child: const _NotificationsTile(),
+                const _GroupDivider(),
+                _UpdateTile(
+                  isOnline: _isOnline,
+                  isChecking: _isCheckingUpdate,
+                  onTap:
+                      _isOnline && !_isCheckingUpdate ? _checkForUpdates : null,
                 ),
-              ),
-            ),
-
-            // ── Section: Account ─────────────────────────────────────
-            const SliverToBoxAdapter(
-              child: _SectionLabel(title: 'Account'),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Container(
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardTheme.color,
-                    borderRadius: BorderRadius.circular(26),
-                  ),
-                  child: Column(
-                    children: [
-                      _SettingsTile(
-                        icon: Icons.edit_outlined,
-                        label: 'Edit Profile',
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const EditProfileScreen()),
-                        ),
-                      ),
-                      Divider(
-                        height: 1,
-                        indent: 52,
-                        color: Theme.of(context).dividerTheme.color,
-                      ),
-                      _SettingsTile(
-                        icon: Icons.refresh,
-                        label: 'Reset Progress',
-                        isDestructive: true,
-                        onTap: () => _confirmReset(context),
-                      ),
-                    ],
-                  ),
+                const _GroupDivider(),
+                _SettingsTile(
+                  icon: Icons.description_outlined,
+                  label: 'Licenses',
+                  onTap: () => showLicensePage(context: context),
                 ),
-              ),
+              ],
             ),
+          ),
 
-            // ── Section: About ───────────────────────────────────────
-            const SliverToBoxAdapter(
-              child: _SectionLabel(title: 'About'),
+          // Bottom clearance — safe area aware
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 32 + MediaQuery.of(context).padding.bottom,
             ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Container(
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardTheme.color,
-                    borderRadius: BorderRadius.circular(26),
-                  ),
-                  child: Column(
-                    children: [
-                      // App version row
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 14),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: AppTheme.primaryColor
-                                    .withValues(alpha: 0.10),
-                                borderRadius: BorderRadius.circular(14),
-                              ),
-                              child: const Icon(Icons.info_outline_rounded,
-                                  size: 20, color: AppTheme.primaryColor),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('App version',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    'ARNET v$_currentVersion',
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        height: 1,
-                        indent: 52,
-                        color: Theme.of(context).dividerTheme.color,
-                      ),
-                      // Check for updates tile
-                      _UpdateTile(
-                        isOnline: _isOnline,
-                        isChecking: _isCheckingUpdate,
-                        onTap: _isOnline && !_isCheckingUpdate
-                            ? _checkForUpdates
-                            : null,
-                      ),
-                      Divider(
-                        height: 1,
-                        indent: 52,
-                        color: Theme.of(context).dividerTheme.color,
-                      ),
-                      _SettingsTile(
-                        icon: Icons.description_outlined,
-                        label: 'Licenses',
-                        onTap: () => showLicensePage(context: context),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 96 + MediaQuery.of(context).padding.bottom,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -493,7 +406,203 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 }
 
-// ── Update tile ───────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+//  SETTINGS GROUP — card container matching app's borderRadius language
+//  BorderRadius.circular(14) to match _LessonCard / _SectionCard
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _SettingsGroup extends StatelessWidget {
+  final List<Widget> children;
+  const _SettingsGroup({required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardTheme.color,
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: children,
+        ),
+      ),
+    );
+  }
+}
+
+// ── Thin divider between rows inside a group ──────────────────────────────────
+
+class _GroupDivider extends StatelessWidget {
+  const _GroupDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      height: 1,
+      // 20 (card padding) + 40 (icon) + 14 (gap) = 74 to align under text
+      indent: 74,
+      endIndent: 0,
+      color: Theme.of(context).dividerTheme.color,
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  SECTION LABEL — spaced to align with 20px card horizontal padding
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _SectionLabel extends StatelessWidget {
+  final String title;
+  const _SectionLabel({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Padding(
+      // Matches the 20px horizontal padding of _SettingsGroup
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+      child: Text(
+        title.toUpperCase(),
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: isDark
+                  ? AppTheme.textTertiaryDark
+                  : AppTheme.textTertiaryLight,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.8,
+            ),
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  SETTINGS TILE — icon badge + label + chevron
+//  Uses explicit layout (not ListTile) for pixel-perfect alignment
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _SettingsTile extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  final bool isDestructive;
+
+  const _SettingsTile({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.isDestructive = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final tertiaryText =
+        isDark ? AppTheme.textTertiaryDark : AppTheme.textTertiaryLight;
+    final iconColor =
+        isDestructive ? AppTheme.dangerColor : AppTheme.primaryColor;
+    final iconTint = isDestructive ? AppTheme.dangerLight : AppTheme.greenTint;
+    final labelColor = isDestructive
+        ? AppTheme.dangerColor
+        : theme.textTheme.titleSmall?.color;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          child: Row(
+            children: [
+              // Icon badge — same 40×40 / radius-10 as _SectionCard
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: iconTint,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(icon, size: 20, color: iconColor),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Text(
+                  label,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: labelColor,
+                  ),
+                ),
+              ),
+              Icon(
+                Icons.chevron_right_rounded,
+                size: 18,
+                color: tertiaryText,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  INFO TILE — read-only row (icon + label + value), no chevron
+//  Used for version display so it aligns with _SettingsTile rows
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _InfoTile extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
+  const _InfoTile({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppTheme.greenTint,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(icon, size: 20, color: AppTheme.primaryColor),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label, style: theme.textTheme.titleSmall),
+                const SizedBox(height: 2),
+                Text(value, style: theme.textTheme.bodySmall),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  UPDATE TILE — same layout as _SettingsTile with conditional trailing
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _UpdateTile extends StatelessWidget {
   final bool isOnline;
@@ -508,57 +617,77 @@ class _UpdateTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: AppTheme.primaryColor.withValues(alpha: 0.10),
-          borderRadius: BorderRadius.circular(14),
-        ),
-        child: Icon(
-          Icons.system_update_outlined,
-          size: 20,
-          color: isOnline ? AppTheme.primaryColor : const Color(0xFF9AA0A8),
-        ),
-      ),
-      title: Text(
-        'Check for Updates',
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          color: isOnline
-              ? Theme.of(context).textTheme.titleSmall?.color
-              : const Color(0xFF9AA0A8),
-        ),
-      ),
-      subtitle: !isOnline
-          ? Text(
-              'Connect to the internet to check for updates',
-              style: Theme.of(context).textTheme.bodySmall,
-            )
-          : null,
-      trailing: isChecking
-          ? const SizedBox(
-              width: 18,
-              height: 18,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: AppTheme.primaryColor,
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final tertiaryText =
+        isDark ? AppTheme.textTertiaryDark : AppTheme.textTertiaryLight;
+    final labelColor =
+        isOnline ? theme.textTheme.titleSmall?.color : tertiaryText;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppTheme.greenTint,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  Icons.system_update_outlined,
+                  size: 20,
+                  color: isOnline ? AppTheme.primaryColor : tertiaryText,
+                ),
               ),
-            )
-          : const Icon(
-              Icons.chevron_right_rounded,
-              color: Color(0xFF9AA0A8),
-              size: 20,
-            ),
-      onTap: onTap,
-      dense: true,
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Check for Updates',
+                      style: theme.textTheme.titleSmall
+                          ?.copyWith(color: labelColor),
+                    ),
+                    if (!isOnline) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        'Connect to the internet to check',
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              if (isChecking)
+                const SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: AppTheme.primaryColor,
+                  ),
+                )
+              else
+                Icon(Icons.chevron_right_rounded,
+                    size: 18, color: tertiaryText),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
 
-// ── Version badge (used in update dialog) ─────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+//  VERSION BADGE — used in update dialog
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _VersionBadge extends StatelessWidget {
   final String label;
@@ -573,20 +702,24 @@ class _VersionBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final tertiaryText =
+        isDark ? AppTheme.textTertiaryDark : AppTheme.textTertiaryLight;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(fontSize: 10, color: Color(0xFF9AA0A8)),
+          style: theme.textTheme.labelSmall?.copyWith(color: tertiaryText),
         ),
-        const SizedBox(height: 2),
+        const SizedBox(height: 4),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
-            color: highlight
-                ? AppTheme.primaryColor.withValues(alpha: 0.12)
-                : Theme.of(context).scaffoldBackgroundColor,
+            color:
+                highlight ? AppTheme.greenTint : theme.scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(8),
             border: highlight
                 ? Border.all(
@@ -595,12 +728,9 @@ class _VersionBadge extends StatelessWidget {
           ),
           child: Text(
             'v$version',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              color: highlight
-                  ? AppTheme.primaryColor
-                  : Theme.of(context).textTheme.bodySmall?.color,
+            style: theme.textTheme.labelSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: highlight ? AppTheme.primaryColor : tertiaryText,
             ),
           ),
         ),
@@ -609,68 +739,60 @@ class _VersionBadge extends StatelessWidget {
   }
 }
 
-// ── Section label ─────────────────────────────────────────────────────────────
-
-class _SectionLabel extends StatelessWidget {
-  final String title;
-  const _SectionLabel({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 8),
-      child: Text(
-        title.toUpperCase(),
-        style: const TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          color: Color(0xFF9AA0A8),
-          letterSpacing: 0.8,
-        ),
-      ),
-    );
-  }
-}
-
-// ── Appearance tile ───────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+//  APPEARANCE TILE — theme switcher
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _AppearanceTile extends StatelessWidget {
   const _AppearanceTile();
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Consumer<AppearanceNotifier>(
       builder: (context, appearance, _) {
         return Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  Icon(
-                    Icons.brightness_medium_outlined,
-                    color: Theme.of(context).textTheme.bodySmall?.color,
-                    size: 20,
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: AppTheme.greenTint,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(
+                      Icons.brightness_medium_outlined,
+                      size: 20,
+                      color: AppTheme.primaryColor,
+                    ),
                   ),
-                  const SizedBox(width: 12),
-                  Text('Appearance',
-                      style: Theme.of(context).textTheme.titleSmall),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Appearance', style: theme.textTheme.titleSmall),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Match your device or choose a mode.',
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              const SizedBox(height: 4),
-              Padding(
-                padding: const EdgeInsets.only(left: 32),
-                child: Text(
-                  'Match your device or switch between light and dark mode.',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 14),
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  borderRadius: BorderRadius.circular(16),
+                  color: theme.scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 padding: const EdgeInsets.all(4),
                 child: Row(
@@ -704,7 +826,9 @@ class _AppearanceTile extends StatelessWidget {
   }
 }
 
-// ── Notifications tile ────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+//  NOTIFICATIONS TILE
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _NotificationsTile extends StatefulWidget {
   const _NotificationsTile();
@@ -724,45 +848,76 @@ class _NotificationsTileState extends State<_NotificationsTile> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: AppTheme.primaryColor.withValues(alpha: 0.10),
-          borderRadius: BorderRadius.circular(14),
-        ),
-        child: Icon(
-          _enabled
-              ? Icons.notifications_active_outlined
-              : Icons.notifications_off_outlined,
-          size: 20,
-          color: AppTheme.primaryColor,
-        ),
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final tertiaryText =
+        isDark ? AppTheme.textTertiaryDark : AppTheme.textTertiaryLight;
+
+    // Badge tint + icon color react to toggle state:
+    //   enabled  → greenTint bg + primaryColor icon  (same as all other tiles)
+    //   disabled → muted bg    + tertiary icon        (visually "off")
+    // Badge tint + icon color react to toggle state:
+    //   enabled  → greenTint bg + primaryColor icon  (same as all other tiles)
+    //   disabled → muted bg    + tertiary icon        (visually "off")
+    final badgeTint = _enabled
+        ? AppTheme.greenTint
+        : (isDark ? AppTheme.borderColorDark : AppTheme.borderColorLight);
+    final iconColor = _enabled ? AppTheme.primaryColor : tertiaryText;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+      child: Row(
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: badgeTint,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              _enabled
+                  ? Icons.notifications_active_outlined
+                  : Icons.notifications_off_outlined,
+              size: 20,
+              color: iconColor,
+            ),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Notifications', style: theme.textTheme.titleSmall),
+                const SizedBox(height: 2),
+                Text(
+                  _enabled
+                      ? 'Daily reminders and achievements on'
+                      : 'Notifications are turned off',
+                  style: theme.textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+          Switch.adaptive(
+            value: _enabled,
+            onChanged: (value) {
+              setState(() => _enabled = value);
+              context.read<AppState>().setNotificationsEnabled(value);
+            },
+            activeTrackColor: AppTheme.primaryColor,
+          ),
+        ],
       ),
-      title:
-          Text('Notifications', style: Theme.of(context).textTheme.titleSmall),
-      subtitle: Text(
-        _enabled
-            ? 'Daily reminders and achievements enabled'
-            : 'Notifications are turned off',
-        style: Theme.of(context).textTheme.bodySmall,
-      ),
-      trailing: Switch.adaptive(
-        value: _enabled,
-        onChanged: (value) {
-          setState(() => _enabled = value); // instant local update
-          context
-              .read<AppState>()
-              .setNotificationsEnabled(value); // sync to state
-        },
-        activeTrackColor: AppTheme.primaryColor,
-      ),
-      dense: true,
     );
   }
 }
-// ── Appearance option ─────────────────────────────────────────────────────────
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  APPEARANCE OPTION — animated segment inside the switcher track
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _AppearanceOption extends StatelessWidget {
   final IconData icon;
@@ -779,19 +934,22 @@ class _AppearanceOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final tertiaryText =
+        isDark ? AppTheme.textTertiaryDark : AppTheme.textTertiaryLight;
+
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
         behavior: HitTestBehavior.opaque,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
+          duration: const Duration(milliseconds: 220),
           curve: Curves.easeOutCubic,
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+          padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 8),
           decoration: BoxDecoration(
-            color: isSelected
-                ? Theme.of(context).cardTheme.color
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
+            color: isSelected ? theme.cardTheme.color : Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -799,25 +957,23 @@ class _AppearanceOption extends StatelessWidget {
               AnimatedScale(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOutBack,
-                scale: isSelected ? 1.0 : 0.9,
+                scale: isSelected ? 1.0 : 0.88,
                 child: Icon(
                   icon,
-                  size: 20,
-                  color: isSelected
-                      ? AppTheme.primaryColor
-                      : Theme.of(context).textTheme.bodySmall?.color,
+                  size: 18,
+                  color: isSelected ? AppTheme.primaryColor : tertiaryText,
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOut,
                 style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                  fontSize: 13,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
                   color: isSelected
-                      ? Theme.of(context).textTheme.titleSmall?.color
-                      : Theme.of(context).textTheme.bodySmall?.color,
+                      ? theme.textTheme.titleSmall?.color
+                      : tertiaryText,
                 ),
                 child: Text(label),
               ),
@@ -825,65 +981,6 @@ class _AppearanceOption extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-// ── Settings tile ─────────────────────────────────────────────────────────────
-
-class _SettingsTile extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-  final bool isDestructive;
-
-  const _SettingsTile({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-    this.isDestructive = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isDestructive
-        ? AppTheme.dangerColor
-        : Theme.of(context).textTheme.titleSmall?.color;
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      leading: Padding(
-        padding: const EdgeInsets.only(right: 0),
-        child: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: isDestructive
-                ? AppTheme.dangerColor.withValues(alpha: 0.10)
-                : AppTheme.primaryColor.withValues(alpha: 0.10),
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Icon(
-            icon,
-            size: 20,
-            color: isDestructive ? AppTheme.dangerColor : AppTheme.primaryColor,
-          ),
-        ),
-      ),
-      title: Text(
-        label,
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          color: color,
-        ),
-      ),
-      trailing: const Icon(
-        Icons.chevron_right_rounded,
-        color: Color(0xFF9AA0A8),
-        size: 20,
-      ),
-      onTap: onTap,
-      dense: true,
     );
   }
 }
