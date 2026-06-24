@@ -9,7 +9,7 @@ final List<LearningModule> sampleModules = [
     title: 'Fundamentals of Data Communication',
     description:
         'Learn the core principles of data communication including transmission modes, protocols, and how data flows between devices across networks.',
-    thumbnailEmoji: '🌐',
+    thumbnailEmoji: "model",
     completedLessons: 0,
     lessons: [
       Lesson(

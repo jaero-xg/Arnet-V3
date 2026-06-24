@@ -1,15 +1,13 @@
-// lib/screens/module_details_screen.dart
-
 import 'package:flutter/material.dart';
 import '../models/app_models.dart';
 import '../theme/app_theme.dart';
 import 'lesson_reader_screen.dart';
 
 const _kModuleIcons = <String, IconData>{
-  'Module 1': Icons.wifi_rounded,
-  'Module 2': Icons.cable_rounded,
-  'Module 3': Icons.router_rounded,
-  'Module 4': Icons.settings_ethernet_rounded,
+  'Module 1': Icons.wifi,
+  'Module 2': Icons.cable,
+  'Module 3': Icons.router,
+  'Module 4': Icons.settings_ethernet_outlined,
 };
 
 class ModuleDetailsScreen extends StatelessWidget {
@@ -18,46 +16,53 @@ class ModuleDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final pct = module.completionPercentage;
     final isDone = pct == 100;
 
+    // Same soft elevation used for cards on the Home screen — keeps every
+    // surface in the app reading as one consistent visual language.
+
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           // ── Sticky App Bar ─────────────────────────────────────────────
           SliverAppBar(
             pinned: true,
-            backgroundColor: Theme.of(context).cardTheme.color,
+            backgroundColor: theme.scaffoldBackgroundColor,
             surfaceTintColor: Colors.transparent,
             elevation: 0,
             leading: Padding(
-              padding: const EdgeInsets.all(8),
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Icon(
-                    Icons.arrow_back_rounded,
-                    size: 18,
-                    color: Theme.of(context).textTheme.titleLarge?.color,
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: theme.cardTheme.color,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(10),
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context),
+                    borderRadius: BorderRadius.circular(10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        size: 16,
+                        color: theme.textTheme.titleLarge?.color,
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
             title: Text(
               module.id,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(1),
-              child: Container(
-                height: 0.8,
-                color: Theme.of(context).dividerTheme.color ??
-                    AppTheme.borderColorLight,
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.2,
               ),
             ),
           ),
@@ -65,23 +70,26 @@ class ModuleDetailsScreen extends StatelessWidget {
           // ── Module Hero Card ────────────────────────────────────────────
           SliverToBoxAdapter(
             child: Container(
-              color: Theme.of(context).cardTheme.color,
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: theme.cardTheme.color,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        width: 64,
-                        height: 64,
+                        width: 60,
+                        height: 60,
                         decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withValues(alpha: 0.10),
-                          borderRadius: BorderRadius.circular(26),
+                          color: AppTheme.greenTint,
+                          borderRadius: BorderRadius.circular(14),
                         ),
                         child: Icon(
                           _kModuleIcons[module.id] ?? Icons.school_outlined,
-                          size: 30,
+                          size: 24,
                           color: AppTheme.primaryColor,
                         ),
                       ),
@@ -92,21 +100,22 @@ class ModuleDetailsScreen extends StatelessWidget {
                           children: [
                             Text(
                               module.title,
-                              style: Theme.of(context).textTheme.titleSmall,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                             const SizedBox(height: 8),
-                            Row(
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
                               children: [
                                 _InfoPill(
                                   icon: Icons.menu_book_outlined,
                                   label: '${module.lessons.length} lessons',
-                                  color: AppTheme.primaryColor,
                                 ),
-                                const SizedBox(width: 6),
                                 _InfoPill(
                                   icon: Icons.check_circle_outline_rounded,
-                                  label: '${module.completedLessons} done',
-                                  color: AppTheme.primaryColor,
+                                  label: '${module.completedLessons} completed',
                                 ),
                               ],
                             ),
@@ -115,37 +124,42 @@ class ModuleDetailsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 16),
                   Text(
                     module.description,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Progress',
-                        style: Theme.of(context).textTheme.labelMedium,
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       Text(
-                        isDone ? 'Completed ✓' : '${pct.toInt()}%',
-                        style: const TextStyle(
-                          fontSize: 13,
+                        isDone ? 'Completed' : '${pct.toInt()}%',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: isDone
+                              ? AppTheme.successColor
+                              : AppTheme.primaryColor,
                           fontWeight: FontWeight.w700,
-                          color: AppTheme.primaryColor,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(4),
                     child: LinearProgressIndicator(
                       value: pct / 100,
                       backgroundColor: AppTheme.greenTint,
-                      color: AppTheme.primaryColor,
-                      minHeight: 8,
+                      color: isDone
+                          ? AppTheme.successColor
+                          : AppTheme.primaryColor,
+                      minHeight: 5,
                     ),
                   ),
                 ],
@@ -156,17 +170,19 @@ class ModuleDetailsScreen extends StatelessWidget {
           // ── Lessons header ──────────────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     'Lessons',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: theme.textTheme.titleLarge,
                   ),
+                  const SizedBox(width: 8),
                   const Spacer(),
                   Text(
                     '${module.completedLessons} of ${module.lessons.length}',
-                    style: Theme.of(context).textTheme.labelSmall,
+                    style: theme.textTheme.labelSmall,
                   ),
                 ],
               ),
@@ -175,16 +191,14 @@ class ModuleDetailsScreen extends StatelessWidget {
 
           // ── Lesson list ─────────────────────────────────────────────────
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => _LessonCard(
-                  lesson: module.lessons[index],
-                  index: index,
-                  module: module,
-                  isLast: index == module.lessons.length - 1,
-                ),
-                childCount: module.lessons.length,
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+            sliver: SliverList.separated(
+              itemCount: module.lessons.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 10),
+              itemBuilder: (context, index) => _LessonCard(
+                lesson: module.lessons[index],
+                index: index,
+                module: module,
               ),
             ),
           ),
@@ -194,37 +208,35 @@ class ModuleDetailsScreen extends StatelessWidget {
   }
 }
 
-// ── Info Pill ─────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+//  INFO PILL
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _InfoPill extends StatelessWidget {
   final IconData icon;
   final String label;
-  final Color color;
-  const _InfoPill({
-    required this.icon,
-    required this.label,
-    required this.color,
-  });
+  const _InfoPill({required this.icon, required this.label});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(10),
+        color: AppTheme.greenTint,
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: color),
-          const SizedBox(width: 4),
+          Icon(icon, size: 13, color: AppTheme.primaryColor),
+          const SizedBox(width: 5),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 12,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppTheme.primaryColor,
               fontWeight: FontWeight.w600,
-              color: color,
             ),
           ),
         ],
@@ -233,140 +245,148 @@ class _InfoPill extends StatelessWidget {
   }
 }
 
-// ── Lesson Card ───────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+//  LESSON CARD — elevated, matches Home screen's module/action cards
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _LessonCard extends StatelessWidget {
   final Lesson lesson;
   final int index;
   final LearningModule module;
-  final bool isLast;
 
   const _LessonCard({
     required this.lesson,
     required this.index,
     required this.module,
-    required this.isLast,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final tertiaryText =
+        isDark ? AppTheme.textTertiaryDark : AppTheme.textTertiaryLight;
     final isCompleted = lesson.isCompleted;
 
     return Container(
-      margin: EdgeInsets.only(bottom: isLast ? 0 : 10),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardTheme.color,
-        borderRadius: BorderRadius.circular(26),
+        color: theme.cardTheme.color,
+        borderRadius: BorderRadius.circular(14),
       ),
-      child: InkWell(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => LessonReaderScreen(lesson: lesson, module: module),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>
+                  LessonReaderScreen(lesson: lesson, module: module),
+            ),
           ),
-        ),
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-          child: Row(
-            children: [
-              // Step indicator circle
-              Container(
-                width: 42,
-                height: 42,
-                decoration: BoxDecoration(
-                  color: isCompleted
-                      ? AppTheme.primaryColor.withValues(alpha: 0.1)
-                      : AppTheme.primaryColor.withValues(alpha: 0.10),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Center(
-                  child: isCompleted
-                      ? const Icon(
-                          Icons.check_rounded,
-                          size: 18,
-                          color: AppTheme.primaryColor,
-                        )
-                      : Text(
-                          '${index + 1}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.primaryColor,
-                            fontSize: 14,
+          borderRadius: BorderRadius.circular(14),
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              children: [
+                // Step indicator
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: isCompleted
+                        ? AppTheme.successLight
+                        : AppTheme.greenTint,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: isCompleted
+                        ? const Icon(
+                            Icons.check_rounded,
+                            size: 18,
+                            color: AppTheme.successColor,
+                          )
+                        : Text(
+                            '${index + 1}',
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              color: AppTheme.primaryColor,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
+                const SizedBox(width: 14),
 
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      lesson.title,
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      lesson.subtitle,
-                      style: Theme.of(context).textTheme.titleSmall,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
-                        Icons.schedule_rounded,
-                        size: 12,
-                        color: Color(0xFF9AA0A8),
-                      ),
-                      const SizedBox(width: 3),
                       Text(
-                        '${lesson.readingTimeMinutes} min',
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: Color(0xFF9AA0A8),
+                        lesson.title,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: tertiaryText,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.3,
                         ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        lesson.subtitle,
+                        style: theme.textTheme.titleSmall,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
-                  if (isCompleted)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Text(
-                        'Done',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: AppTheme.primaryColor,
-                          fontWeight: FontWeight.w700,
+                ),
+                const SizedBox(width: 10),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.schedule_outlined,
+                          size: 12,
+                          color: tertiaryText,
                         ),
-                      ),
-                    )
-                  else
-                    const Icon(
-                      Icons.chevron_right_rounded,
-                      size: 18,
-                      color: Color(0xFF9AA0A8),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${lesson.readingTimeMinutes} min',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: tertiaryText,
+                          ),
+                        ),
+                      ],
                     ),
-                ],
-              ),
-            ],
+                    const SizedBox(height: 8),
+                    if (isCompleted)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: AppTheme.successLight,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          'Completed',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: AppTheme.successColor,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      )
+                    else
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 14,
+                        color: tertiaryText.withValues(alpha: 0.6),
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

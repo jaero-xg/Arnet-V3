@@ -2,11 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../models/app_models.dart';
 import '../state/app_state.dart';
 import '../theme/app_theme.dart';
+import '../data/network_svgs.dart';
+import '../data/model_assets.dart';
 import 'module_details_screen.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ModelDetailsScreen extends StatefulWidget {
   final Model3D model;
@@ -41,7 +43,7 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
           // ── Sticky App Bar ─────────────────────────────────────────────
           SliverAppBar(
             pinned: true,
-            backgroundColor: Theme.of(context).cardTheme.color,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             surfaceTintColor: Colors.transparent,
             elevation: 0,
             leading: Padding(
@@ -50,13 +52,13 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
                 onTap: () => Navigator.pop(context),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(16),
+                    color: AppTheme.greenTint,
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
                     Icons.arrow_back_rounded,
                     size: 18,
-                    color: Theme.of(context).textTheme.titleLarge?.color,
+                    color: AppTheme.primaryColor,
                   ),
                 ),
               ),
@@ -83,10 +85,10 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
           // ── Model Name ─────────────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 4),
               child: Text(
                 model.name,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
@@ -94,7 +96,7 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
           // ── Description ─────────────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 20),
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
               child: Text(
                 model.description,
                 style: Theme.of(context).textTheme.bodyMedium,
@@ -116,13 +118,13 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
           // ── Action Buttons ───────────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: _RelatedLessonButton(relatedModule: relatedModule),
             ),
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
               child: _ARLaunchButton(),
             ),
           ),
@@ -140,6 +142,9 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
 }
 
 // ── Model Preview ─────────────────────────────────────────────────────────────
+// Renders the real asset image at assets/images/models/{id}.png. Falls back
+// to the matching NetworkSvgs outline icon (then a generic icon) if the
+// asset is missing, same pattern used in the models grid.
 
 class _ModelPreview extends StatelessWidget {
   final Model3D model;
@@ -148,37 +153,63 @@ class _ModelPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).cardTheme.color,
-      width: double.infinity,
-      height: 220,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.string(
-              model.thumbnailSvg,
-              width: 80,
-              height: 80,
-              fit: BoxFit.contain,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            height: 220,
+            decoration: BoxDecoration(
+              color: AppTheme.greenTint,
+              borderRadius: BorderRadius.circular(18),
             ),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppTheme.accentColor.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                model.category,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: AppTheme.accentColor,
-                  fontWeight: FontWeight.w600,
-                ),
+            clipBehavior: Clip.hardEdge,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Image.asset(
+                ModelAssets.pathFor(model.id),
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  final fallbackSvg = NetworkSvgs.forId(model.id);
+                  return Center(
+                    child: fallbackSvg != null
+                        ? SvgPicture.string(
+                            fallbackSvg,
+                            width: 80,
+                            height: 80,
+                            colorFilter: const ColorFilter.mode(
+                              AppTheme.primaryColor,
+                              BlendMode.srcIn,
+                            ),
+                          )
+                        : Icon(
+                            Icons.view_in_ar_rounded,
+                            size: 64,
+                            color: AppTheme.primaryColor.withValues(alpha: 0.5),
+                          ),
+                  );
+                },
               ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(
+              color: AppTheme.greenTint,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(
+              model.category,
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppTheme.primaryColor,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -194,18 +225,21 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
       child: Row(
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           const Spacer(),
           if (trailing != null)
             Text(
               trailing!,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppTheme.primaryColor,
+                    fontWeight: FontWeight.w700,
+                  ),
             ),
         ],
       ),
@@ -226,11 +260,11 @@ class _ModelInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
-          borderRadius: BorderRadius.circular(26),
+          borderRadius: BorderRadius.circular(18),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -278,10 +312,7 @@ class _InfoRow extends StatelessWidget {
             width: 130,
             child: Text(
               label,
-              style: const TextStyle(
-                fontSize: 13,
-                color: Color(0xFF8BAAB8),
-              ),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
           Expanded(
@@ -308,6 +339,7 @@ class _RelatedLessonButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       onTap: () => Navigator.push(
         context,
@@ -315,25 +347,25 @@ class _RelatedLessonButton extends StatelessWidget {
           builder: (_) => ModuleDetailsScreen(module: relatedModule),
         ),
       ),
-      borderRadius: BorderRadius.circular(26),
+      borderRadius: BorderRadius.circular(18),
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
-          borderRadius: BorderRadius.circular(26),
+          borderRadius: BorderRadius.circular(18),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         child: Row(
           children: [
             Container(
               width: 42,
               height: 42,
               decoration: BoxDecoration(
-                color: AppTheme.tealColor.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(16),
+                color: AppTheme.greenTint,
+                borderRadius: BorderRadius.circular(12),
               ),
               child: const Icon(
                 Icons.menu_book_outlined,
-                color: AppTheme.tealColor,
+                color: AppTheme.primaryColor,
                 size: 22,
               ),
             ),
@@ -354,10 +386,12 @@ class _RelatedLessonButton extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(
+            Icon(
               Icons.chevron_right_rounded,
               size: 20,
-              color: Color(0xFFB0C8D4),
+              color: isDark
+                  ? AppTheme.textQuaternaryDark
+                  : AppTheme.textQuaternaryLight,
             ),
           ],
         ),
@@ -396,7 +430,7 @@ class _ARLaunchButton extends StatelessWidget {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(26),
+            borderRadius: BorderRadius.circular(18),
           ),
           elevation: 0,
         ),

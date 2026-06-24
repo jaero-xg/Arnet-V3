@@ -1,5 +1,7 @@
 // lib/models/app_models.dart
 
+import 'package:flutter/src/widgets/icon_data.dart';
+
 /// Complete data model for learner profile with full serialization support.
 class LearnerProfile {
   final String name;
@@ -148,6 +150,8 @@ class LearningModule {
 
   double get completionPercentage =>
       lessons.isEmpty ? 0 : (completedLessons / lessons.length) * 100;
+
+  IconData? get thumbnailSvg => null;
 
   /// Apply saved progress to this module.
   void applyProgress(Map<String, dynamic> progress) {

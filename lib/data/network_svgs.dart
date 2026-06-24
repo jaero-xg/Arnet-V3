@@ -1,5 +1,13 @@
+// lib/data/network_svgs.dart
+//
+// NOTE: thumbnails now render from real assets (assets/images/models/{id}.png)
+// via Image.asset in models_screen.dart and model_details_screen.dart.
+// This class is kept as a fallback icon set — NetworkSvgs.forId(model.id)
+// returns a matching outline illustration to show if the asset image fails
+// to load, instead of a generic placeholder icon.
+
 class NetworkSvgs {
-  // ── Existing icons (upgraded to outline-only) ─────────────────────────────
+  // ── Existing icons (outline-only) ─────────────────────────────────────────
 
   static const String modem = '''
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
@@ -157,4 +165,29 @@ class NetworkSvgs {
   <circle cx="38" cy="45" r="1.5" fill="none" stroke="#4a90e2" stroke-width="1.5"/>
 </svg>
 ''';
+
+  // ── Fallback lookup ─────────────────────────────────────────────────────
+  // Maps a Model3D.id to its matching outline SVG. Keys are the actual ids
+  // used in sample_data.dart (mdl_modem, mdl_networkSwitch, ...) — used as a
+  // fallback whenever ModelAssets.pathFor(id) has no real photo, or the
+  // photo fails to load.
+  static const Map<String, String> _byId = {
+    'mdl_modem': modem,
+    'mdl_networkSwitch': networkSwitch,
+    'mdl_hub': hub,
+    'mdl_repeater': repeater,
+    'mdl_rj45': rj45,
+    'mdl_coaxialCable': coaxialCable,
+    'mdl_opticalFiber': opticalFiber,
+    'mdl_smartphone': smartphone,
+    'mdl_serverRack': serverRack,
+    'mdl_laptop': laptop,
+    'mdl_desktop': desktop,
+    'mdl_router': router,
+    'mdl_access_point': wirelessAccessPoint,
+  };
+
+  /// Returns a fallback SVG string for the given model id, or null if there's
+  /// no matching fallback (caller should show a generic icon in that case).
+  static String? forId(String id) => _byId[id];
 }

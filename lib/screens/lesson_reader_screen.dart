@@ -1,5 +1,3 @@
-// lib/screens/lesson_reader_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/app_models.dart';
@@ -8,10 +6,10 @@ import '../theme/app_theme.dart';
 import 'quiz_screen.dart';
 
 const _kModuleIcons = <String, IconData>{
-  'Module 1': Icons.wifi_rounded,
-  'Module 2': Icons.cable_rounded,
-  'Module 3': Icons.router_rounded,
-  'Module 4': Icons.settings_ethernet_rounded,
+  'Module 1': Icons.wifi,
+  'Module 2': Icons.cable,
+  'Module 3': Icons.router,
+  'Module 4': Icons.settings_ethernet_outlined,
 };
 
 class LessonReaderScreen extends StatefulWidget {
@@ -59,63 +57,69 @@ class _LessonReaderScreenState extends State<LessonReaderScreen> {
     final module = widget.module;
     final lessonIndex = module.lessons.indexWhere((l) => l.id == lesson.id);
     final totalLessons = module.lessons.length;
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: Theme.of(context).cardTheme.color,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Stack(
         children: [
           // ── Main scrollable content ──────────────────────────────────
           CustomScrollView(
             controller: _scrollController,
             slivers: [
-              // ── App bar ────────────────────────────────────────────
+              // ── App bar — mirrors Module Details exactly ────────────
               SliverAppBar(
                 pinned: true,
-                backgroundColor: Theme.of(context).cardTheme.color,
+                backgroundColor: theme.scaffoldBackgroundColor,
                 surfaceTintColor: Colors.transparent,
                 elevation: 0,
                 leading: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Icon(
-                        Icons.arrow_back_rounded,
-                        size: 18,
-                        color: Theme.of(context).textTheme.titleSmall?.color,
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: theme.cardTheme.color,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(10),
+                      child: InkWell(
+                        onTap: () => Navigator.pop(context),
+                        borderRadius: BorderRadius.circular(10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Icon(
+                            Icons.arrow_back_ios_new_rounded,
+                            size: 16,
+                            color: theme.textTheme.titleLarge?.color,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      lesson.title,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ],
+                title: Text(
+                  lesson.title,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.2,
+                  ),
                 ),
                 actions: [
                   if (lessonIndex >= 0)
                     Padding(
                       padding: const EdgeInsets.only(right: 16),
                       child: Container(
-                        height: 36,
+                        height: 32,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 9.5),
+                            horizontal: 12, vertical: 7),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          borderRadius: BorderRadius.circular(10),
+                          color: theme.cardTheme.color,
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           '${lessonIndex + 1} / $totalLessons',
-                          style: const TextStyle(
-                            fontSize: 12,
+                          style: theme.textTheme.labelSmall?.copyWith(
                             fontWeight: FontWeight.w700,
                             color: AppTheme.primaryColor,
                           ),
@@ -124,31 +128,170 @@ class _LessonReaderScreenState extends State<LessonReaderScreen> {
                     ),
                 ],
                 bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(5),
-                  child: LinearProgressIndicator(
-                    value: _readProgress,
-                    backgroundColor: AppTheme.greenTint,
-                    color: AppTheme.primaryColor,
-                    minHeight: 4,
+                  preferredSize: const Size.fromHeight(3),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(2),
+                    child: LinearProgressIndicator(
+                      value: _readProgress,
+                      backgroundColor: AppTheme.greenTint,
+                      color: AppTheme.primaryColor,
+                      minHeight: 3,
+                    ),
                   ),
                 ),
               ),
 
-              // ── Lesson hero ────────────────────────────────────────
+              // ── Lesson Hero — flat card, matches Module Details hero ─
               SliverToBoxAdapter(
-                child: _LessonHero(lesson: lesson, module: module),
+                child: Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: theme.cardTheme.color,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Icon + title row — mirrors module hero row
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 60,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: AppTheme.greenTint,
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: Icon(
+                              _kModuleIcons[module.id] ?? Icons.school_outlined,
+                              size: 24,
+                              color: AppTheme.primaryColor,
+                            ),
+                          ),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Module breadcrumb pill
+                                _InfoPill(
+                                  icon: _kModuleIcons[module.id] ??
+                                      Icons.school_outlined,
+                                  label: module.title,
+                                ),
+                                const SizedBox(height: 8),
+                                // Lesson meta pills row
+                                Wrap(
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: [
+                                    _InfoPill(
+                                      icon: Icons.schedule_outlined,
+                                      label:
+                                          '${lesson.readingTimeMinutes} min read',
+                                    ),
+                                    _InfoPill(
+                                      icon: Icons.format_list_bulleted_outlined,
+                                      label:
+                                          '${lesson.sections.length} sections',
+                                    ),
+                                    if (lesson.isCompleted)
+                                      _InfoPill(
+                                        icon:
+                                            Icons.check_circle_outline_rounded,
+                                        label: 'Completed',
+                                        color: AppTheme.successColor,
+                                        tint: AppTheme.successLight,
+                                      ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Lesson subtitle as body headline
+                      Text(
+                        lesson.subtitle,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.2,
+                        ),
+                      ),
+
+                      // ── Read progress ─────────────────────────────────
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Reading progress',
+                            style: theme.textTheme.labelMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            _readProgress >= 1.0
+                                ? 'Done'
+                                : '${(_readProgress * 100).toInt()}%',
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: _readProgress >= 1.0
+                                  ? AppTheme.successColor
+                                  : AppTheme.primaryColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: LinearProgressIndicator(
+                          value: _readProgress,
+                          backgroundColor: AppTheme.greenTint,
+                          color: _readProgress >= 1.0
+                              ? AppTheme.successColor
+                              : AppTheme.primaryColor,
+                          minHeight: 5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
 
-              // ── Section blocks ─────────────────────────────────────
+              // ── Sections header — mirrors "Lessons" header ──────────
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Sections',
+                        style: theme.textTheme.titleLarge,
+                      ),
+                      const Spacer(),
+                      Text(
+                        '${lesson.sections.length} total',
+                        style: theme.textTheme.labelSmall,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // ── Section blocks ──────────────────────────────────────
               SliverPadding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 120),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => _SectionBlock(
-                      section: lesson.sections[index],
-                      index: index,
-                    ),
-                    childCount: lesson.sections.length,
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 120),
+                sliver: SliverList.separated(
+                  itemCount: lesson.sections.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 10),
+                  itemBuilder: (context, index) => _SectionCard(
+                    section: lesson.sections[index],
+                    index: index,
                   ),
                 ),
               ),
@@ -168,189 +311,46 @@ class _LessonReaderScreenState extends State<LessonReaderScreen> {
   }
 }
 
-// ── Lesson Hero ───────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+//  INFO PILL — exact copy from module_details_screen.dart for consistency
+// ═══════════════════════════════════════════════════════════════════════════════
 
-class _LessonHero extends StatelessWidget {
-  final Lesson lesson;
-  final LearningModule module;
-  const _LessonHero({required this.lesson, required this.module});
-
-  @override
-  Widget build(BuildContext context) {
-    final icon = _kModuleIcons[module.id] ?? Icons.school_outlined;
-
-    return Container(
-      color: Theme.of(context).cardTheme.color,
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Module breadcrumb pill — icon instead of emoji
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              color: AppTheme.primaryColor.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  icon,
-                  size: 13,
-                  color: AppTheme.primaryColor,
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  module.title,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
-
-          // Lesson subtitle as the main headline
-          Text(
-            lesson.subtitle,
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          const SizedBox(height: 10),
-
-          // Meta row: read time + section count
-          Row(
-            children: [
-              _MetaChip(
-                icon: Icons.schedule_rounded,
-                label: '${lesson.readingTimeMinutes} min read',
-              ),
-              const SizedBox(width: 8),
-              _MetaChip(
-                icon: Icons.format_list_bulleted_rounded,
-                label: '${lesson.sections.length} sections',
-              ),
-              if (lesson.isCompleted) ...[
-                const SizedBox(width: 8),
-                const _MetaChip(
-                  icon: Icons.check_circle_rounded,
-                  label: 'Completed',
-                  color: AppTheme.primaryColor,
-                ),
-              ],
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // Divider
-          Container(
-            height: 0.8,
-            color: Theme.of(context).dividerTheme.color ??
-                AppTheme.borderColorLight,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MetaChip extends StatelessWidget {
+class _InfoPill extends StatelessWidget {
   final IconData icon;
   final String label;
-  final Color color;
+  final Color? color;
+  final Color? tint;
 
-  const _MetaChip({
+  const _InfoPill({
     required this.icon,
     required this.label,
-    this.color = const Color(0xFF9AA0A8),
+    this.color,
+    this.tint,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 13, color: color),
-        const SizedBox(width: 4),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: color,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
-    );
-  }
-}
+    final theme = Theme.of(context);
+    final effectiveColor = color ?? AppTheme.primaryColor;
+    final effectiveTint = tint ?? AppTheme.greenTint;
 
-// ── Section Block ─────────────────────────────────────────────────────────────
-
-class _SectionBlock extends StatelessWidget {
-  final LessonSection section;
-  final int index;
-  const _SectionBlock({required this.section, required this.index});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 32),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: effectiveTint,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Section number + heading row
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Section number badge
-              Container(
-                width: 26,
-                height: 26,
-                margin: const EdgeInsets.only(top: 1, right: 10),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryColor,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Center(
-                  child: Text(
-                    '${index + 1}',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  section.heading,
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-
-          // Accent underline
-          Container(
-            width: 42,
-            height: 2,
-            decoration: BoxDecoration(
-              color: AppTheme.primaryColor,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          const SizedBox(height: 12),
-
-          // Body text
+          Icon(icon, size: 13, color: effectiveColor),
+          const SizedBox(width: 5),
           Text(
-            section.body,
-            style: Theme.of(context).textTheme.bodyMedium,
+            label,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: effectiveColor,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
@@ -358,7 +358,104 @@ class _SectionBlock extends StatelessWidget {
   }
 }
 
-// ── Bottom CTA ────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+//  SECTION CARD — same card shape, radius, padding as _LessonCard
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _SectionCard extends StatelessWidget {
+  final LessonSection section;
+  final int index;
+  const _SectionCard({required this.section, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final tertiaryText =
+        isDark ? AppTheme.textTertiaryDark : AppTheme.textTertiaryLight;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.cardTheme.color,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Section number badge + heading row — same pattern as _LessonCard
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppTheme.greenTint,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    '${index + 1}',
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      color: AppTheme.primaryColor,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Section ${index + 1}',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: tertiaryText,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      section.heading,
+                      style: theme.textTheme.titleSmall,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+
+          // Accent underline — 2px, same primaryColor as progress bar
+          Container(
+            width: 32,
+            height: 2,
+            decoration: BoxDecoration(
+              color: AppTheme.primaryColor,
+              borderRadius: BorderRadius.circular(1),
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          // Body text — same bodyMedium style and 1.7 line-height as before
+          Text(
+            section.body,
+            style: theme.textTheme.bodyMedium?.copyWith(height: 1.7),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  BOTTOM CTA — same surface color + upward shadow as Module Details pattern
+// ═══════════════════════════════════════════════════════════════════════════════
 
 class _BottomCTA extends StatelessWidget {
   final Lesson lesson;
@@ -367,21 +464,17 @@ class _BottomCTA extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardTheme.color,
-        border: Border(
-          top: BorderSide(
-            color: Theme.of(context).dividerTheme.color ??
-                AppTheme.borderColorLight,
-            width: 0.8,
-          ),
-        ),
+        color: theme.cardTheme.color,
         boxShadow: [
           BoxShadow(
-            color: AppTheme.primaryColor.withValues(alpha: 0.06),
-            blurRadius: 12,
+            color: Colors.black.withValues(alpha: isDark ? 0.30 : 0.05),
+            blurRadius: 20,
             offset: const Offset(0, -4),
           ),
         ],
@@ -398,26 +491,15 @@ class _BottomCTA extends StatelessWidget {
               ),
             );
           },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.primaryColor,
-            foregroundColor: Colors.white,
-            minimumSize: const Size(double.infinity, 52),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            elevation: 0,
-          ),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.quiz_outlined, size: 20),
-              SizedBox(width: 8),
+              Icon(Icons.quiz_outlined,
+                  size: 18, color: theme.colorScheme.onPrimary),
+              const SizedBox(width: 8),
               Text(
                 "I've read this — Take Quiz",
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(color: theme.colorScheme.onPrimary),
               ),
             ],
           ),
